@@ -10,7 +10,12 @@
 */
 
 global $fbc_db_version;
-$fbc_db_version = '1.0';
+$fbc_db_version = '1.1';
+
+
+function getClosingSettingTableName($wpdb) {
+return $wpdb->prefix . 'forgebiz_closing_settingsv3';
+}
 
 function fbc_install() {
 	global $wpdb;
@@ -29,6 +34,10 @@ function fbc_install() {
 		sales_3 decimal(15,2) NOT NULL,
 		sales_4 decimal(15,2) NOT NULL,
 		sales_5 decimal(15,2) NOT NULL,
+		sales_6 decimal(15,2) NOT NULL,
+		sales_7 decimal(15,2) NOT NULL,
+		sales_8 decimal(15,2) NOT NULL,
+		sales_9 decimal(15,2) NOT NULL,		
 		close_1_cent decimal(15,2) NOT NULL,
 		close_5_cents decimal(15,2) NOT NULL,	
 		close_10_cents decimal(15,2) NOT NULL,	
@@ -48,15 +57,15 @@ function fbc_install() {
 		gift_certificates_sold decimal(15,2) NOT NULL,
 		gross_sales decimal(15,2) NOT NULL,
 		income_1 decimal(15,2) NOT NULL,
+		income_2 decimal(15,2) NOT NULL,
+		income_3 decimal(15,2) NOT NULL,
+		income_4 decimal(15,2) NOT NULL,
+		income_5 decimal(15,2) NOT NULL,
+		income_6 decimal(15,2) NOT NULL,
+		income_7 decimal(15,2) NOT NULL,
+		income_8 decimal(15,2) NOT NULL,
+		income_9 decimal(15,2) NOT NULL,		
 		income_cash_store decimal(15,2) NOT NULL,
-		income_cash_tips decimal(15,2) NOT NULL,
-		income_checks decimal(15,2) NOT NULL,
-		income_coupon decimal(15,2) NOT NULL,
-		income_credit_card decimal(15,2) NOT NULL,
-		income_debits decimal(15,2) NOT NULL,
-		income_deposit_redeemed decimal(15,2) NOT NULL,
-		income_gift_certificate_redeemed decimal(15,2) NOT NULL,
-		income_receipts decimal(15,2) NOT NULL,
 		income_total decimal(15,2) NOT NULL,
 		last_update datetime default NULL,
 		location_id bigint(20) NOT NULL,
@@ -85,35 +94,64 @@ function fbc_install() {
 
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
-	//echo $wpdb->last_error; 
-	//die();  
-	$label_table_name = $wpdb->prefix . 'forgebiz_labels';
+
+	$closing_settings_table_name = getClosingSettingTableName($wpdb);
 	
 
 
 
 
-	$label_sql = "CREATE TABLE $label_table_name (
+	$label_sql = "CREATE TABLE $closing_settings_table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
+		show_sales_1 TINYINT(1),
+		show_sales_2 TINYINT(1),
+		show_sales_3 TINYINT(1),
+		show_sales_4 TINYINT(1),
+		show_sales_5 TINYINT(1),
+		show_sales_6 TINYINT(1),
+		show_sales_7 TINYINT(1),
+		show_sales_8 TINYINT(1),
+		show_sales_9 TINYINT(1),
 		sales_1_label varchar(100) NOT NULL,
 		sales_2_label varchar(100) NOT NULL,
 		sales_3_label varchar(100) NOT NULL,
 		sales_4_label varchar(100) NOT NULL,
 		sales_5_label varchar(100) NOT NULL,
+		sales_6_label varchar(100) NOT NULL,
+		sales_7_label varchar(100) NOT NULL,
+		sales_8_label varchar(100) NOT NULL,
+		sales_9_label varchar(100) NOT NULL,				
+		show_income_1 TINYINT(1),
+		show_income_2 TINYINT(1),
+		show_income_3 TINYINT(1),
+		show_income_4 TINYINT(1),
+		show_income_5 TINYINT(1),
+		show_income_6 TINYINT(1),
+		show_income_7 TINYINT(1),
+		show_income_8 TINYINT(1),
+		show_income_9 TINYINT(1),
+		income_1_label varchar(100) NOT NULL,
+		income_2_label varchar(100) NOT NULL,
+		income_3_label varchar(100) NOT NULL,
+		income_4_label varchar(100) NOT NULL,
+		income_5_label varchar(100) NOT NULL,
+		income_6_label varchar(100) NOT NULL,
+		income_7_label varchar(100) NOT NULL,
+		income_8_label varchar(100) NOT NULL,
+		income_9_label varchar(100) NOT NULL,	
 		close_total_label varchar(100) NOT NULL,
 		closer_name_label varchar(100) NOT NULL,
 		difference_label varchar(100) NOT NULL,
 		gross_sales_label varchar(100) NOT NULL,
-		income_1_label varchar(100) NOT NULL,
-		income_2_label varchar(100) NOT NULL,		
 		opener_name_label varchar(255) NOT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
 
 	dbDelta( $label_sql );
-	
-	
+	//	echo $wpdb->last_error; 
+	//die();  
+	//
 	$location_table_name = $wpdb->prefix . 'forgebiz_locations';
 	
 
@@ -126,9 +164,7 @@ function fbc_install() {
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 	
-		dbDelta( $location_sql );
-	#labels table
-	
+	dbDelta( $location_sql );
 
 	add_option( 'fbc_db_version', $fbc_db_version );
 }
@@ -136,27 +172,62 @@ function fbc_install() {
 function fbc_install_data() {
 	global $wpdb;
 	
-	$label_table_name = $wpdb->prefix . 'forgebiz_labels';
+	$closing_settings_table_name = getClosingSettingTableName($wpdb);
 
 	
 	$wpdb->insert( 
-		$label_table_name, 
+		$closing_settings_table_name, 
 		array( 
-			'sales_1_label' => "sales 1", 
-			'sales_2_label' => "sales 2", 		
-			'sales_3_label' => "sales_3", 		
-			'sales_4_label' => "sales 4", 					
-			'sales_5_label' => "sales 5",
-			'close_total_label' => "close_total_label", 		
-			'closer_name_label' => "closer_name_label", 		
-			'closing_date' => "closing_date", 					
-			'difference_label' => "difference_label",
-			'gross_sales_label' => "gross_sales_label",
-			'income_1_label' => "income_1_label", 		
-			'income_2_label' => "income_2_label", 		
-			'opener_name_label' => "opener_name_label"		
+		
+				'show_sales_1'  => 1,
+				'show_sales_2'  => 1,
+				'show_sales_3'  => 1,
+				'show_sales_4'  => 1,
+				'show_sales_5' => 1,
+				'show_sales_6'  => 1,
+				'show_sales_7'  => 1,
+				'show_sales_8'  => 1,
+				'show_sales_9'  => 1,
+				'sales_1_label'  => 'Sales Product #1',
+				'sales_2_label'   => 'Sales Product #2',
+				'sales_3_label'  => 'Sales Product #3',
+				'sales_4_label'  => 'Sales Product #4',
+				'sales_5_label'  => 'Sales Product #5',
+				'sales_6_label'  => 'Sales Product #6',
+				'sales_7_label'  => 'Sales Product #7',
+				'sales_8_label'  => 'Sales Product #8',
+				'sales_9_label'  => 'Sales Product #9',
+				'show_income_1'  => 1,
+				'show_income_2'  => 1,
+				'show_income_3'  => 1,
+				'show_income_4'  => 1,
+				'show_income_5'  => 1,
+				'show_income_6' => 1,
+				'show_income_7'  => 1,
+				'show_income_8'  => 1,
+				'show_income_9'  => 1,
+				'income_1_label'  => 'Income #1',
+				'income_2_label'  => 'Income #2',				
+				'income_3_label'  => 'Income #3',
+				'income_4_label'  => 'Income #4',
+				'income_5_label'  => 'Income #5',
+				'income_6_label'  => 'Income #6',
+				'income_7_label'  => 'Income #7',
+				'income_8_label'  => 'Income #8',
+				'income_9_label'  => 'Income #9',
+				'close_total_label'  => 'sales_1_label',
+				'closer_name_label'  => 'sales_1_label',
+				'difference_label' => 'sales_1_label',
+				'gross_sales_label'  => 'sales_1_label',
+				'opener_name_label'  => 'sales_1_label',
+		
+		
 		) 
 	);
+	
+	echo $wpdb->last_error; 
+	die();  
+	
 }
 
 
@@ -234,47 +305,12 @@ class gwtApp
 		// Success response
 		wp_send_json_success( $body );
 		
-		///wp/v2/posts/<id>
-		//   	api/forgebiz-closings/labels/<id>
+
 	}
 	
 
 
 
-
-	public function weather_api( $wp ) { 
-		// Weather API
-		if ( $wp->matched_rule !== $this->api_route )
-			return;
-		// Validate params
-		if ( empty( $wp->query_vars['api_position'] ) ) {
-			return wp_send_json_error( 'Missing required position parameters.' );
-		}
-		// Lookup weather forecast
-		$position = esc_attr( $wp->query_vars['api_position'] );
-		$coords = explode( ':', $position );
-		$lat = round( floatval( $coords[0] ), 4 );
-		$long = round( floatval( $coords[1] ), 4 );
-		$url = "https://api.weather.gov/points/$lat,$long/forecast";
-		$response = wp_remote_get( $url );
-		$status = wp_remote_retrieve_response_code( $response );
-		$body = wp_remote_retrieve_body( $response );
-		$body = json_decode( $body, true );
-		
-		// Errors
-		if ( $status !== 200 ) 
-			wp_send_json_error( $body );
-		// Cache control headers, these will cache the 
-		// users local weather forecast in the browser
-		// for 1 day to reduce API requests.
-		$ttl = DAY_IN_SECONDS;
-		header( "Cache-Control: public, max-age=$ttl" );
-		header( "Last-Modified: $last_modified" );
-
-		// Success response
-		wp_send_json_success( $body );
-	}
-	// flush_rules() if our rules are not yet included
 	public function flush_rewrites() {
 		$rules = get_option( 'rewrite_rules' );
 		if ( ! isset( $rules[ $this->api_route ] ) ) {
@@ -316,11 +352,7 @@ class gwtApp
 
 		// Conditions for url path
 		$url_match = ( substr( $_SERVER['REQUEST_URI'], 0, strlen( $this->base_href ) ) === $this->base_href );
-		//echo "server=";
-		//echo $_SERVER['REQUEST_URI'] . "\n";
-		//echo "base_href=";
-		//echo $this->base_href . "\n";
-		//echo "url_match $url_match" . "\n";
+
 	
 		if ( ! $url_match ) 
 			return $continue;
@@ -330,17 +362,17 @@ class gwtApp
 		//mywebapp/mywebapp.nocache.js
 		//echo "hi";
 		//	die;
-		$main_js = $this->auto_version_file( 'ClosingsApp/war/closingsapp/closingsapp.nocache.js' );
-		$main_css = $this->auto_version_file( 'ClosingsApp/war/ClosingsApp.css' );
+		$main_js = $this->auto_version_file( 'MyWebApp/war/mywebapp/mywebapp.nocache.js' );
+		$main_css = $this->auto_version_file( 'MyWebApp/war/MyWebApp.css' );
 		$plugin_url = $this->plugin_url;
 		$base_href = $this->base_href;
 
-		$page_title = 'forgebiz closings | forgebiz.com';
+		$page_title = 'WordPress Angular.js Plugin Demo App | kevinleary.net';
 		// Browser caching for our main template
 		$ttl = DAY_IN_SECONDS;
 		header( "Cache-Control: public, max-age=$ttl" );
 		// Load index view
-		include_once( $this->plugin_dir . 'ClosingsApp/war/ClosingsApp.php' );
+		include_once( $this->plugin_dir . 'MyWebApp/war/MyWebApp.php' );
 		exit;
 	}
 } // class gwtApp
@@ -348,17 +380,26 @@ new gwtApp();
 
 
 add_action( 'rest_api_init', function () {
-	register_rest_route( 'forgebiz-closings/v1', '/label/(?P<id>\d+)', array(
+		//forgebiz_closing_settings
+	register_rest_route( 'forgebiz-closings/v1', '/closing-settings/(?P<id>\d+)', array(
 		'methods' => 'GET',
-		'callback' => 'get_label',
+		'callback' => 'get_closing_settings',
 		  'permission_callback' => function () {
       return current_user_can( 'edit_others_posts' );
     }
 	) );
 	
-	register_rest_route( 'forgebiz-closings/v1', '/label/(?P<id>\d+)', array(
+	register_rest_route( 'forgebiz-closings/v1', '/closing-settings/(?P<id>\d+)', array(
 		'methods' => 'POST',
-		'callback' => 'save_label',
+		'callback' => 'save_closing_settings',
+  'permission_callback' => function () {
+      return current_user_can( 'edit_others_posts' );
+    }		
+	) );
+	
+	register_rest_route( 'forgebiz-closings/v1', '/closing/search', array(
+		'methods' => 'GET',
+		'callback' => 'search_closings',
   'permission_callback' => function () {
       return current_user_can( 'edit_others_posts' );
     }		
@@ -366,9 +407,11 @@ add_action( 'rest_api_init', function () {
 	
 	
 	
+	
+	
 } );
 
-	function save_label(  $request ) {
+	function save_closing_settings(  $request ) {
 		
 		/*
 		https://developer.wordpress.org/rest-api/extending-the-rest-api/adding-custom-endpoints/
@@ -376,13 +419,7 @@ add_action( 'rest_api_init', function () {
 		If the request has the Content-type: application/json header set and valid JSON in the body, get_json_params() will return the parsed JSON body as an associative array.
 		*/
   $data = json_decode(file_get_contents("php://input"));
-  
- // print_r($request);
-  
- // die();
-  
-  	//$id = $request['id'];
-  	//$sales_1_label = $request['sales_1_label'];
+
   	
 
 	global $wpdb;
@@ -443,34 +480,58 @@ $wpdb->update(
  
 	}
 	
-	function get_label( $request ) {
+	
+	
+		function search_closings( $request ) {
 		
 	global $wpdb;
-		// wp_forgebiz_labels
-		//$data = array("where" => "do we go");
-		$table_name = $wpdb->prefix . 'forgebiz_labels';
+
+		$table_name = $wpdb->prefix . 'forgebiz_closing';
 		
-		//$wpdb->prefix . 'forgebiz_labels';
+
 		
  $querystr = "
     SELECT $table_name.* 
     FROM $table_name
-    WHERE $table_name.ID = ${request['id']}
  ";
- //$request['id']
 
- $label_result = $wpdb->get_results($querystr, OBJECT);
+
+ $query_results = $wpdb->get_results($querystr, OBJECT);
 // $results=$wpdb->get_results($querystr);
  
  
  $data = array("querystr" => $querystr);
 		//data.push();
 
+		return new WP_REST_Response( $query_results, 200 );
+		
+}
+
+
+	
+	function get_closing_settings($request ) {
+		
+	global $wpdb;
+
+		$table_name = $wpdb->prefix . 'closing-settings';
+		
+
+ $querystr = "
+    SELECT $table_name.* 
+    FROM $table_name
+    WHERE $table_name.ID = ${request['id']}
+ ";
+
+
+ $label_result = $wpdb->get_results($querystr, OBJECT);
+
+ 
+ 
+ $data = array("querystr" => $querystr);
+
+
 		return new WP_REST_Response( $label_result, 200 );
 		
 }
 	
 	
-
-// SELECT forgebiz_labels.*    FROM forgebiz_labels    WHERE forgebiz_labels.ID = 1 "}
-
