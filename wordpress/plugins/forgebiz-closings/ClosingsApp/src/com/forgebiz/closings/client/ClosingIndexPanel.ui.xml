@@ -1,0 +1,32 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:datepicker='urn:import:com.google.gwt.user.datepicker.client'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+  <g:HTMLPanel>
+
+
+   <g:Label ui:field="errorLabel"  />
+   
+
+     			<label>Start Date</label>
+                     <datepicker:DateBox ui:field="startDatePicker"/>
+     			
+
+     			<label>End Date		</label>
+                     <datepicker:DateBox ui:field="endDatePicker"/>
+     	
+   location
+
+
+      		<label><g:SimpleCheckBox ui:field="showDeleted"/><span>Show Deleted</span></label>
+    		
+      		<g:Button ui:field="searchButton">Search</g:Button>
+    
+
+    
+      
+          		  		
+      		
+</g:HTMLPanel>
+
+</ui:UiBinder>
