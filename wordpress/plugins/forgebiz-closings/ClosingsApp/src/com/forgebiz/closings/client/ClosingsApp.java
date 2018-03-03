@@ -1,7 +1,7 @@
 package com.forgebiz.closings.client;
 //package com.mycompany.mywebapp.client;
 
-import com.forgebiz.closings.shared.FieldVerifier;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
@@ -119,16 +119,8 @@ public class ClosingsApp implements EntryPoint {
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
 						GWT.log("good result " + response.getStatusText());
-						// displayError(response.getStatusText());
-						// displayLabels(response);
-						//ClosingSettings closingSettings = ClosingSettings.create(response.getText());
 						JsArray<ClosingSettings> records = JsonUtils.<JsArray<ClosingSettings>>safeEval(response.getText());
-						// ClosingLabel cl = records.get(0);
 						ClosingSettings closingSettings = records.get(0);
-						// ClosingLabel cl = ClosingLabel.create(response.getText());
-						// GWT.log("Sales1" + cl.getId());
-						
-						// o//penCashPanel = new CashPanel(this);
 						callback.onSuccess(closingSettings);
 
 					} else {
@@ -280,48 +272,6 @@ public class ClosingsApp implements EntryPoint {
 				doTestCall();
 			}
 		});
-
-		// Create a handler for the sendButton and nameField
-		class MyHandler implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the sendButton.
-			 */
-			public void onClick(ClickEvent event) {
-				sendNameToServer();
-			}
-
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					sendNameToServer();
-				}
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-			private void sendNameToServer() {
-				// First, we validate the input.
-				errorLabel.setText("");
-				String textToServer = nameField.getText();
-				if (!FieldVerifier.isValidName(textToServer)) {
-					errorLabel.setText("Please enter at least four characters");
-					return;
-				}
-
-				// Then, we send the input to the server.
-				sendButton.setEnabled(false);
-				textToServerLabel.setText(textToServer);
-				serverResponseLabel.setText("");
-
-			}
-		}
-
-		// Add a handler to send the name to the server
-		MyHandler handler = new MyHandler();
-		sendButton.addClickHandler(handler);
-		nameField.addKeyUpHandler(handler);
 	}
+
 }

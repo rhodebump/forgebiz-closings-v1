@@ -1,0 +1,45 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:datepicker='urn:import:com.google.gwt.user.datepicker.client'
+                  xmlns:fbc='urn:import:com.mycompany.mywebapp.client'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+  <g:HTMLPanel>
+
+<table>
+<tr>
+<td>
+<h2>Step 1, Opening Totals</h2>
+<fbc:CashPanel ui:field="openCashPanel">
+
+</fbc:CashPanel>
+      		
+</td>
+
+<td>
+<h2>Step 2, Closing Totals</h2>
+      		<fbc:CashPanel ui:field="closeCashPanel">
+      		
+</fbc:CashPanel>
+</td>
+
+<td>
+<h2>Step 3, Sales</h2>
+    		<fbc:SalesPanel ui:field="salesPanel"></fbc:SalesPanel>
+    		
+    <h2>Step 4, Income</h2>		
+    		
+      		<fbc:IncomePanel ui:field="incomePanel"></fbc:IncomePanel>
+      		  		
+</td>
+</tr>
+
+
+</table>
+
+
+
+
+      		
+</g:HTMLPanel>
+
+</ui:UiBinder>
