@@ -476,19 +476,25 @@ function search_closings($request)
 function get_closing_settings($request)
 {
     global $wpdb;
-    $table_name = $wpdb->prefix . 'closing-settings';
+    //| wp_forgebiz_closing_settings
+    $table_name = $wpdb->prefix . 'forgebiz_closing_settings';
     
     $querystr = "
     SELECT $table_name.* 
     FROM $table_name
-    WHERE $table_name.ID = ${request['id']}
  ";
+    //should only ever be one settings object
+    //if there are more, we will have to figure out what we are doing and pass the id
+    //    WHERE $table_name.ID = ${request['id']}
     
     $label_result = $wpdb->get_results($querystr, OBJECT);
     
     $data = array(
         "querystr" => $querystr
     );
+    
+     //echo $wpdb->last_error;
+    // die();
     
     return new WP_REST_Response($label_result, 200);
 }

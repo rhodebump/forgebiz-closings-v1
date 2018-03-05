@@ -1,5 +1,4 @@
 package com.forgebiz.closings.client;
-//package com.mycompany.mywebapp.client;
 
 
 import com.google.gwt.core.client.EntryPoint;
@@ -51,34 +50,7 @@ public class ClosingsApp implements EntryPoint {
 		}
 	}
 
-	// private static final String JSON_URL = GWT.getModuleBaseURL() + "weather?q=";
-	private static final String JSON_URL = GWT.getModuleBaseURL() + "/api/weather?q=";
 
-	private void doTestCall() {
-
-		String url = URL.encode(JSON_URL);
-		GWT.log("url = " + url);
-		// Send request to server and catch any errors.
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-		setNonce(builder);
-		try {
-			builder.sendRequest(null, new RequestCallback() {
-				public void onError(Request request, Throwable exception) {
-					displayError("Couldn't retrieve JSON : " + JSON_URL + exception.getMessage());
-				}
-
-				public void onResponseReceived(Request request, Response response) {
-					if (200 == response.getStatusCode()) {
-						displayError(response.getText());
-					} else {
-						displayError("Couldn't retrieve JSON (" + JSON_URL + response.getStatusText() + ")");
-					}
-				}
-			});
-		} catch (RequestException e) {
-			displayError("Couldn't retrieve JSON : " + e.getMessage());
-		}
-	}
 
 
 
@@ -102,10 +74,7 @@ public class ClosingsApp implements EntryPoint {
 
 	private void fetchClosingSettings(AsyncCallback callback) {
 		String url = URL.encode(JSON_URL2);
-		GWT.log("url = " + url);
-		// http://localhost:8080/forgebiz-closings//wp-json/forgebiz-closings/v1/label/1
 
-		// Send request to server and catch any errors.
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		// config.headers['X-WP-Nonce'] = myLocalized.nonce;
 		setNonce(builder);
@@ -125,7 +94,6 @@ public class ClosingsApp implements EntryPoint {
 
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
-						//displayError("Couldn't retrieve JSON (" + JSON_URL + response.getStatusText() + ")");
 						callback.onFailure(new Exception(response.getStatusText()));
 						
 					}
@@ -166,6 +134,7 @@ public class ClosingsApp implements EntryPoint {
 		}
 
 		public void onSuccess(Object response) {
+			GWT.log("newClosingCallback.onSuccess");
 			ClosingSettings closingSettings = (ClosingSettings) response;
 			CashPanel openCashPanel = new CashPanel();
 			CashPanel closeCashPanel = new CashPanel();
@@ -186,6 +155,7 @@ public class ClosingsApp implements EntryPoint {
 		}
 
 		public void onSuccess(Object response) {
+			GWT.log("openSettingCallback.onSuccess");
 			ClosingSettings closingSettings = (ClosingSettings) response;
 			ClosingSettingsPanel csp = new ClosingSettingsPanel(closingSettings);
 
