@@ -13,7 +13,7 @@ $fbc_db_version = '1.1';
 
 function getClosingSettingTableName($wpdb)
 {
-    return $wpdb->prefix . 'forgebiz_closing_settingsv3';
+    return $wpdb->prefix . 'forgebiz_closing_settings';
 }
 
 function fbc_install()
@@ -210,8 +210,7 @@ function fbc_install_data()
     
     ));
     
-    echo $wpdb->last_error;
-    die();
+
 }
 
 register_activation_hook(__FILE__, 'fbc_install');
@@ -352,17 +351,17 @@ class gwtApp
         
         if (! $url_match)
             return $continue;
-        $main_js = $this->auto_version_file('MyWebApp/war/mywebapp/mywebapp.nocache.js');
-        $main_css = $this->auto_version_file('MyWebApp/war/MyWebApp.css');
+        $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
+        $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         
-        $page_title = 'WordPress Angular.js Plugin Demo App | kevinleary.net';
+        $page_title = 'Forgebiz Closings | forgebiz.com';
         // Browser caching for our main template
         $ttl = DAY_IN_SECONDS;
         header("Cache-Control: public, max-age=$ttl");
         // Load index view
-        include_once ($this->plugin_dir . 'MyWebApp/war/MyWebApp.php');
+        include_once ($this->plugin_dir . 'ClosingsApp/war/ClosingsApp.php');
         exit();
     }
 } // class gwtApp

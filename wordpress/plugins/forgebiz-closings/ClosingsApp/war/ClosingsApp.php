@@ -27,23 +27,12 @@ var WordpressForgebizSettings = {
       </div>
     </noscript>
 
-    <h1>Web Application Starter Project</h1>
+    <h1>Forgebiz Closings</h1>
     <div id="closingsNav"></div>
     
     <div id="closingsMain"></div>
     
-    <table align="center">
-      <tr>
-        <td colspan="2" style="font-weight:bold;">Please enter your name:</td>        
-      </tr>
-      <tr>
-        <td id="nameFieldContainer"></td>
-        <td id="sendButtonContainer"></td>
-      </tr>
-      <tr>
-        <td colspan="2" style="color:red;" id="errorLabelContainer"></td>
-      </tr>
-    </table>
+
 
 
 
