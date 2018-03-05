@@ -7,6 +7,10 @@ import com.google.gwt.core.client.JsonUtils;
 public class ClosingSettings
   extends JavaScriptObject
 {
+	
+    protected ClosingSettings() {
+    }
+    
   public static ClosingSettings create(String json)
   {
     GWT.log(json);
@@ -208,7 +212,7 @@ public class ClosingSettings
 	}-*/;
 
   
-  public final native boolean getShowSales1();/*-{
+  public final native boolean getShowSales1()/*-{
 	return this.show_sales_1;
 	}-*/;
 

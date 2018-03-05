@@ -5,7 +5,7 @@ run2:
 	docker run  --name forgebiz-wordpress --link wordpressdb:mysql  -p 8080:80 -d wordpress
 
 run3:
-	docker run -v /Users/prhodes/Development/forgebiz_closings/wordpress/plugins/forgebiz-closings:/var/www/html/wp-content/plugins/forgebiz-closings --name forgebiz-wordpress --link wordpressdb:mysql  -p 8080:80 -d wordpress
+	docker run -v /Users/prhodes/Development/forgebiz-closings/wordpress/plugins/forgebiz-closings:/var/www/html/wp-content/plugins/forgebiz-closings --name forgebiz-wordpress --link wordpressdb:mysql  -p 8080:80 -d wordpress
 
 exec:
 	docker exec -it forgebiz-wordpress sh

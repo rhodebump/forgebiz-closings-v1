@@ -1,6 +1,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:datepicker='urn:import:com.google.gwt.user.datepicker.client'
-                  xmlns:fbc='urn:import:com.mycompany.mywebapp.client'
+                  xmlns:fbc='urn:import:com.forgebiz.closings.client'
     xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
   <g:HTMLPanel>
