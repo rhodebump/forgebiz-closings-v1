@@ -37,9 +37,15 @@ public class ClosingPanel
   @UiField(provided=true)
   IncomePanel incomePanel;
   
+  
+  @UiField(provided=true)
+	DateBox closingDateBox = new DateBox();
+	
+	
+  
   ClosingsApp closingsApp = null;
   
-  public ClosingPanel(ClosingsApp closingsApp,ClosingSettings closingSettings, CashPanel openCashPanel, CashPanel closeCashPanel, SalesPanel salesPanel, IncomePanel incomePanel, Button saveButton)
+  public ClosingPanel(ClosingsApp closingsApp,ClosingSettings closingSettings, CashPanel openCashPanel, CashPanel closeCashPanel, SalesPanel salesPanel, IncomePanel incomePanel, Button saveButton, DateBox closingDateBox)
   {
 	  this.closingsApp = closingsApp;
     this.closingSettings = closingSettings;
