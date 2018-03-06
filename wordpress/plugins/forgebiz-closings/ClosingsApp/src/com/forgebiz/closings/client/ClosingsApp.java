@@ -23,6 +23,17 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class ClosingsApp implements EntryPoint {
 
 	//final Label errorLabel = new Label();
+	
+	public static int getIntValue(TextBox textBox) {
+		try {
+			return Integer.parseInt(textBox.getValue());
+		} catch (Exception e) {
+			GWT.log("returning 0 for " + textBox.getName());
+		}
+		return 0;
+	}
+	
+	
 
 	private VerticalPanel messagesPanel =new VerticalPanel();
 	
