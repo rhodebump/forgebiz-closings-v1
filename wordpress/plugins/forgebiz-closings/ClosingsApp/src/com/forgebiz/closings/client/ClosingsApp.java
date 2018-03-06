@@ -111,7 +111,7 @@ public class ClosingsApp implements EntryPoint {
 
 	}
 
-	Button searchClosingsButton = new Button("Search Closing");
+	Button searchClosingsButton = new Button("Closings");
 
 	public ClickHandler searchClosingsHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
@@ -122,16 +122,7 @@ public class ClosingsApp implements EntryPoint {
 		}
 	};
 
-	Button createClosingButton = new Button("New Closing");
 
-	public ClickHandler createNewClosingHandler = new ClickHandler() {
-		public void onClick(ClickEvent event) {
-			// new closing panel
-			// how to swap out the panel?
-			fetchClosingSettings(newClosingCallback);
-
-		}
-	};
 
 	Button settingButton = new Button("Settings");
 
@@ -179,6 +170,18 @@ public class ClosingsApp implements EntryPoint {
 		}
 	};
 
+		Button locationsButton = new Button("Locations");
+
+	public ClickHandler locationsHandler = new ClickHandler() {
+		public void onClick(ClickEvent event) {
+			// new closing panel
+			// how to swap out the panel?
+			//fetchClosingSettings(newClosingCallback);
+
+		}
+	};
+	
+	
 	/**
 	 * This is the entry point method.
 	 */
@@ -188,12 +191,12 @@ public class ClosingsApp implements EntryPoint {
 
 		
 		RootPanel.get("messagesPanel").add(messagesPanel);
-		RootPanel.get("closingsNav").add(createClosingButton);
+		//RootPanel.get("closingsNav").add(createClosingButton);
 		createClosingButton.addClickHandler(createNewClosingHandler);
 		RootPanel.get("closingsNav").add(settingButton);
 		searchClosingsButton.addClickHandler(searchClosingsHandler);
 		RootPanel.get("closingsNav").add(searchClosingsButton);
-		
+				RootPanel.get("closingsNav").add(locationsButton);
 		
 		settingButton.addClickHandler(settingHandler);
 
