@@ -81,25 +81,25 @@ public class ClosingPanel
 		public void onClick(ClickEvent event) {
 			GWT.log("saveHandler.onClick");
 			Closing closing= (Closing)JavaScriptObject.createObject().cast();
-closing.setIncome1(incomePanel.xx);
-closing.setIncome2(incomePanel.xx);
-closing.setIncome3(incomePanel.xx);
-closing.setIncome4(incomePanel.xx);
-closing.setIncome5(incomePanel.xx);
-closing.setIncome6(incomePanel.xx);
-closing.setIncome7(incomePanel.xx);
-closing.setIncome8(incomePanel.xx);
-closing.setIncome19(incomePanel.xx);
+closing.setIncome1(incomePanel.income1TextBox);
+closing.setIncome2(incomePanel.income2TextBox);
+closing.setIncome3(incomePanel.income3TextBox);
+closing.setIncome4(incomePanel.income4TextBox);
+closing.setIncome5(incomePanel.income5TextBox);
+closing.setIncome6(incomePanel.income6TextBox);
+closing.setIncome7(incomePanel.income7TextBox);
+closing.setIncome8(incomePanel.income8TextBox);
+closing.setIncome9(incomePanel.income9TextBox);
 
-closing.setSales1(incomePanel.xx);
-closing.setSales2(incomePanel.xx);
-closing.setSales3(incomePanel.xx);
-closing.setSales4(incomePanel.xx);
-closing.setSales5(incomePanel.xx);
-closing.setSales6(incomePanel.xx);
-closing.setSales7(incomePanel.xx);
-closing.setSales8(incomePanel.xx);
-closing.setSales9(incomePanel.xx);
+closing.setSales1(salesPanel.income1TextBox);
+closing.setSales2(salesPanel.income2TextBox);
+closing.setSales3(salesPanel.income3TextBox);
+closing.setSales4(salesPanel.income4TextBox);
+closing.setSales5(salesPanel.income5TextBox);
+closing.setSales6(salesPanel.income6TextBox);
+closing.setSales7(salesPanel.income7TextBox);
+closing.setSales8(salesPanel.income8TextBox);
+closing.setSales9(salesPanel.income9TextBox);
 
 
 			saveClosing(closing);
