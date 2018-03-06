@@ -15,13 +15,16 @@ function getClosingSettingTableName($wpdb)
 {
     return $wpdb->prefix . 'forgebiz_closing_settings';
 }
-
+function getClosingTableName($wpdb)
+{
+    return $wpdb->prefix . 'forgebiz_closing';
+}
 function fbc_install()
 {
     global $wpdb;
     global $fbc_db_version;
     
-    $table_name = $wpdb->prefix . 'forgebiz_closing';
+    $table_name = getClosingTableName($wpdb);
     
     $charset_collate = $wpdb->get_charset_collate();
     
@@ -392,7 +395,99 @@ add_action('rest_api_init', function () {
             return current_user_can('edit_others_posts');
         }
     ));
+	
+	    register_rest_route('forgebiz-closings/v1', '/closing/(?P<id>\d+)', array(
+        'methods' => 'POST',
+        'callback' => 'save_closing',
+        'permission_callback' => function () {
+            return current_user_can('edit_others_posts');
+        }
+    ));
+	
+	
 });
+
+	
+	function save_closing($request)
+{
+    
+
+    $data = json_decode(file_get_contents("php://input"));
+    
+    global $wpdb;
+
+    $table_name = getClosingTableName($wpdb);
+
+    $result = $wpdb->update($table_name, array(
+        'sales_1' => $request['sales_1'],
+        'sales_2' => $request['sales_2'],
+        'sales_3' => $request['sales_3'],
+        'sales_4' => $request['sales_4'],
+        'sales_5' => $request['sales_5'],
+        'sales_6' => $request['sales_6'],
+        'sales_7' => $request['sales_7'],
+        'sales_8' => $request['sales_8'],
+        'sales_9' => $request['sales_9'],
+        'income_1' => $request['income_1'],
+        'income_2' => $request['income_2'],
+        'income_3' => $request['income_3'],
+        'income_4' => $request['income_4'],
+        'income_5' => $request['income_5'],
+        'income_5' => $request['income_5'],
+        'income_7' => $request['income_7'],
+        'income_8' => $request['income_8'],
+        'income_9' => $request['income_9']
+    
+    ), array(
+        'ID' => $request['id']
+    ), array(
+
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+
+    
+    ), array(
+        '%d'
+    ));
+    
+    //    echo $wpdb->last_error;
+    // die();
+    
+    if (false === $result) {
+
+        $data =  $wpdb->last_error;
+     
+    }
+    
+    $debug = var_export($wpdb->last_query, true);
+    
+   # if ($wpdb->last_error) {
+   #     die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
+   # }
+    
+    return new WP_REST_Response($debug, 200);
+    
+
+}
+
+
 
 function save_closing_settings($request)
 {
@@ -519,14 +614,53 @@ function save_closing_settings($request)
 function search_closings($request)
 {
     global $wpdb;
-    $table_name = $wpdb->prefix . 'forgebiz_closing';
+	
+	/*
+			if (startDate) {
+				
+				ge("closingDate",startDate)
+				
+			}
+			if (endDate) {
+
+				le("closingDate",endDate)
+				
+			}
+			*/
+    $table_name = getClosingTableName($wpdb);
     
-    $querystr = "
+    $query = "
     SELECT $table_name.* 
     FROM $table_name
  ";
-    
-    $query_results = $wpdb->get_results($querystr, OBJECT);
+	
+	
+Just check if the variables contain a value and if they do, build the query like so:
+
+$startDate = $_GET['start_date'];
+
+if ($startDate) {
+    $sql[] = " closing_date >= '$startDate' ";
+}
+	
+$endDate = $_GET['end_date'];
+if ($endDate) {
+    $sql[] = " closing_date <= '$endDate' ";
+}
+
+$location_id = $_GET['location_id'];
+if ($endDate) {
+    $sql[] = " location_id = 'location_id' ";
+}
+	
+	
+if (!empty($sql)) {
+    $query .= ' WHERE ' . implode(' AND ', $sql);
+}
+	
+    // WHERE $table_name.ID = ${request['id']}
+	
+    $query_results = $wpdb->get_results($query, OBJECT);
 
     
     $data = array(
