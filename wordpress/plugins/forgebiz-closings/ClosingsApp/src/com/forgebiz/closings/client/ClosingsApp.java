@@ -135,8 +135,9 @@ public class ClosingsApp implements EntryPoint {
 			CashPanel closeCashPanel = new CashPanel();
 			SalesPanel salesPanel = new SalesPanel(closingSettings);
 			IncomePanel incomePanel = new IncomePanel(closingSettings);
-			ClosingPanel closingPanel = new ClosingPanel(closingSettings, openCashPanel, closeCashPanel, salesPanel,
-					incomePanel);
+			Button saveButton = new Button();
+			ClosingPanel closingPanel = new ClosingPanel(ClosingsApp.this,closingSettings, openCashPanel, closeCashPanel, salesPanel,
+					incomePanel, saveButton);
 			openCashPanel.setClosingPanel(closingPanel);
 			closeCashPanel.setClosingPanel(closingPanel);
 			RootPanel.get("closingsMain").clear();
