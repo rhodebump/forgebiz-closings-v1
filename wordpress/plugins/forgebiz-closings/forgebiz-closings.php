@@ -19,6 +19,11 @@ function getClosingTableName($wpdb)
 {
     return $wpdb->prefix . 'forgebiz_closing';
 }
+function getLocationTableName($wpdb)
+{
+    return $wpdb->prefix . 'forgebiz_location';
+}
+
 function fbc_install()
 {
     global $wpdb;
@@ -96,9 +101,9 @@ function fbc_install()
     require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
     
-    $closing_settings_table_name = getClosingSettingTableName($wpdb);
+   $table_name = getClosingSettingTableName($wpdb);
     
-    $label_sql = "CREATE TABLE $closing_settings_table_name (
+    $label_sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		show_sales_1 TINYINT(1),
 		show_sales_2 TINYINT(1),
@@ -145,14 +150,13 @@ function fbc_install()
 	) $charset_collate;";
     
     dbDelta($label_sql);
-    // echo $wpdb->last_error;
-    // die();
-    //
-    $location_table_name = $wpdb->prefix . 'forgebiz_locations';
+
+    $table_name = getLocationTableName();
     
-    $location_sql = "CREATE TABLE $location_table_name (
+    $location_sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		location_name varchar(100) NOT NULL,
+		notification_email_addresses varchar(255) NOT NULL,		
 		PRIMARY KEY  (id)
 	) $charset_collate;";
     
@@ -165,9 +169,9 @@ function fbc_install_data()
 {
     global $wpdb;
     
-    $closing_settings_table_name = getClosingSettingTableName($wpdb);
+    $table_name = getClosingSettingTableName($wpdb);
     
-    $wpdb->insert($closing_settings_table_name, array(
+    $wpdb->insert($table_name, array(
         
         'show_sales_1' => 1,
         'show_sales_2' => 1,
@@ -213,6 +217,12 @@ function fbc_install_data()
     
     ));
     
+    $table_name = getLocationTableName($wpdb);	
+    $wpdb->insert($table_name, array(
+        
+        'location_name' => 'Register #1'
+    
+    ));	
 
 }
 
@@ -404,10 +414,73 @@ add_action('rest_api_init', function () {
         }
     ));
 	
+	    register_rest_route('forgebiz-closings/v1', '/location/(?P<id>\d+)', array(
+        'methods' => 'POST',
+        'callback' => 'save_location',
+        'permission_callback' => function () {
+            return current_user_can('edit_others_posts');
+        }
+    ));
+    register_rest_route('forgebiz-closings/v1', '/location/search', array(
+        'methods' => 'GET',
+        'callback' => 'location_search',
+        'permission_callback' => function () {
+            return current_user_can('edit_others_posts');
+        }
+    ));	
+	
 	
 });
 
 	
+		
+			function save_location($request)
+{
+    
+
+    $data = json_decode(file_get_contents("php://input"));
+    
+    global $wpdb;
+
+    $table_name = getLocationTableName($wpdb);	
+
+    $result = $wpdb->update($table_name, array(
+        'name' => $request['name'],
+        'notification_email_addresses' => $request['notification_email_addresses']
+    
+    ), array(
+        'ID' => $request['id']
+    ), array(
+
+        '%s',
+        '%s'
+
+    
+    ), array(
+        '%d'
+    ));
+    
+    //    echo $wpdb->last_error;
+    // die();
+    
+    if (false === $result) {
+
+        $data =  $wpdb->last_error;
+     
+    }
+    
+    $debug = var_export($wpdb->last_query, true);
+    
+   # if ($wpdb->last_error) {
+   #     die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
+   # }
+    
+    return new WP_REST_Response($debug, 200);
+    
+
+}
+
+
 	function save_closing($request)
 {
     
@@ -611,6 +684,29 @@ function save_closing_settings($request)
 
 }
 
+	
+	function location_search($request)
+{
+    global $wpdb;
+	
+
+    $table_name = getLocationTableName($wpdb);
+    
+    $query = "
+    SELECT $table_name.* 
+    FROM $table_name
+ ";
+	
+
+
+	
+    $query_results = $wpdb->get_results($query, OBJECT);
+
+    
+    return new WP_REST_Response($query_results, 200);
+}
+
+
 function search_closings($request)
 {
     global $wpdb;
@@ -634,8 +730,7 @@ function search_closings($request)
     FROM $table_name
  ";
 	
-	
-Just check if the variables contain a value and if they do, build the query like so:
+
 
 $startDate = $_GET['start_date'];
 
@@ -658,7 +753,7 @@ if (!empty($sql)) {
     $query .= ' WHERE ' . implode(' AND ', $sql);
 }
 	
-    // WHERE $table_name.ID = ${request['id']}
+
 	
     $query_results = $wpdb->get_results($query, OBJECT);
 
