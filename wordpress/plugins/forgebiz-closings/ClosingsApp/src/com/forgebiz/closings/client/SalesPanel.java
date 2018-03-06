@@ -14,28 +14,29 @@ public class SalesPanel extends BaseIncomeSalesPanel {
 	}
 
 	public SalesPanel(ClosingSettings closingSettings) {
-		initControl(this.income1Label, this.income1TextBox, closingSettings.getShowSales1(),
+		super();
+		initControl(income1Label, income1TextBox, closingSettings.getShowSales1(),
 				closingSettings.getSalesLabel1());
-		initControl(this.income2Label, this.income1TextBox, closingSettings.getShowSales2(),
+		initControl(income2Label, income2TextBox, closingSettings.getShowSales2(),
 				closingSettings.getSalesLabel2());
-		initControl(this.income3Label, this.income1TextBox, closingSettings.getShowSales3(),
+		initControl(income3Label, income3TextBox, closingSettings.getShowSales3(),
 				closingSettings.getSalesLabel3());
-		initControl(this.income4Label, this.income1TextBox, closingSettings.getShowSales4(),
+		initControl(income4Label, income4TextBox, closingSettings.getShowSales4(),
 				closingSettings.getSalesLabel4());
-		initControl(this.income5Label, this.income1TextBox, closingSettings.getShowSales5(),
+		initControl(income5Label, income5TextBox, closingSettings.getShowSales5(),
 				closingSettings.getSalesLabel5());
-		initControl(this.income6Label, this.income1TextBox, closingSettings.getShowSales6(),
+		initControl(income6Label, income6TextBox, closingSettings.getShowSales6(),
 				closingSettings.getSalesLabel6());
-		initControl(this.income7Label, this.income1TextBox, closingSettings.getShowSales7(),
+		initControl(income7Label, income7TextBox, closingSettings.getShowSales7(),
 				closingSettings.getSalesLabel7());
-		initControl(this.income8Label, this.income1TextBox, closingSettings.getShowSales8(),
+		initControl(income8Label, income8TextBox, closingSettings.getShowSales8(),
 				closingSettings.getSalesLabel8());
-		initControl(this.income9Label, this.income1TextBox, closingSettings.getShowSales9(),
+		initControl(income9Label, income9TextBox, closingSettings.getShowSales9(),
 				closingSettings.getSalesLabel9());
 
-		add(this.totalLabel);
-		add(this.totalTextBox);
-		this.totalTextBox.setEnabled(false);
+		add(totalLabel);
+		add(totalTextBox);
+		totalTextBox.setEnabled(false);
 	}
 
 	public void calculateAll() {

@@ -12,12 +12,7 @@ public class ClosingPanel
 {
   private static final MyBinder binder = (MyBinder)GWT.create(MyBinder.class);
   
-  private void displayMessage(String error) {}
-  
-  private void displayError(String error)
-  {
-    displayMessage(error);
-  }
+
   
   private ClosingSettings closingSettings = null;
   @UiField(provided=true)

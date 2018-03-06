@@ -11,11 +11,11 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimpleCheckBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.dom.client.FieldSetElement;
 
 public class ClosingSettingsPanel extends VerticalPanel {
 
@@ -219,7 +219,7 @@ public class ClosingSettingsPanel extends VerticalPanel {
 		}
 	};
 
-	private static final String JSON_URL2 = "http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings";
+
 
 	private void saveClosingSettings(ClosingSettings closingSettings) {
 		String url = URL
@@ -262,26 +262,24 @@ public class ClosingSettingsPanel extends VerticalPanel {
 
 	private void initControl(SimpleCheckBox checkbox, TextBox textbox, String labelText, boolean display,String prompt) {
 		
-
-		Label debugLabel2 = new Label("display is " + display);
-		add(debugLabel2);
+		DecoratorPanel decPanel = new DecoratorPanel();
+		add(decPanel);
+		VerticalPanel vp = new VerticalPanel();
+		decPanel.add(vp);
 		if (display == false) {
-			//checkbox.setValue(new Boolean(false));
-			Label debugLabel = new Label("Checkbox shoudl be unchecked");
-			add(debugLabel);
 			checkbox.setValue(false);
 		} else {
 			checkbox.setValue(true);
 		}
 		
 		Label checkboxLabel = new Label("Display " + prompt);
-		add(checkboxLabel);
-		add(checkbox);
+		vp.add(checkboxLabel);
+		vp.add(checkbox);
 		Label textboxLabel = new Label("Label for " + prompt);
-		add(textboxLabel);
+		vp.add(textboxLabel);
 		//textbox.setValue(labelText);
-		textbox.setText(labelText);
-		add(textbox);
+		textbox.setValue(labelText);
+		vp.add(textbox);
 	}
 	
 	private ClosingsApp closingsApp = null;

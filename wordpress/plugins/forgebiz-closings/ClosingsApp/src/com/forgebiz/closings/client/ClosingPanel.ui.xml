@@ -7,7 +7,7 @@
 
 <table>
 <tr>
-<td>
+<td valign="top">
 <h2>Step 1, Opening Totals</h2>
 <fbc:CashPanel ui:field="openCashPanel">
 
@@ -15,14 +15,14 @@
       		
 </td>
 
-<td>
+<td valign="top">
 <h2>Step 2, Closing Totals</h2>
       		<fbc:CashPanel ui:field="closeCashPanel">
       		
 </fbc:CashPanel>
 </td>
 
-<td>
+<td valign="top">
 <h2>Step 3, Sales</h2>
     		<fbc:SalesPanel ui:field="salesPanel"></fbc:SalesPanel>
     		

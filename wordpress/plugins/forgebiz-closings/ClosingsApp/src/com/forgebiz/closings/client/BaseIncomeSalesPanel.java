@@ -31,7 +31,8 @@ public class BaseIncomeSalesPanel extends VerticalPanel {
 	}
 
 	protected void initControl(Label label, TextBox textBox, boolean showControl, String labelText) {
-		if (showControl) {
+		
+		if (showControl != false) {
 			label.setText(labelText);
 			add(label);
 			add(textBox);
@@ -66,8 +67,8 @@ public class BaseIncomeSalesPanel extends VerticalPanel {
 
 	public void calculateAll() {
 		GWT.log("calculateAll2");
-		double total = 0.0D;
-		total += getIntegerValue(this.income1TextBox).intValue();
+		//double total = 0.0D;
+		//total += getIntegerValue(this.income1TextBox).intValue();
 	}
 
 	public void setClosingPanel(ClosingPanel closingPanel) {
