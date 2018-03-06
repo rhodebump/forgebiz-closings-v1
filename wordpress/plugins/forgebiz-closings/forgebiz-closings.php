@@ -106,15 +106,15 @@ function fbc_install()
 		show_sales_7 TINYINT(1),
 		show_sales_8 TINYINT(1),
 		show_sales_9 TINYINT(1),
-		sales_1_label varchar(100) NOT NULL,
-		sales_2_label varchar(100) NOT NULL,
-		sales_3_label varchar(100) NOT NULL,
-		sales_4_label varchar(100) NOT NULL,
-		sales_5_label varchar(100) NOT NULL,
-		sales_6_label varchar(100) NOT NULL,
-		sales_7_label varchar(100) NOT NULL,
-		sales_8_label varchar(100) NOT NULL,
-		sales_9_label varchar(100) NOT NULL,				
+		sales_label_1 varchar(100) NOT NULL,
+		sales_label_2 varchar(100) NOT NULL,
+		sales_label_3 varchar(100) NOT NULL,
+		sales_label_4 varchar(100) NOT NULL,
+		sales_label_5 varchar(100) NOT NULL,
+		sales_label_6 varchar(100) NOT NULL,
+		sales_label_7 varchar(100) NOT NULL,
+		sales_label_8 varchar(100) NOT NULL,
+		sales_label_9 varchar(100) NOT NULL,				
 		show_income_1 TINYINT(1),
 		show_income_2 TINYINT(1),
 		show_income_3 TINYINT(1),
@@ -124,15 +124,15 @@ function fbc_install()
 		show_income_7 TINYINT(1),
 		show_income_8 TINYINT(1),
 		show_income_9 TINYINT(1),
-		income_1_label varchar(100) NOT NULL,
-		income_2_label varchar(100) NOT NULL,
-		income_3_label varchar(100) NOT NULL,
-		income_4_label varchar(100) NOT NULL,
-		income_5_label varchar(100) NOT NULL,
-		income_6_label varchar(100) NOT NULL,
-		income_7_label varchar(100) NOT NULL,
-		income_8_label varchar(100) NOT NULL,
-		income_9_label varchar(100) NOT NULL,	
+		income_label_1 varchar(100) NOT NULL,
+		income_label_2 varchar(100) NOT NULL,
+		income_label_3 varchar(100) NOT NULL,
+		income_label_4 varchar(100) NOT NULL,
+		income_label_5 varchar(100) NOT NULL,
+		income_label_6 varchar(100) NOT NULL,
+		income_label_7 varchar(100) NOT NULL,
+		income_label_8 varchar(100) NOT NULL,
+		income_label_9 varchar(100) NOT NULL,	
 		close_total_label varchar(100) NOT NULL,
 		closer_name_label varchar(100) NOT NULL,
 		difference_label varchar(100) NOT NULL,
@@ -175,15 +175,15 @@ function fbc_install_data()
         'show_sales_7' => 1,
         'show_sales_8' => 1,
         'show_sales_9' => 1,
-        'sales_1_label' => 'Sales Product #1',
-        'sales_2_label' => 'Sales Product #2',
-        'sales_3_label' => 'Sales Product #3',
-        'sales_4_label' => 'Sales Product #4',
-        'sales_5_label' => 'Sales Product #5',
-        'sales_6_label' => 'Sales Product #6',
-        'sales_7_label' => 'Sales Product #7',
-        'sales_8_label' => 'Sales Product #8',
-        'sales_9_label' => 'Sales Product #9',
+        'sales_label_1' => 'Sales Product #1',
+        'sales_label_2' => 'Sales Product #2',
+        'sales_label_3' => 'Sales Product #3',
+        'sales_label_4' => 'Sales Product #4',
+        'sales_label_5' => 'Sales Product #5',
+        'sales_label_6' => 'Sales Product #6',
+        'sales_label_7' => 'Sales Product #7',
+        'sales_label_8' => 'Sales Product #8',
+        'sales_label_9' => 'Sales Product #9',
         'show_income_1' => 1,
         'show_income_2' => 1,
         'show_income_3' => 1,
@@ -193,20 +193,20 @@ function fbc_install_data()
         'show_income_7' => 1,
         'show_income_8' => 1,
         'show_income_9' => 1,
-        'income_1_label' => 'Income #1',
-        'income_2_label' => 'Income #2',
-        'income_3_label' => 'Income #3',
-        'income_4_label' => 'Income #4',
-        'income_5_label' => 'Income #5',
-        'income_6_label' => 'Income #6',
-        'income_7_label' => 'Income #7',
-        'income_8_label' => 'Income #8',
-        'income_9_label' => 'Income #9',
-        'close_total_label' => 'sales_1_label',
-        'closer_name_label' => 'sales_1_label',
-        'difference_label' => 'sales_1_label',
-        'gross_sales_label' => 'sales_1_label',
-        'opener_name_label' => 'sales_1_label'
+        'income_label_1' => 'Income #1',
+        'income_label_2' => 'Income #2',
+        'income_label_3' => 'Income #3',
+        'income_label_4' => 'Income #4',
+        'income_label_5' => 'Income #5',
+        'income_label_6' => 'Income #6',
+        'income_label_7' => 'Income #7',
+        'income_label_8' => 'Income #8',
+        'income_label_9' => 'Income #9',
+        'close_total_label' => 'close_total_label',
+        'closer_name_label' => 'closer_name_label',
+        'difference_label' => 'difference_label',
+        'gross_sales_label' => 'gross_sales_label',
+        'opener_name_label' => 'opener_name_label'
     
     ));
     
@@ -407,30 +407,61 @@ function save_closing_settings($request)
     global $wpdb;
     // wp_forgebiz_labels
     // $data = array("where" => "do we go");
-    $table_name = $wpdb->prefix . 'forgebiz_labels';
+    $closing_settings_table_name = getClosingSettingTableName($wpdb);
     
     // https://codeable.io/how-to-import-json-into-wordpress/
-    $wpdb->update($table_name, array(
-        // 'column1' => 'value1', // string
-        // 'column2' => 'value2' // integer (number)
-        
-        'sales_1_label' => $request['sales_1_label'],
-        'sales_2_label' => $request['sales_2_label'],
-        'sales_3_label' => $request['sales_3_label'],
-        'sales_4_label' => $request['sales_4_label'],
-        'sales_5_label' => $request['sales_5_label'],
-        'close_total_label' => $request['close_total_label'],
-        'closer_name_label' => $request['closer_name_label'],
-        'closing_date' => $request['closing_date'],
-        'difference_label' => $request['difference_label'],
-        'gross_sales_label' => $request['gross_sales_label'],
-        'income_1_label' => $request['income_1_label'],
-        'income_2_label' => $request['income_2_label'],
-        'income_2_label' => $request['income_2_label']
+    $result = $wpdb->update($closing_settings_table_name, array(
+        'show_sales_1' => $request['show_sales_1'],
+        'show_sales_2' => $request['show_sales_2'],
+        'show_sales_3' => $request['show_sales_3'],
+        'show_sales_4' => $request['show_sales_4'],
+        'show_sales_5' => $request['show_sales_5'],
+        'show_sales_6' => $request['show_sales_6'],
+        'show_sales_7' => $request['show_sales_7'],
+        'show_sales_8' => $request['show_sales_8'],
+        'show_sales_9' => $request['show_sales_9'],
+        'sales_label_1' => $request['sales_label_1'],
+        'sales_label_2' => $request['sales_label_2'],
+        'sales_label_3' => $request['sales_label_3'],
+        'sales_label_4' => $request['sales_label_4'],
+        'sales_label_5' => $request['sales_label_5'],
+        'sales_label_6' => $request['sales_label_6'],
+        'sales_label_7' => $request['sales_label_7'],
+        'sales_label_8' => $request['sales_label_8'],
+        'sales_label_9' => $request['sales_label_7'],
+        'show_income_1' => $request['show_income_1'],
+        'show_income_2' => $request['show_income_2'],
+        'show_income_3' => $request['show_income_3'],
+        'show_income_4' => $request['show_income_4'],
+        'show_income_5' => $request['show_income_5'],
+        'show_income_6' => $request['show_income_6'],
+        'show_income_7' => $request['show_income_7'],
+        'show_income_8' => $request['show_income_8'],
+        'show_income_9' => $request['show_income_9'],
+        'income_label_1' => $request['income_label_1'],
+        'income_label_2' => $request['income_label_2'],
+        'income_label_3' => $request['income_label_3'],
+        'income_label_4' => $request['income_label_4'],
+        'income_label_5' => $request['income_label_5'],
+        'income_label_6' => $request['income_label_6'],
+        'income_label_7' => $request['income_label_7'],
+        'income_label_8' => $request['income_label_8'],
+        'income_label_9' => $request['income_label_9']
     
     ), array(
         'ID' => $request['id']
     ), array(
+
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        
         '%s',
         '%s',
         '%s',
@@ -440,16 +471,49 @@ function save_closing_settings($request)
         '%s',
         '%s',
         '%s',
+        
         '%s',
         '%s',
         '%s',
-        '%s'
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
     
     ), array(
         '%d'
     ));
     
-    return new WP_REST_Response($data, 200);
+    //    echo $wpdb->last_error;
+    // die();
+    
+    if (false === $result) {
+
+        $data =  $wpdb->last_error;
+     
+    }
+    
+    $debug = var_export($wpdb->last_query, true);
+    
+   # if ($wpdb->last_error) {
+   #     die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
+   # }
+    
+    return new WP_REST_Response($debug, 200);
+    
+
 }
 
 function search_closings($request)

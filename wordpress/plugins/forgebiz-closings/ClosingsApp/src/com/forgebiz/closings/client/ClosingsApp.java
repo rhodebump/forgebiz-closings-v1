@@ -29,16 +29,17 @@ import com.google.gwt.http.client.URL;
 
 public class ClosingsApp implements EntryPoint {
 
-	final Label errorLabel = new Label();
+	//final Label errorLabel = new Label();
 
+	private VerticalPanel messagesPanel =new VerticalPanel();
+	
 
-
-	private void displayMessage(String error) {
-		errorLabel.setText(error);
+	public void displayMessage(String error) {
+		messagesPanel.add(new Label(error));
 	}
 
-	private void displayError(String error) {
-		errorLabel.setText(error);
+	public void displayError(String error) {
+		messagesPanel.add(new Label(error));
 
 	}
 
@@ -90,6 +91,7 @@ public class ClosingsApp implements EntryPoint {
 						GWT.log("good result " + response.getStatusText());
 						JsArray<ClosingSettings> records = JsonUtils.<JsArray<ClosingSettings>>safeEval(response.getText());
 						ClosingSettings closingSettings = records.get(0);
+						displayMessage(response.getText());
 						callback.onSuccess(closingSettings);
 
 					} else {
@@ -157,7 +159,7 @@ public class ClosingsApp implements EntryPoint {
 		public void onSuccess(Object response) {
 			GWT.log("openSettingCallback.onSuccess");
 			ClosingSettings closingSettings = (ClosingSettings) response;
-			ClosingSettingsPanel csp = new ClosingSettingsPanel(closingSettings);
+			ClosingSettingsPanel csp = new ClosingSettingsPanel(ClosingsApp.this,closingSettings);
 
 			RootPanel.get("closingsMain").clear();
 			RootPanel.get("closingsMain").add(csp);
@@ -179,7 +181,8 @@ public class ClosingsApp implements EntryPoint {
 		initSettings();
 	
 
-
+		
+		RootPanel.get("messagesPanel").add(messagesPanel);
 		RootPanel.get("closingsNav").add(createClosingButton);
 		createClosingButton.addClickHandler(createNewClosingHandler);
 		RootPanel.get("closingsNav").add(settingButton);

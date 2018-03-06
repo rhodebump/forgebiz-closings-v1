@@ -15,17 +15,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimpleCheckBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.dom.client.FieldSetElement;
 
 public class ClosingSettingsPanel extends VerticalPanel {
-	Label errorLabel;
 
-	private void displayMessage(String error) {
-		this.errorLabel.setText(this.errorLabel.getText() + " " + error);
-	}
 
-	private void displayError(String error) {
-		displayMessage(error);
-	}
+
 
 	SimpleCheckBox showSales1CheckBox = new SimpleCheckBox();
 	TextBox sales_1_labelTextBox = new TextBox();
@@ -88,82 +83,84 @@ public class ClosingSettingsPanel extends VerticalPanel {
 	public ClickHandler saveHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("saveHandler.onClick");
-			ClosingSettingsPanel.this.closingSettings
-					.setSalesLabel1(ClosingSettingsPanel.this.sales_1_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setSalesLabel2(ClosingSettingsPanel.this.sales_2_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setSalesLabel3(ClosingSettingsPanel.this.sales_3_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setSalesLabel4(ClosingSettingsPanel.this.sales_4_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setSalesLabel5(ClosingSettingsPanel.this.sales_5_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setSalesLabel6(ClosingSettingsPanel.this.sales_6_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setSalesLabel7(ClosingSettingsPanel.this.sales_7_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setSalesLabel8(ClosingSettingsPanel.this.sales_8_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setSalesLabel9(ClosingSettingsPanel.this.sales_9_labelTextBox.getValue());
-
-			ClosingSettingsPanel.this.closingSettings
-					.setShowSales1(ClosingSettingsPanel.this.showSales1CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowSales2(ClosingSettingsPanel.this.showSales2CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowSales3(ClosingSettingsPanel.this.showSales3CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowSales4(ClosingSettingsPanel.this.showSales4CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowSales5(ClosingSettingsPanel.this.showSales5CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowSales6(ClosingSettingsPanel.this.showSales6CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowSales7(ClosingSettingsPanel.this.showSales7CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowSales8(ClosingSettingsPanel.this.showSales8CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowSales9(ClosingSettingsPanel.this.showSales9CheckBox.getValue().booleanValue());
-
-			ClosingSettingsPanel.this.closingSettings
-					.setIncomeLabel1(ClosingSettingsPanel.this.income_1_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setIncomeLabel2(ClosingSettingsPanel.this.income_2_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setIncomeLabel3(ClosingSettingsPanel.this.income_3_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setIncomeLabel4(ClosingSettingsPanel.this.income_4_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setIncomeLabel5(ClosingSettingsPanel.this.income_5_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setIncomeLabel6(ClosingSettingsPanel.this.income_6_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setIncomeLabel7(ClosingSettingsPanel.this.income_7_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setIncomeLabel8(ClosingSettingsPanel.this.income_8_labelTextBox.getValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setIncomeLabel9(ClosingSettingsPanel.this.income_9_labelTextBox.getValue());
-
-			ClosingSettingsPanel.this.closingSettings
-					.setShowIncome1(ClosingSettingsPanel.this.showIncome1CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowIncome2(ClosingSettingsPanel.this.showIncome2CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowIncome3(ClosingSettingsPanel.this.showIncome3CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowIncome4(ClosingSettingsPanel.this.showIncome4CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowIncome5(ClosingSettingsPanel.this.showIncome5CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowIncome6(ClosingSettingsPanel.this.showIncome6CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowIncome7(ClosingSettingsPanel.this.showIncome7CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowIncome8(ClosingSettingsPanel.this.showIncome8CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.closingSettings
-					.setShowIncome9(ClosingSettingsPanel.this.showIncome9CheckBox.getValue().booleanValue());
-			ClosingSettingsPanel.this.saveClosingSettings(ClosingSettingsPanel.this.closingSettings);
+			closingSettings
+					.setSalesLabel1(sales_1_labelTextBox.getValue());
+			closingSettings
+					.setSalesLabel2(sales_2_labelTextBox.getValue());
+			closingSettings
+					.setSalesLabel3(sales_3_labelTextBox.getValue());
+			closingSettings
+					.setSalesLabel4(sales_4_labelTextBox.getValue());
+			closingSettings
+					.setSalesLabel5(sales_5_labelTextBox.getValue());
+			closingSettings
+					.setSalesLabel6(sales_6_labelTextBox.getValue());
+			closingSettings
+					.setSalesLabel7(sales_7_labelTextBox.getValue());
+			closingSettings
+					.setSalesLabel8(sales_8_labelTextBox.getValue());
+			closingSettings
+					.setSalesLabel9(sales_9_labelTextBox.getValue());
+			
+			GWT.log("saveHandler.onClick2");
+			closingSettings
+					.setShowSales1(showSales1CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowSales2(showSales2CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowSales3(showSales3CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowSales4(showSales4CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowSales5(showSales5CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowSales6(showSales6CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowSales7(showSales7CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowSales8(showSales8CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowSales9(showSales9CheckBox.getValue().booleanValue());
+			GWT.log("saveHandler.onClick3");
+			closingSettings
+					.setIncomeLabel1(income_1_labelTextBox.getValue());
+			closingSettings
+					.setIncomeLabel2(income_2_labelTextBox.getValue());
+			closingSettings
+					.setIncomeLabel3(income_3_labelTextBox.getValue());
+			closingSettings
+					.setIncomeLabel4(income_4_labelTextBox.getValue());
+			closingSettings
+					.setIncomeLabel5(income_5_labelTextBox.getValue());
+			closingSettings
+					.setIncomeLabel6(income_6_labelTextBox.getValue());
+			closingSettings
+					.setIncomeLabel7(income_7_labelTextBox.getValue());
+			closingSettings
+					.setIncomeLabel8(income_8_labelTextBox.getValue());
+			closingSettings
+					.setIncomeLabel9(income_9_labelTextBox.getValue());
+			GWT.log("saveHandler.onClick4");
+			closingSettings
+					.setShowIncome1(showIncome1CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowIncome2(showIncome2CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowIncome3(showIncome3CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowIncome4(showIncome4CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowIncome5(showIncome5CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowIncome6(showIncome6CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowIncome7(showIncome7CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowIncome8(showIncome8CheckBox.getValue().booleanValue());
+			closingSettings
+					.setShowIncome9(showIncome9CheckBox.getValue().booleanValue());
+			GWT.log("saveHandler.onClick5");
+			saveClosingSettings(closingSettings);
 		}
 	};
 
@@ -224,21 +221,23 @@ public class ClosingSettingsPanel extends VerticalPanel {
 
 	private static final String JSON_URL2 = "http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings";
 
-	private void saveClosingSettings(ClosingSettings closingLabel) {
+	private void saveClosingSettings(ClosingSettings closingSettings) {
 		String url = URL
-				.encode("http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings/" + closingLabel.getId());
+				.encode("http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings/" + closingSettings.getId());
 		GWT.log("url = " + url);
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		ClosingsApp.setNonce(builder);
 		builder.setHeader("Content-Type", "application/json");
-		String postData = JsonUtils.stringify(closingLabel);
-		displayMessage("postData: " + postData);
+		GWT.log(" JsonUtils.stringify1");
+		String postData = JsonUtils.stringify(closingSettings);
+		GWT.log(" JsonUtils.stringify2");
+		closingsApp.displayMessage("postData: " + postData);
 		GWT.log("postData:" + postData);
 		try {
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
-					ClosingSettingsPanel.this.displayError(
+					closingsApp.displayError(
 							"Couldn't retrieve JSON : http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings"
 									+ exception.getMessage());
 				}
@@ -246,67 +245,86 @@ public class ClosingSettingsPanel extends VerticalPanel {
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
 						GWT.log("good result " + response.getStatusText());
-						ClosingSettingsPanel.this.displayMessage("response=" + response.getText());
+						closingsApp.displayMessage(response.getText());
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
-						ClosingSettingsPanel.this.displayMessage(
+						closingsApp.displayMessage(
 								"Couldn't retrieve JSON (http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings"
 										+ response.getStatusText() + ")");
 					}
 				}
 			});
 		} catch (RequestException e) {
-			displayError("Couldn't retrieve JSON : " + e.getMessage());
+			closingsApp.displayError("Couldn't retrieve JSON : " + e.getMessage());
 		}
 	}
 
-	private void initControl(SimpleCheckBox checkbox, TextBox textbox, String labelText, boolean display) {
-		checkbox.setValue(Boolean.valueOf(display));
 
+	private void initControl(SimpleCheckBox checkbox, TextBox textbox, String labelText, boolean display,String prompt) {
+		
+
+		Label debugLabel2 = new Label("display is " + display);
+		add(debugLabel2);
+		if (display == false) {
+			//checkbox.setValue(new Boolean(false));
+			Label debugLabel = new Label("Checkbox shoudl be unchecked");
+			add(debugLabel);
+			checkbox.setValue(false);
+		} else {
+			checkbox.setValue(true);
+		}
+		
+		Label checkboxLabel = new Label("Display " + prompt);
+		add(checkboxLabel);
 		add(checkbox);
-		textbox.setValue(labelText);
+		Label textboxLabel = new Label("Label for " + prompt);
+		add(textboxLabel);
+		//textbox.setValue(labelText);
+		textbox.setText(labelText);
 		add(textbox);
 	}
+	
+	private ClosingsApp closingsApp = null;
+	public ClosingSettingsPanel(ClosingsApp closingsApp,ClosingSettings closingSettings) {
+		this.closingsApp = closingsApp;
+		this.closingSettings = closingSettings;
+		initControl(this.showSales1CheckBox, this.sales_1_labelTextBox, closingSettings.getSalesLabel1(),
+				closingSettings.getShowSales1(), "Sales #1");
+		initControl(this.showSales2CheckBox, this.sales_2_labelTextBox, closingSettings.getSalesLabel2(),
+				closingSettings.getShowSales2(), "Sales #2");
+		initControl(this.showSales3CheckBox, this.sales_3_labelTextBox, closingSettings.getSalesLabel3(),
+				closingSettings.getShowSales3(), "Sales #3");
+		initControl(this.showSales4CheckBox, this.sales_4_labelTextBox, closingSettings.getSalesLabel4(),
+				closingSettings.getShowSales4(), "Sales #4");
+		initControl(this.showSales5CheckBox, this.sales_5_labelTextBox, closingSettings.getSalesLabel5(),
+				closingSettings.getShowSales5(), "Sales #5");
+		initControl(this.showSales6CheckBox, this.sales_6_labelTextBox, closingSettings.getSalesLabel6(),
+				closingSettings.getShowSales6(), "Sales #6");
+		initControl(this.showSales7CheckBox, this.sales_7_labelTextBox, closingSettings.getSalesLabel7(),
+				closingSettings.getShowSales7(), "Sales #7");
+		initControl(this.showSales8CheckBox, this.sales_8_labelTextBox, closingSettings.getSalesLabel8(),
+				closingSettings.getShowSales8(), "Sales #8");
+		initControl(this.showSales9CheckBox, this.sales_9_labelTextBox, closingSettings.getSalesLabel9(),
+				closingSettings.getShowSales9(), "Sales #9");
 
-	public ClosingSettingsPanel(ClosingSettings closingSetting) {
-		this.closingSettings = this.closingSettings;
-		initControl(this.showSales1CheckBox, this.sales_1_labelTextBox, closingSetting.getSalesLabel1(),
-				closingSetting.getShowSales1());
-		initControl(this.showSales2CheckBox, this.sales_2_labelTextBox, closingSetting.getSalesLabel2(),
-				closingSetting.getShowSales2());
-		initControl(this.showSales3CheckBox, this.sales_3_labelTextBox, closingSetting.getSalesLabel3(),
-				closingSetting.getShowSales3());
-		initControl(this.showSales4CheckBox, this.sales_4_labelTextBox, closingSetting.getSalesLabel4(),
-				closingSetting.getShowSales4());
-		initControl(this.showSales5CheckBox, this.sales_5_labelTextBox, closingSetting.getSalesLabel5(),
-				closingSetting.getShowSales5());
-		initControl(this.showSales6CheckBox, this.sales_6_labelTextBox, closingSetting.getSalesLabel6(),
-				closingSetting.getShowSales6());
-		initControl(this.showSales7CheckBox, this.sales_7_labelTextBox, closingSetting.getSalesLabel7(),
-				closingSetting.getShowSales7());
-		initControl(this.showSales8CheckBox, this.sales_8_labelTextBox, closingSetting.getSalesLabel8(),
-				closingSetting.getShowSales8());
-		initControl(this.showSales9CheckBox, this.sales_9_labelTextBox, closingSetting.getSalesLabel9(),
-				closingSetting.getShowSales9());
-
-		initControl(this.showIncome1CheckBox, this.income_1_labelTextBox, closingSetting.getIncomeLabel1(),
-				closingSetting.getShowIncome1());
-		initControl(this.showIncome2CheckBox, this.income_2_labelTextBox, closingSetting.getIncomeLabel2(),
-				closingSetting.getShowIncome2());
-		initControl(this.showIncome3CheckBox, this.income_3_labelTextBox, closingSetting.getIncomeLabel3(),
-				closingSetting.getShowIncome3());
-		initControl(this.showIncome4CheckBox, this.income_4_labelTextBox, closingSetting.getIncomeLabel4(),
-				closingSetting.getShowIncome4());
-		initControl(this.showIncome5CheckBox, this.income_5_labelTextBox, closingSetting.getIncomeLabel5(),
-				closingSetting.getShowIncome5());
-		initControl(this.showIncome6CheckBox, this.income_6_labelTextBox, closingSetting.getIncomeLabel6(),
-				closingSetting.getShowIncome6());
-		initControl(this.showIncome7CheckBox, this.income_7_labelTextBox, closingSetting.getIncomeLabel7(),
-				closingSetting.getShowIncome7());
-		initControl(this.showIncome8CheckBox, this.income_8_labelTextBox, closingSetting.getIncomeLabel8(),
-				closingSetting.getShowIncome8());
-		initControl(this.showIncome9CheckBox, this.income_9_labelTextBox, closingSetting.getIncomeLabel9(),
-				closingSetting.getShowIncome9());
+		initControl(this.showIncome1CheckBox, this.income_1_labelTextBox, closingSettings.getIncomeLabel1(),
+				closingSettings.getShowIncome1(),"Income #1");
+		initControl(this.showIncome2CheckBox, this.income_2_labelTextBox, closingSettings.getIncomeLabel2(),
+				closingSettings.getShowIncome2(),"Income #2");
+		initControl(this.showIncome3CheckBox, this.income_3_labelTextBox, closingSettings.getIncomeLabel3(),
+				closingSettings.getShowIncome3(),"Income #4");
+		initControl(this.showIncome4CheckBox, this.income_4_labelTextBox, closingSettings.getIncomeLabel4(),
+				closingSettings.getShowIncome4(),"Income #5");
+		initControl(this.showIncome5CheckBox, this.income_5_labelTextBox, closingSettings.getIncomeLabel5(),
+				closingSettings.getShowIncome5(),"Income #6");
+		initControl(this.showIncome6CheckBox, this.income_6_labelTextBox, closingSettings.getIncomeLabel6(),
+				closingSettings.getShowIncome6(),"Income #7");
+		initControl(this.showIncome7CheckBox, this.income_7_labelTextBox, closingSettings.getIncomeLabel7(),
+				closingSettings.getShowIncome7(),"Income #8");
+		initControl(this.showIncome8CheckBox, this.income_8_labelTextBox, closingSettings.getIncomeLabel8(),
+				closingSettings.getShowIncome8(),"Income #9");
+		initControl(this.showIncome9CheckBox, this.income_9_labelTextBox, closingSettings.getIncomeLabel9(),
+				closingSettings.getShowIncome9(),"Income #9");
 
 		add(this.saveButton);
 		this.saveButton.addClickHandler(this.saveHandler);

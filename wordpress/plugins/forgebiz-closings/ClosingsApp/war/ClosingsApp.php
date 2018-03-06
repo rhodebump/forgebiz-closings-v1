@@ -28,8 +28,12 @@ var WordpressForgebizSettings = {
     </noscript>
 
     <h1>Forgebiz Closings</h1>
-    <div id="closingsNav"></div>
     
+    
+    
+
+    <div id="closingsNav"></div>
+            <div id="messagesPanel"></div>
     <div id="closingsMain"></div>
     
 
