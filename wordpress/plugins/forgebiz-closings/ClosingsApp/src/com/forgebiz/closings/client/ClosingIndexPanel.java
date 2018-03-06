@@ -22,7 +22,9 @@ import com.google.gwt.user.datepicker.client.DateBox;
 public class ClosingIndexPanel extends Composite {
 	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
 
-
+	@UiField
+	ClosingsApp closingsApp;
+	
 	@UiField
 	Label errorLabel;
 
@@ -72,7 +74,7 @@ public class ClosingIndexPanel extends Composite {
 		}
 	};
 
-	public ClosingIndexPanel(ClosingsApp.displayError) {
+	public ClosingIndexPanel(ClosingsApp closingsApp) {
 		initWidget((Widget) binder.createAndBindUi(this));
 		this.startDatePicker.setFormat(
 				new DateBox.DefaultFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT)));
