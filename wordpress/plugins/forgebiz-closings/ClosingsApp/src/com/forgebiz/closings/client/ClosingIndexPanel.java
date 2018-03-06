@@ -22,13 +22,6 @@ import com.google.gwt.user.datepicker.client.DateBox;
 public class ClosingIndexPanel extends Composite {
 	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
 
-	private void displayMessage(String error) {
-		this.errorLabel.setText(this.errorLabel.getText() + " " + error);
-	}
-
-	private void displayError(String error) {
-		displayMessage(error);
-	}
 
 	@UiField
 	Label errorLabel;
@@ -59,28 +52,27 @@ public class ClosingIndexPanel extends Composite {
 			try {
 				builder.sendRequest(null, new RequestCallback() {
 					public void onError(Request request, Throwable exception) {
-						ClosingIndexPanel.this.displayError("Couldn't retrieve JSON : " + url + exception.getMessage());
+						ClosingsApp.displayError("Couldn't retrieve JSON : " + url + exception.getMessage());
 					}
 
 					public void onResponseReceived(Request request, Response response) {
 						if (200 == response.getStatusCode()) {
 							GWT.log("good result " + response.getStatusText());
 
-							ClosingIndexPanel.this.displayError(response.getText());
+							ClosingsApp.displayError(response.getText());
 						} else {
 							GWT.log("bad result " + response.getStatusCode());
-							ClosingIndexPanel.this
-									.displayError("Couldn't retrieve JSON (" + url + response.getStatusText() + ")");
+							ClosingsApp.displayError("Couldn't retrieve JSON (" + url + response.getStatusText() + ")");
 						}
 					}
 				});
 			} catch (RequestException e) {
-				ClosingIndexPanel.this.displayError("Couldn't retrieve JSON : " + e.getMessage());
+				ClosingsApp.displayError("Couldn't retrieve JSON : " + e.getMessage());
 			}
 		}
 	};
 
-	public ClosingIndexPanel() {
+	public ClosingIndexPanel(ClosingsApp.displayError) {
 		initWidget((Widget) binder.createAndBindUi(this));
 		this.startDatePicker.setFormat(
 				new DateBox.DefaultFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT)));
