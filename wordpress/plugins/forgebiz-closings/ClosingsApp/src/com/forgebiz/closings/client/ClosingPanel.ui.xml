@@ -5,7 +5,7 @@
 
   <g:HTMLPanel>
 
-                    <datepicker:DateBox ui:field="closingDatePicker"/>
+                    <datepicker:DateBox ui:field="closingDateBox"/>
     
     
 <table>
