@@ -57,20 +57,27 @@ public class BaseIncomeSalesPanel extends VerticalPanel {
 	}
 
 
-
+	private double total =  0.0D;
+	public double getTotal() {
+		return total;
+	}
+	
+	public void setTotal(double total) {
+		this.total = total;
+	}
 	public void calculateAll() {
 		GWT.log("calculateAll2");
-		double total = 0.0D;
-		total += getIntegerValue(this.income1TextBox).intValue();
-		total += getIntegerValue(this.income2TextBox).intValue();
-		total += getIntegerValue(this.income3TextBox).intValue();
-		total += getIntegerValue(this.income4TextBox).intValue();
-		total += getIntegerValue(this.income5TextBox).intValue();
-		total += getIntegerValue(this.income6TextBox).intValue();
-		total += getIntegerValue(this.income7TextBox).intValue();
-		total += getIntegerValue(this.income8TextBox).intValue();
-		total += getIntegerValue(this.income9TextBox).intValue();		
-		setTotal(total);
+		double t = 0.0D;
+		t += getIntegerValue(this.income1TextBox).intValue();
+		t += getIntegerValue(this.income2TextBox).intValue();
+		t += getIntegerValue(this.income3TextBox).intValue();
+		t += getIntegerValue(this.income4TextBox).intValue();
+		t += getIntegerValue(this.income5TextBox).intValue();
+		t += getIntegerValue(this.income6TextBox).intValue();
+		t += getIntegerValue(this.income7TextBox).intValue();
+		t += getIntegerValue(this.income8TextBox).intValue();
+		t += getIntegerValue(this.income9TextBox).intValue();		
+		setTotal(t);
 	}
 
 	public void setClosingPanel(ClosingPanel closingPanel) {
