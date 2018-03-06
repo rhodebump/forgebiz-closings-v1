@@ -9,23 +9,23 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class BaseIncomeSalesPanel extends VerticalPanel {
 	Label income1Label = new Label();
-	TextBox income1TextBox = new TextBox();
+	public TextBox income1TextBox = new TextBox();
 	Label income2Label = new Label();
-	TextBox income2TextBox = new TextBox();
+	public TextBox income2TextBox = new TextBox();
 	Label income3Label = new Label();
-	TextBox income3TextBox = new TextBox();
+	public TextBox income3TextBox = new TextBox();
 	Label income4Label = new Label();
-	TextBox income4TextBox = new TextBox();
+	public TextBox income4TextBox = new TextBox();
 	Label income5Label = new Label();
-	TextBox income5TextBox = new TextBox();
+	public TextBox income5TextBox = new TextBox();
 	Label income6Label = new Label();
-	TextBox income6TextBox = new TextBox();
+	public TextBox income6TextBox = new TextBox();
 	Label income7Label = new Label();
-	TextBox income7TextBox = new TextBox();
+	public TextBox income7TextBox = new TextBox();
 	Label income8Label = new Label();
-	TextBox income8TextBox = new TextBox();
+	public TextBox income8TextBox = new TextBox();
 	Label income9Label = new Label();
-	TextBox income9TextBox = new TextBox();
+	public  TextBox income9TextBox = new TextBox();
 
 	public void setCashTotalCash(double d) {
 	}
