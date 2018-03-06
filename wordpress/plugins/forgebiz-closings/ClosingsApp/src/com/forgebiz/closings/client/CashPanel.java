@@ -103,14 +103,7 @@ public class CashPanel extends VerticalPanel {
 		GWT.log("cashpanel #2");
 	}
 
-	private Integer getIntegerValue(TextBox textBox) {
-		try {
-			return Integer.valueOf(Integer.parseInt(textBox.getValue()));
-		} catch (Exception e) {
-			GWT.log("returning 0 for " + textBox.getName());
-		}
-		return Integer.valueOf(0);
-	}
+
 
 	public void calculateAll() {
 		GWT.log("calculateAll2");
