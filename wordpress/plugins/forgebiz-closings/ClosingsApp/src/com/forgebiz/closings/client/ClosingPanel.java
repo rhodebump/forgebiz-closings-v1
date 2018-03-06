@@ -81,7 +81,25 @@ public class ClosingPanel
 		public void onClick(ClickEvent event) {
 			GWT.log("saveHandler.onClick");
 			Closing closing= (Closing)JavaScriptObject.createObject().cast();
+closing.setIncome1(incomePanel.xx);
+closing.setIncome2(incomePanel.xx);
+closing.setIncome3(incomePanel.xx);
+closing.setIncome4(incomePanel.xx);
+closing.setIncome5(incomePanel.xx);
+closing.setIncome6(incomePanel.xx);
+closing.setIncome7(incomePanel.xx);
+closing.setIncome8(incomePanel.xx);
+closing.setIncome19(incomePanel.xx);
 
+closing.setSales1(incomePanel.xx);
+closing.setSales2(incomePanel.xx);
+closing.setSales3(incomePanel.xx);
+closing.setSales4(incomePanel.xx);
+closing.setSales5(incomePanel.xx);
+closing.setSales6(incomePanel.xx);
+closing.setSales7(incomePanel.xx);
+closing.setSales8(incomePanel.xx);
+closing.setSales9(incomePanel.xx);
 
 
 			saveClosing(closing);
