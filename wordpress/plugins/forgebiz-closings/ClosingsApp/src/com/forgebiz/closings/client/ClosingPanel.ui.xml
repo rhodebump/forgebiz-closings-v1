@@ -5,6 +5,9 @@
 
   <g:HTMLPanel>
 
+                    <datepicker:DateBox ui:field="closingDatePicker"/>
+    
+    
 <table>
 <tr>
 <td valign="top">
