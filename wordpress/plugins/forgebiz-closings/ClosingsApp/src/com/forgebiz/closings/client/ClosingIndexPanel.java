@@ -41,7 +41,14 @@ public class ClosingIndexPanel extends Composite {
 
 	@UiField
 	Button searchButton = new Button("Search");
+	public ClickHandler createNewClosingHandler = new ClickHandler() {
+		public void onClick(ClickEvent event) {
+			// new closing panel
+			// how to swap out the panel?
+			fetchClosingSettings(newClosingCallback);
 
+		}
+	};
 	public ClickHandler searchHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("searchHandler.onClick");
@@ -81,6 +88,13 @@ public class ClosingIndexPanel extends Composite {
 				new DateBox.DefaultFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT)));
 
 		this.searchButton.addClickHandler(this.searchHandler);
+		
+			Button createClosingButton = new Button("New Closing");
+
+		this.createClosingButton.addClickHandler(this.createNewClosingHandler);
+
+		
+		
 	}
 
 	@UiTemplate("ClosingIndexPanel.ui.xml")
