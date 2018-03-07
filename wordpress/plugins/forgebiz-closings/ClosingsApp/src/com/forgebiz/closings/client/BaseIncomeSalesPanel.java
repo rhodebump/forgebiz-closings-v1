@@ -68,15 +68,15 @@ public class BaseIncomeSalesPanel extends VerticalPanel {
 	public void calculateAll() {
 		GWT.log("calculateAll2");
 		double t = 0.0D;
-		t += getIntegerValue(this.income1TextBox).intValue();
-		t += getIntegerValue(this.income2TextBox).intValue();
-		t += getIntegerValue(this.income3TextBox).intValue();
-		t += getIntegerValue(this.income4TextBox).intValue();
-		t += getIntegerValue(this.income5TextBox).intValue();
-		t += getIntegerValue(this.income6TextBox).intValue();
-		t += getIntegerValue(this.income7TextBox).intValue();
-		t += getIntegerValue(this.income8TextBox).intValue();
-		t += getIntegerValue(this.income9TextBox).intValue();		
+		t += ClosingsApp.getIntValue(this.income1TextBox);
+		t += ClosingsApp.getIntValue(this.income2TextBox);
+		t += ClosingsApp.getIntValue(this.income3TextBox);
+		t += ClosingsApp.getIntValue(this.income4TextBox);
+		t += ClosingsApp.getIntValue(this.income5TextBox);
+		t += ClosingsApp.getIntValue(this.income6TextBox);
+		t += ClosingsApp.getIntValue(this.income7TextBox);
+		t += ClosingsApp.getIntValue(this.income8TextBox);
+		t += ClosingsApp.getIntValue(this.income9TextBox);		
 		setTotal(t);
 	}
 

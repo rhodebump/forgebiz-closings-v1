@@ -13,15 +13,43 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class ClosingIndexPanel extends Composite {
 	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
 
+	
+	AsyncCallback newClosingCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+		}
+
+		public void onSuccess(Object response) {
+			GWT.log("newClosingCallback.onSuccess");
+			ClosingSettings closingSettings = (ClosingSettings) response;
+			CashPanel openCashPanel = new CashPanel();
+			CashPanel closeCashPanel = new CashPanel();
+			SalesPanel salesPanel = new SalesPanel(closingSettings);
+			IncomePanel incomePanel = new IncomePanel(closingSettings);
+			Button saveButton = new Button();
+
+			DateBox closingDateBox = new DateBox();
+			ClosingPanel closingPanel = new ClosingPanel(closingsApp,closingSettings, openCashPanel, closeCashPanel, salesPanel,
+					incomePanel, saveButton, closingDateBox);
+			openCashPanel.setClosingPanel(closingPanel);
+			closeCashPanel.setClosingPanel(closingPanel);
+			RootPanel.get("closingsMain").clear();
+			RootPanel.get("closingsMain").add(closingPanel);
+
+		}
+	};
+	
+	
 	@UiField
 	ClosingsApp closingsApp;
 	
@@ -40,7 +68,7 @@ public class ClosingIndexPanel extends Composite {
 		public void onClick(ClickEvent event) {
 			// new closing panel
 			// how to swap out the panel?
-			fetchClosingSettings(newClosingCallback);
+			closingsApp.fetchClosingSettings(newClosingCallback);
 
 		}
 	};
@@ -54,22 +82,22 @@ public class ClosingIndexPanel extends Composite {
 			try {
 				builder.sendRequest(null, new RequestCallback() {
 					public void onError(Request request, Throwable exception) {
-						ClosingsApp.displayError("Couldn't retrieve JSON : " + url + exception.getMessage());
+						closingsApp.displayError("Couldn't retrieve JSON : " + url + exception.getMessage());
 					}
 
 					public void onResponseReceived(Request request, Response response) {
 						if (200 == response.getStatusCode()) {
 							GWT.log("good result " + response.getStatusText());
 
-							ClosingsApp.displayError(response.getText());
+							closingsApp.displayError(response.getText());
 						} else {
 							GWT.log("bad result " + response.getStatusCode());
-							ClosingsApp.displayError("Couldn't retrieve JSON (" + url + response.getStatusText() + ")");
+							closingsApp.displayError("Couldn't retrieve JSON (" + url + response.getStatusText() + ")");
 						}
 					}
 				});
 			} catch (RequestException e) {
-				ClosingsApp.displayError("Couldn't retrieve JSON : " + e.getMessage());
+				closingsApp.displayError("Couldn't retrieve JSON : " + e.getMessage());
 			}
 		}
 	};
@@ -85,7 +113,7 @@ public class ClosingIndexPanel extends Composite {
 		
 			Button createClosingButton = new Button("New Closing");
 
-		this.createClosingButton.addClickHandler(this.createNewClosingHandler);
+		createClosingButton.addClickHandler(this.createNewClosingHandler);
 
 		
 		

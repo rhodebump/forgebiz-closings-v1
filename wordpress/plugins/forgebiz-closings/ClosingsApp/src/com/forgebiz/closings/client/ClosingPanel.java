@@ -17,101 +17,93 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.datepicker.client.DateBox;
 
-public class ClosingPanel
-  extends Composite
-{
-  private static final MyBinder binder = (MyBinder)GWT.create(MyBinder.class);
-  
+public class ClosingPanel extends Composite {
+	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
 
-	 @UiField(provided=true)
-		Button saveButton;
-	  
-  private ClosingSettings closingSettings = null;
-  @UiField(provided=true)
-  CashPanel openCashPanel;
-  @UiField(provided=true)
-  CashPanel closeCashPanel;
-  @UiField(provided=true)
-  SalesPanel salesPanel;
-  @UiField(provided=true)
-  IncomePanel incomePanel;
-  
-  
-  @UiField(provided=true)
+	@UiField(provided = true)
+	Button saveButton;
+
+	private ClosingSettings closingSettings = null;
+	@UiField(provided = true)
+	CashPanel openCashPanel;
+	@UiField(provided = true)
+	CashPanel closeCashPanel;
+	@UiField(provided = true)
+	SalesPanel salesPanel;
+	@UiField(provided = true)
+	IncomePanel incomePanel;
+
+	@UiField(provided = true)
 	DateBox closingDateBox = new DateBox();
+
+	ClosingsApp closingsApp = null;
+
+	public ClosingPanel(ClosingsApp closingsApp, ClosingSettings closingSettings, CashPanel openCashPanel,
+			CashPanel closeCashPanel, SalesPanel salesPanel, IncomePanel incomePanel, Button saveButton,
+			DateBox closingDateBox) {
+		this.closingsApp = closingsApp;
+		this.closingSettings = closingSettings;
+		this.openCashPanel = openCashPanel;
+		this.closeCashPanel = closeCashPanel;
+		this.salesPanel = salesPanel;
+		this.incomePanel = incomePanel;
+		this.saveButton = saveButton;
+		this.saveButton.addClickHandler(this.saveHandler);
+		initWidget((Widget) binder.createAndBindUi(this));
+		GWT.log("closingpanel");
+
+	}
+
+	public void calculateAll() {
+		GWT.log("calculateAll");
+		this.openCashPanel.calculateAll();
+		double openCashTotal = this.openCashPanel.getCashTotal();
+		GWT.log("openCashTotal " + openCashTotal);
+		this.closeCashPanel.calculateAll();
+		double closeCashTotal = this.closeCashPanel.getCashTotal();
+		GWT.log("closeCashTotal " + closeCashTotal);
+		double totalCash = closeCashTotal - openCashTotal;
+		GWT.log("totalCash " + totalCash);
+
+		this.incomePanel.setCashTotalCash(totalCash);
+	}
+
+	@UiTemplate("ClosingPanel.ui.xml")
+	static abstract interface MyBinder extends UiBinder<Widget, ClosingPanel> {
+	}
 	
 	
-  
-  ClosingsApp closingsApp = null;
-  
-  public ClosingPanel(ClosingsApp closingsApp,ClosingSettings closingSettings, CashPanel openCashPanel, CashPanel closeCashPanel, SalesPanel salesPanel, IncomePanel incomePanel, Button saveButton, DateBox closingDateBox)
-  {
-	  this.closingsApp = closingsApp;
-    this.closingSettings = closingSettings;
-    this.openCashPanel = openCashPanel;
-    this.closeCashPanel = closeCashPanel;
-    this.salesPanel = salesPanel;
-    this.incomePanel = incomePanel;
-    this.saveButton = saveButton;
-	this.saveButton.addClickHandler(this.saveHandler);
-    initWidget((Widget)binder.createAndBindUi(this));
-    GWT.log("closingpanel");
-    
-    
-  }
-  
-  public void calculateAll()
-  {
-    GWT.log("calculateAll");
-    this.openCashPanel.calculateAll();
-    double openCashTotal = this.openCashPanel.getCashTotal();
-    GWT.log("openCashTotal " + openCashTotal);
-    this.closeCashPanel.calculateAll();
-    double closeCashTotal = this.closeCashPanel.getCashTotal();
-    GWT.log("closeCashTotal " + closeCashTotal);
-    double totalCash = closeCashTotal - openCashTotal;
-    GWT.log("totalCash " + totalCash);
-    
-    this.incomePanel.setCashTotalCash(totalCash);
-  }
-  
-  @UiTemplate("ClosingPanel.ui.xml")
-  static abstract interface MyBinder
-    extends UiBinder<Widget, ClosingPanel>
-  {}
-  
-  
-  
+
 	public ClickHandler saveHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("saveHandler.onClick");
-			Closing closing= (Closing)JavaScriptObject.createObject().cast();
-closing.setIncome1(incomePanel.income1TextBox);
-closing.setIncome2(incomePanel.income2TextBox);
-closing.setIncome3(incomePanel.income3TextBox);
-closing.setIncome4(incomePanel.income4TextBox);
-closing.setIncome5(incomePanel.income5TextBox);
-closing.setIncome6(incomePanel.income6TextBox);
-closing.setIncome7(incomePanel.income7TextBox);
-closing.setIncome8(incomePanel.income8TextBox);
-closing.setIncome9(incomePanel.income9TextBox);
+			Closing closing = (Closing) JavaScriptObject.createObject().cast();
+			closing.setIncome1(ClosingsApp.getDoubleValue(incomePanel.income1TextBox));
+			closing.setIncome2(ClosingsApp.getDoubleValue(incomePanel.income2TextBox));
+			closing.setIncome3(ClosingsApp.getDoubleValue(incomePanel.income3TextBox));
+			closing.setIncome4(ClosingsApp.getDoubleValue(incomePanel.income4TextBox));
+			closing.setIncome5(ClosingsApp.getDoubleValue(incomePanel.income5TextBox));
+			closing.setIncome6(ClosingsApp.getDoubleValue(incomePanel.income6TextBox));
+			closing.setIncome7(ClosingsApp.getDoubleValue(incomePanel.income7TextBox));
+			closing.setIncome8(ClosingsApp.getDoubleValue(incomePanel.income8TextBox));
+			closing.setIncome9(ClosingsApp.getDoubleValue(incomePanel.income9TextBox));
 
-closing.setSales1(salesPanel.income1TextBox);
-closing.setSales2(salesPanel.income2TextBox);
-closing.setSales3(salesPanel.income3TextBox);
-closing.setSales4(salesPanel.income4TextBox);
-closing.setSales5(salesPanel.income5TextBox);
-closing.setSales6(salesPanel.income6TextBox);
-closing.setSales7(salesPanel.income7TextBox);
-closing.setSales8(salesPanel.income8TextBox);
-closing.setSales9(salesPanel.income9TextBox);
-
+			closing.setSales1(ClosingsApp.getDoubleValue(salesPanel.income1TextBox));
+			closing.setSales2(ClosingsApp.getDoubleValue(salesPanel.income2TextBox));
+			closing.setSales3(ClosingsApp.getDoubleValue(salesPanel.income3TextBox));
+			closing.setSales4(ClosingsApp.getDoubleValue(salesPanel.income4TextBox));
+			closing.setSales5(ClosingsApp.getDoubleValue(salesPanel.income5TextBox));
+			closing.setSales6(ClosingsApp.getDoubleValue(salesPanel.income6TextBox));
+			closing.setSales7(ClosingsApp.getDoubleValue(salesPanel.income7TextBox));
+			closing.setSales8(ClosingsApp.getDoubleValue(salesPanel.income8TextBox));
+			closing.setSales9(ClosingsApp.getDoubleValue(salesPanel.income9TextBox));
 
 			saveClosing(closing);
 		}
 	};
-	
+
 	private void saveClosing(Closing closing) {
 		String url = URL
 				.encode("http://localhost:8080//wp-json/forgebiz-closings/v1/closing/" + closingSettings.getId());
@@ -149,5 +141,5 @@ closing.setSales9(salesPanel.income9TextBox);
 			closingsApp.displayError("Couldn't retrieve JSON : " + e.getMessage());
 		}
 	}
-	
+
 }

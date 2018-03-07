@@ -108,16 +108,16 @@ public class CashPanel extends VerticalPanel {
 	public void calculateAll() {
 		GWT.log("calculateAll2");
 		double total = 0.0D;
-		total += ClosingsApp.getIntValue(this.open1Cent).intValue();
-		total += ClosingsApp.getIntValue(this.open5Cents).intValue();
-		total += ClosingsApp.getIntValue(this.open10Cents).intValue();
-		total += ClosingsApp.getIntValue(this.open25Cents).intValue();
-		total += ClosingsApp.getIntValue(this.open1Dollar).intValue();
-		total += ClosingsApp.getIntValue(this.open5Dollars).intValue();
-		total += ClosingsApp.getIntValue(this.open10Dollars).intValue();
-		total += ClosingsApp.getIntValue(this.open20Dollars).intValue();
-		total += ClosingsApp.getIntValue(this.open50Dollars).intValue();
-		total += ClosingsApp.getIntValue(this.open100Dollars).intValue();
+		total += ClosingsApp.getIntValue(this.open1Cent);
+		total += ClosingsApp.getIntValue(this.open5Cents);
+		total += ClosingsApp.getIntValue(this.open10Cents);
+		total += ClosingsApp.getIntValue(this.open25Cents);
+		total += ClosingsApp.getIntValue(this.open1Dollar);
+		total += ClosingsApp.getIntValue(this.open5Dollars);
+		total += ClosingsApp.getIntValue(this.open10Dollars);
+		total += ClosingsApp.getIntValue(this.open20Dollars);
+		total += ClosingsApp.getIntValue(this.open50Dollars);
+		total += ClosingsApp.getIntValue(this.open100Dollars);
 
 		setCashTotal(total);
 	}

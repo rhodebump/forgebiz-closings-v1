@@ -1,6 +1,5 @@
 package com.forgebiz.closings.client;
 
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
@@ -18,12 +17,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ClosingsApp implements EntryPoint {
 
-	//final Label errorLabel = new Label();
-	
+	// final Label errorLabel = new Label();
+
 	public static int getIntValue(TextBox textBox) {
 		try {
 			return Integer.parseInt(textBox.getValue());
@@ -32,11 +32,17 @@ public class ClosingsApp implements EntryPoint {
 		}
 		return 0;
 	}
-	
-	
 
-	private VerticalPanel messagesPanel =new VerticalPanel();
-	
+	public static double getDoubleValue(TextBox textBox) {
+		try {
+			return Double.parseDouble(textBox.getValue());
+		} catch (Exception e) {
+			GWT.log("returning 0 for " + textBox.getName());
+		}
+		return 0.0D;
+	}
+
+	private VerticalPanel messagesPanel = new VerticalPanel();
 
 	public void displayMessage(String error) {
 		messagesPanel.add(new Label(error));
@@ -54,10 +60,6 @@ public class ClosingsApp implements EntryPoint {
 			displayMessage("Couldn't retrieve JSON (" + response.getStatusText() + ")");
 		}
 	}
-
-
-
-
 
 	public static final String JSON_BASE = "http://localhost:8080/wp-json/forgebiz-closings/v1";
 
@@ -77,7 +79,7 @@ public class ClosingsApp implements EntryPoint {
 		rb.setHeader("X-WP-Nonce", NONCE);
 	}
 
-	private void fetchClosingSettings(AsyncCallback callback) {
+	public void fetchClosingSettings(AsyncCallback callback) {
 		String url = URL.encode(JSON_URL2);
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -93,7 +95,8 @@ public class ClosingsApp implements EntryPoint {
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
 						GWT.log("good result " + response.getStatusText());
-						JsArray<ClosingSettings> records = JsonUtils.<JsArray<ClosingSettings>>safeEval(response.getText());
+						JsArray<ClosingSettings> records = JsonUtils
+								.<JsArray<ClosingSettings>>safeEval(response.getText());
 						ClosingSettings closingSettings = records.get(0);
 						displayMessage(response.getText());
 						callback.onSuccess(closingSettings);
@@ -101,7 +104,7 @@ public class ClosingsApp implements EntryPoint {
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
 						callback.onFailure(new Exception(response.getStatusText()));
-						
+
 					}
 				}
 			});
@@ -116,37 +119,13 @@ public class ClosingsApp implements EntryPoint {
 	public ClickHandler searchClosingsHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("search handler");
-			ClosingIndexPanel closingsIndexPanel = new ClosingIndexPanel();
+			ClosingIndexPanel closingsIndexPanel = new ClosingIndexPanel(ClosingsApp.this);
 			RootPanel.get("closingsMain").clear();
 			RootPanel.get("closingsMain").add(closingsIndexPanel);
 		}
 	};
 
-
-
 	Button settingButton = new Button("Settings");
-
-	AsyncCallback newClosingCallback = new AsyncCallback() {
-		public void onFailure(Throwable throwable) {
-		}
-
-		public void onSuccess(Object response) {
-			GWT.log("newClosingCallback.onSuccess");
-			ClosingSettings closingSettings = (ClosingSettings) response;
-			CashPanel openCashPanel = new CashPanel();
-			CashPanel closeCashPanel = new CashPanel();
-			SalesPanel salesPanel = new SalesPanel(closingSettings);
-			IncomePanel incomePanel = new IncomePanel(closingSettings);
-			Button saveButton = new Button();
-			ClosingPanel closingPanel = new ClosingPanel(ClosingsApp.this,closingSettings, openCashPanel, closeCashPanel, salesPanel,
-					incomePanel, saveButton);
-			openCashPanel.setClosingPanel(closingPanel);
-			closeCashPanel.setClosingPanel(closingPanel);
-			RootPanel.get("closingsMain").clear();
-			RootPanel.get("closingsMain").add(closingPanel);
-
-		}
-	};
 
 	AsyncCallback openSettingCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
@@ -155,7 +134,7 @@ public class ClosingsApp implements EntryPoint {
 		public void onSuccess(Object response) {
 			GWT.log("openSettingCallback.onSuccess");
 			ClosingSettings closingSettings = (ClosingSettings) response;
-			ClosingSettingsPanel csp = new ClosingSettingsPanel(ClosingsApp.this,closingSettings);
+			ClosingSettingsPanel csp = new ClosingSettingsPanel(ClosingsApp.this, closingSettings);
 
 			RootPanel.get("closingsMain").clear();
 			RootPanel.get("closingsMain").add(csp);
@@ -170,36 +149,32 @@ public class ClosingsApp implements EntryPoint {
 		}
 	};
 
-		Button locationsButton = new Button("Locations");
+	Button locationsButton = new Button("Locations");
 
 	public ClickHandler locationsHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			// new closing panel
 			// how to swap out the panel?
-			//fetchClosingSettings(newClosingCallback);
+			// fetchClosingSettings(newClosingCallback);
 
 		}
 	};
-	
-	
+
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
 		initSettings();
-	
 
-		
 		RootPanel.get("messagesPanel").add(messagesPanel);
-		//RootPanel.get("closingsNav").add(createClosingButton);
-		createClosingButton.addClickHandler(createNewClosingHandler);
+		// RootPanel.get("closingsNav").add(createClosingButton);
+
 		RootPanel.get("closingsNav").add(settingButton);
 		searchClosingsButton.addClickHandler(searchClosingsHandler);
 		RootPanel.get("closingsNav").add(searchClosingsButton);
-				RootPanel.get("closingsNav").add(locationsButton);
-		
-		settingButton.addClickHandler(settingHandler);
+		RootPanel.get("closingsNav").add(locationsButton);
 
+		settingButton.addClickHandler(settingHandler);
 
 	}
 
