@@ -15,10 +15,12 @@ function getClosingSettingTableName($wpdb)
 {
     return $wpdb->prefix . 'forgebiz_closing_settings';
 }
+
 function getClosingTableName($wpdb)
 {
     return $wpdb->prefix . 'forgebiz_closing';
 }
+
 function getLocationTableName($wpdb)
 {
     return $wpdb->prefix . 'forgebiz_location';
@@ -101,7 +103,7 @@ function fbc_install()
     require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
     
-   $table_name = getClosingSettingTableName($wpdb);
+    $table_name = getClosingSettingTableName($wpdb);
     
     $label_sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -150,7 +152,7 @@ function fbc_install()
 	) $charset_collate;";
     
     dbDelta($label_sql);
-
+    
     $table_name = getLocationTableName();
     
     $location_sql = "CREATE TABLE $table_name (
@@ -217,13 +219,12 @@ function fbc_install_data()
     
     ));
     
-    $table_name = getLocationTableName($wpdb);	
+    $table_name = getLocationTableName($wpdb);
     $wpdb->insert($table_name, array(
         
         'location_name' => 'Register #1'
     
-    ));	
-
+    ));
 }
 
 register_activation_hook(__FILE__, 'fbc_install');
@@ -255,10 +256,10 @@ class gwtApp
         // $this->api_route = '^api/weather/(.*)/?'; // Matches /api/weather/{position}
         $this->api_route = '^api/forgebiz-closings/(.*)/?'; // Matches /api/weather/{position}
         $this->base_href = '/' . basename(dirname(__FILE__)) . '/'; // Matches /wordpress-angular-plugin/
-                                                                        
+                                                                    
         // echo $this->base_href;
-                                                                        // die;
-                                                                        // /forgebiz-closings/
+                                                                    // die;
+                                                                    // /forgebiz-closings/
         
         add_filter('do_parse_request', array(
             $this,
@@ -357,7 +358,6 @@ class gwtApp
      */
     public function intercept_wp_router($continue, WP $wp, $extra_query_vars)
     {
-
         
         // Conditions for url path
         $url_match = (substr($_SERVER['REQUEST_URI'], 0, strlen($this->base_href)) === $this->base_href);
@@ -405,16 +405,16 @@ add_action('rest_api_init', function () {
             return current_user_can('edit_others_posts');
         }
     ));
-	
-	    register_rest_route('forgebiz-closings/v1', '/closing/(?P<id>\d+)', array(
+    
+    register_rest_route('forgebiz-closings/v1', '/closing/(?P<id>\d+)', array(
         'methods' => 'POST',
         'callback' => 'save_closing',
         'permission_callback' => function () {
             return current_user_can('edit_others_posts');
         }
     ));
-	
-	    register_rest_route('forgebiz-closings/v1', '/location/(?P<id>\d+)', array(
+    
+    register_rest_route('forgebiz-closings/v1', '/location/(?P<id>\d+)', array(
         'methods' => 'POST',
         'callback' => 'save_location',
         'permission_callback' => function () {
@@ -427,23 +427,17 @@ add_action('rest_api_init', function () {
         'permission_callback' => function () {
             return current_user_can('edit_others_posts');
         }
-    ));	
-	
-	
+    ));
 });
 
-	
-		
-			function save_location($request)
+function save_location($request)
 {
-    
-
     $data = json_decode(file_get_contents("php://input"));
     
     global $wpdb;
-
-    $table_name = getLocationTableName($wpdb);	
-
+    
+    $table_name = getLocationTableName($wpdb);
+    
     $result = $wpdb->update($table_name, array(
         'name' => $request['name'],
         'notification_email_addresses' => $request['notification_email_addresses']
@@ -451,46 +445,39 @@ add_action('rest_api_init', function () {
     ), array(
         'ID' => $request['id']
     ), array(
-
+        
         '%s',
         '%s'
-
     
     ), array(
         '%d'
     ));
     
-    //    echo $wpdb->last_error;
+    // echo $wpdb->last_error;
     // die();
     
     if (false === $result) {
-
-        $data =  $wpdb->last_error;
-     
+        
+        $data = $wpdb->last_error;
     }
     
     $debug = var_export($wpdb->last_query, true);
     
-   # if ($wpdb->last_error) {
-   #     die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
-   # }
+    // if ($wpdb->last_error) {
+    // die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
+    // }
     
     return new WP_REST_Response($debug, 200);
-    
-
 }
 
-
-	function save_closing($request)
+function save_closing($request)
 {
-    
-
     $data = json_decode(file_get_contents("php://input"));
     
     global $wpdb;
-
+    
     $table_name = getClosingTableName($wpdb);
-
+    
     $result = $wpdb->update($table_name, array(
         'sales_1' => $request['sales_1'],
         'sales_2' => $request['sales_2'],
@@ -514,7 +501,7 @@ add_action('rest_api_init', function () {
     ), array(
         'ID' => $request['id']
     ), array(
-
+        
         '%d',
         '%d',
         '%d',
@@ -533,34 +520,28 @@ add_action('rest_api_init', function () {
         '%d',
         '%d',
         '%d',
-        '%d',
-
+        '%d'
     
     ), array(
         '%d'
     ));
     
-    //    echo $wpdb->last_error;
+    // echo $wpdb->last_error;
     // die();
     
     if (false === $result) {
-
-        $data =  $wpdb->last_error;
-     
+        
+        $data = $wpdb->last_error;
     }
     
     $debug = var_export($wpdb->last_query, true);
     
-   # if ($wpdb->last_error) {
-   #     die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
-   # }
+    // if ($wpdb->last_error) {
+    // die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
+    // }
     
     return new WP_REST_Response($debug, 200);
-    
-
 }
-
-
 
 function save_closing_settings($request)
 {
@@ -619,26 +600,6 @@ function save_closing_settings($request)
     ), array(
         'ID' => $request['id']
     ), array(
-
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
         
         '%d',
         '%d',
@@ -659,104 +620,96 @@ function save_closing_settings($request)
         '%s',
         '%s',
         '%s',
+        
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s'
     
     ), array(
         '%d'
     ));
     
-    //    echo $wpdb->last_error;
+    // echo $wpdb->last_error;
     // die();
     
     if (false === $result) {
-
-        $data =  $wpdb->last_error;
-     
+        
+        $data = $wpdb->last_error;
     }
     
     $debug = var_export($wpdb->last_query, true);
     
-   # if ($wpdb->last_error) {
-   #     die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
-   # }
+    // if ($wpdb->last_error) {
+    // die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
+    // }
     
     return new WP_REST_Response($debug, 200);
-    
-
 }
 
-	
-	function location_search($request)
+function location_search($request)
 {
     global $wpdb;
-	
-
+    
     $table_name = getLocationTableName($wpdb);
     
     $query = "
     SELECT $table_name.* 
     FROM $table_name
  ";
-	
-
-
-	
+    
     $query_results = $wpdb->get_results($query, OBJECT);
-
     
     return new WP_REST_Response($query_results, 200);
 }
 
-
 function search_closings($request)
 {
     global $wpdb;
-	
-	/*
-			if (startDate) {
-				
-				ge("closingDate",startDate)
-				
-			}
-			if (endDate) {
 
-				le("closingDate",endDate)
-				
-			}
-			*/
     $table_name = getClosingTableName($wpdb);
     
     $query = "
     SELECT $table_name.* 
     FROM $table_name
  ";
-	
-
-
-$startDate = $_GET['start_date'];
-
-if ($startDate) {
-    $sql[] = " closing_date >= '$startDate' ";
-}
-	
-$endDate = $_GET['end_date'];
-if ($endDate) {
-    $sql[] = " closing_date <= '$endDate' ";
-}
-
-$location_id = $_GET['location_id'];
-if ($endDate) {
-    $sql[] = " location_id = 'location_id' ";
-}
-	
-	
-if (!empty($sql)) {
-    $query .= ' WHERE ' . implode(' AND ', $sql);
-}
-	
-
-	
+    
+    $startDate = $_GET['start_date'];
+    
+    if ($startDate) {
+        $sql[] = " closing_date >= '$startDate' ";
+    }
+    
+    $endDate = $_GET['end_date'];
+    if ($endDate) {
+        $sql[] = " closing_date <= '$endDate' ";
+    }
+    
+    $location_id = $_GET['location_id'];
+    if ($endDate) {
+        $sql[] = " location_id = 'location_id' ";
+    }
+    
+    if (! empty($sql)) {
+        $query .= ' WHERE ' . implode(' AND ', $sql);
+    }
+    
     $query_results = $wpdb->get_results($query, OBJECT);
-
     
     $data = array(
         "querystr" => $querystr
@@ -769,27 +722,27 @@ if (!empty($sql)) {
 function get_closing_settings($request)
 {
     global $wpdb;
-    //| wp_forgebiz_closing_settings
-    $table_name = $wpdb->prefix . 'forgebiz_closing_settings';
+    // | wp_forgebiz_closing_settings
+    $table_name = getClosingSettingTableName($wpdb);
     
     $querystr = "
     SELECT $table_name.* 
     FROM $table_name
  ";
-    //should only ever be one settings object
-    //if there are more, we will have to figure out what we are doing and pass the id
-    //    WHERE $table_name.ID = ${request['id']}
+    // should only ever be one settings object
+    // if there are more, we will have to figure out what we are doing and pass the id
+    // WHERE $table_name.ID = ${request['id']}
     
-    $label_result = $wpdb->get_results($querystr, OBJECT);
+    $results = $wpdb->get_results($querystr, OBJECT);
     
     $data = array(
         "querystr" => $querystr
     );
     
-     //echo $wpdb->last_error;
+    // echo $wpdb->last_error;
     // die();
     
-    return new WP_REST_Response($label_result, 200);
+    return new WP_REST_Response($results, 200);
 }
 	
 	
