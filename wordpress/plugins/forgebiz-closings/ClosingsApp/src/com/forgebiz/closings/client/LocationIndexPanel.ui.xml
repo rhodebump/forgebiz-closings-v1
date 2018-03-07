@@ -5,13 +5,6 @@
 
 
 
-   
-
-
-
-
-    		
-      		<g:Button ui:field="searchButton">Search</g:Button>
     
       		<g:Button ui:field="createLocationButton">Create Location</g:Button>
     

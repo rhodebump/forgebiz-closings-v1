@@ -400,7 +400,7 @@ add_action('rest_api_init', function () {
     
     register_rest_route('forgebiz-closings/v1', '/closing/search', array(
         'methods' => 'GET',
-        'callback' => 'search_closings',
+        'callback' => 'closings_search',
         'permission_callback' => function () {
             return current_user_can('edit_others_posts');
         }
@@ -416,7 +416,7 @@ add_action('rest_api_init', function () {
     
     register_rest_route('forgebiz-closings/v1', '/location/(?P<id>\d+)', array(
         'methods' => 'POST',
-        'callback' => 'save_location',
+        'callback' => 'location_save',
         'permission_callback' => function () {
             return current_user_can('edit_others_posts');
         }
@@ -430,7 +430,7 @@ add_action('rest_api_init', function () {
     ));
 });
 
-function save_location($request)
+    function location_save($request)
 {
     $data = json_decode(file_get_contents("php://input"));
     
@@ -678,7 +678,7 @@ function location_search($request)
     return new WP_REST_Response($query_results, 200);
 }
 
-function search_closings($request)
+function closings_search($request)
 {
     global $wpdb;
 

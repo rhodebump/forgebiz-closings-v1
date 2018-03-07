@@ -63,7 +63,7 @@ public class ClosingsApp implements EntryPoint {
 
 	public static final String JSON_BASE = "http://localhost:8080/wp-json/forgebiz-closings/v1";
 
-	private static final String JSON_URL2 = JSON_BASE + "/closing-settings/1";
+	
 
 	private static String NONCE;
 
@@ -80,6 +80,7 @@ public class ClosingsApp implements EntryPoint {
 	}
 
 	public void fetchClosingSettings(AsyncCallback callback) {
+		String JSON_URL2 = JSON_BASE + "/closing-settings/1";
 		String url = URL.encode(JSON_URL2);
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -114,6 +115,43 @@ public class ClosingsApp implements EntryPoint {
 
 	}
 
+	public void fetchLocations(AsyncCallback callback) {
+		String JSON_URL2 = JSON_BASE + "/location/search";
+		String url = URL.encode(JSON_URL2);
+
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		// config.headers['X-WP-Nonce'] = myLocalized.nonce;
+		setNonce(builder);
+
+		try {
+			builder.sendRequest(null, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					displayError("Couldn't retrieve JSON : " + JSON_URL2 + exception.getMessage());
+				}
+
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode()) {
+						GWT.log("good result " + response.getStatusText());
+						JsArray<Location> records = JsonUtils
+								.<JsArray<Location>>safeEval(response.getText());
+						//ClosingSettings closingSettings = records.get(0);
+						displayMessage(response.getText());
+						callback.onSuccess(records);
+
+					} else {
+						GWT.log("bad result " + response.getStatusCode());
+						callback.onFailure(new Exception(response.getStatusText()));
+
+					}
+				}
+			});
+		} catch (RequestException e) {
+			displayError("Couldn't retrieve JSON : " + e.getMessage());
+		}
+
+	}
+	
+	
 	Button searchClosingsButton = new Button("Closings");
 
 	public ClickHandler searchClosingsHandler = new ClickHandler() {

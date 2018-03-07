@@ -13,10 +13,14 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class ClosingPanel extends Composite {
@@ -39,10 +43,46 @@ public class ClosingPanel extends Composite {
 	DateBox closingDateBox = new DateBox();
 
 	ClosingsApp closingsApp = null;
+	
+	@UiField(provided = true)
+	ListBox locationListBox;
+	
+	
+	
+	/*
+	 *     ListBox lb = new ListBox();
+    lb.addItem("foo");
+    lb.addItem("bar");
+    lb.addItem("baz");
+    lb.addItem("toto");
+    lb.addItem("tintin");
 
+    // Make enough room for all five items (setting this value to 1 turns it
+    // into a drop-down list).
+    lb.setVisibleItemCount(5);
+	 */
+	AsyncCallback gotLocationsCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+		}
+
+		public void onSuccess(Object response) {
+			GWT.log("openSettingCallback.onSuccess");
+			
+			JsArray<Location> records =(JsArray<Location>) response;
+			for (int i = 0; i < records.length(); i++) {
+				Location location = records.get(i);
+
+				locationListBox.addItem(location.getLocationName(), new Integer(location.getId()).toString());
+				
+				
+			}
+
+		}
+	};
+	
 	public ClosingPanel(ClosingsApp closingsApp, ClosingSettings closingSettings, CashPanel openCashPanel,
 			CashPanel closeCashPanel, SalesPanel salesPanel, IncomePanel incomePanel, Button saveButton,
-			DateBox closingDateBox) {
+			DateBox closingDateBox, ListBox locationListBox) {
 		this.closingsApp = closingsApp;
 		this.closingSettings = closingSettings;
 		this.openCashPanel = openCashPanel;
@@ -53,6 +93,7 @@ public class ClosingPanel extends Composite {
 		this.saveButton.addClickHandler(this.saveHandler);
 		initWidget((Widget) binder.createAndBindUi(this));
 		GWT.log("closingpanel");
+		closingsApp.fetchLocations(gotLocationsCallback);
 
 	}
 

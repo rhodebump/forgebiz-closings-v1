@@ -5,7 +5,7 @@
   <g:HTMLPanel>
 
 
-   <g:Label ui:field="errorLabel"  />
+
    
 
      			<label>Start Date</label>
@@ -15,7 +15,7 @@
      			<label>End Date		</label>
                      <datepicker:DateBox ui:field="endDatePicker"/>
      	
-   location
+                 <g:ListBox ui:field="locationListBox"/>
 
 
       		<label><g:SimpleCheckBox ui:field="showDeleted"/><span>Show Deleted</span></label>

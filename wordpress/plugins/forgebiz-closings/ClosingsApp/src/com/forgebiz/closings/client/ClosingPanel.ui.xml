@@ -6,7 +6,7 @@
   <g:HTMLPanel>
 
                     <datepicker:DateBox ui:field="closingDateBox"/>
-    
+                        <g:ListBox ui:field="locationListBox"/>
     
 <table>
 <tr>

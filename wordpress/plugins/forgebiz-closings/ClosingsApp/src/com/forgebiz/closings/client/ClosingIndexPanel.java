@@ -1,6 +1,7 @@
 package com.forgebiz.closings.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
@@ -17,6 +18,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -39,8 +41,9 @@ public class ClosingIndexPanel extends Composite {
 			Button saveButton = new Button();
 
 			DateBox closingDateBox = new DateBox();
+			 ListBox locationListBox = new ListBox();
 			ClosingPanel closingPanel = new ClosingPanel(closingsApp,closingSettings, openCashPanel, closeCashPanel, salesPanel,
-					incomePanel, saveButton, closingDateBox);
+					incomePanel, saveButton, closingDateBox, locationListBox);
 			openCashPanel.setClosingPanel(closingPanel);
 			closeCashPanel.setClosingPanel(closingPanel);
 			RootPanel.get("closingsMain").clear();
@@ -53,8 +56,7 @@ public class ClosingIndexPanel extends Composite {
 	@UiField
 	ClosingsApp closingsApp;
 	
-	@UiField
-	Label errorLabel;
+
 
 	@UiField
 	DateBox startDatePicker = new DateBox();
@@ -62,6 +64,9 @@ public class ClosingIndexPanel extends Composite {
 	@UiField
 	DateBox endDatePicker = new DateBox();
 
+	@UiField(provided = true)
+	ListBox locationListBox;
+	
 	@UiField
 	Button searchButton = new Button("Search");
 	public ClickHandler createNewClosingHandler = new ClickHandler() {
@@ -72,17 +77,43 @@ public class ClosingIndexPanel extends Composite {
 
 		}
 	};
+	
+	AsyncCallback gotLocationsCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+		}
+
+		public void onSuccess(Object response) {
+			GWT.log("openSettingCallback.onSuccess");
+			
+			JsArray<Location> records =(JsArray<Location>) response;
+			for (int i = 0; i < records.length(); i++) {
+				Location location = records.get(i);
+
+				locationListBox.addItem(location.getLocationName(), new Integer(location.getId()).toString());
+				
+				
+			}
+
+		}
+	};
+	
+	
 	public ClickHandler searchHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("searchHandler.onClick");
-			final String url = URL.encode("http://localhost:8080/wp-json/forgebiz-closings/v1/closing/search");
+			
+			String url = URL.encode("http://localhost:8080/wp-json/forgebiz-closings/v1/closing/search");
+			url = url + "?location_id=" + locationListBox.getSelectedValue();
+			url = url + "&start_date=" + startDatePicker.getValue().toString();
+			url = url + "&end_date=" + endDatePicker.getValue().toString();
+			
 			GWT.log("url = " + url);
 			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 			ClosingsApp.setNonce(builder);
 			try {
 				builder.sendRequest(null, new RequestCallback() {
 					public void onError(Request request, Throwable exception) {
-						closingsApp.displayError("Couldn't retrieve JSON : " + url + exception.getMessage());
+						closingsApp.displayError("Couldn't retrieve JSON : "  + exception.getMessage());
 					}
 
 					public void onResponseReceived(Request request, Response response) {
@@ -92,7 +123,7 @@ public class ClosingIndexPanel extends Composite {
 							closingsApp.displayError(response.getText());
 						} else {
 							GWT.log("bad result " + response.getStatusCode());
-							closingsApp.displayError("Couldn't retrieve JSON (" + url + response.getStatusText() + ")");
+							closingsApp.displayError("Couldn't retrieve JSON ("  + response.getStatusText() + ")");
 						}
 					}
 				});
@@ -115,7 +146,7 @@ public class ClosingIndexPanel extends Composite {
 
 		createClosingButton.addClickHandler(this.createNewClosingHandler);
 
-		
+		closingsApp.fetchLocations(gotLocationsCallback);
 		
 	}
 
