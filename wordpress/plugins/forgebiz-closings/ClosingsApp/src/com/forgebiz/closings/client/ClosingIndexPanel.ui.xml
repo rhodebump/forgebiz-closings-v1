@@ -23,6 +23,7 @@
       		<g:Button ui:field="searchButton">Search</g:Button>
     
 
+<g:SimplePanel ui:field="resultsPanel"></g:SimplePanel>
     
       
           		  		

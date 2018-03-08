@@ -170,5 +170,20 @@ public final native void setSales1(double sales_1) /*-{
   public final native int getId()/*-{
 	return this.id;
 	}-*/;
+
+
+public final native String getOpenerName()/*-{
+	return this.opener_name;
+	}-*/;
+
+public final native String getCloserName()/*-{
+	return this.closer_name;
+	}-*/;
+
+
+public final native String getCloseDate()/*-{
+return this.close_date;
+}-*/;
+
 	
 }

@@ -26,38 +26,32 @@ public class LocationIndexPanel extends Composite {
 	Button searchButton;
 	@UiField
 	Button createLocationButton;
-	
+
 	AsyncCallback gotLocationsCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
 		}
 
 		public void onSuccess(Object response) {
 			GWT.log("openSettingCallback.onSuccess");
-			
-			JsArray<Location> records =(JsArray<Location>) response;
+
+			JsArray<Location> records = (JsArray<Location>) response;
 			for (int i = 0; i < records.length(); i++) {
 				Location location = records.get(i);
-
 
 			}
 
 		}
 	};
-	
-	
 
 	public ClickHandler createNewLocationHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			LocationPanel locationPanel = new LocationPanel(closingsApp);
-			
+
 		}
 	};
 
-
 	public LocationIndexPanel(ClosingsApp closingsApp) {
 		initWidget((Widget) binder.createAndBindUi(this));
-
-
 
 		createLocationButton.addClickHandler(this.createNewLocationHandler);
 		closingsApp.fetchLocations(gotLocationsCallback);
