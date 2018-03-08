@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.Composite;
 //import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimpleCheckBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -74,8 +75,10 @@ public class ClosingIndexPanel extends Composite {
 	@UiField
 	ClosingsApp closingsApp;
 
+
 	@UiField
-	SimplePanel resultsPanel;
+	SimpleCheckBox showDeletedCheckbox;
+	
 
 	@UiField
 	DateBox startDatePicker = new DateBox();
@@ -287,6 +290,9 @@ public class ClosingIndexPanel extends Composite {
 			url = url + "?location_id=" + locationListBox.getSelectedValue();
 			url = url + "&start_date=" + startDatePicker.getValue().toString();
 			url = url + "&end_date=" + endDatePicker.getValue().toString();
+			url = url + "&deleted=" + showDeletedCheckbox.getValue().toString();
+			
+
 
 			GWT.log("url = " + url);
 			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);

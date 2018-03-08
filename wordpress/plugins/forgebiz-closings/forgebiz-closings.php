@@ -704,6 +704,15 @@ function closings_search($request)
     if ($endDate) {
         $sql[] = " location_id = 'location_id' ";
     }
+    $deleted = $_GET['deleted'];
+    if ($deleted) {
+        //so need to show deleted and non-deleted, so let's not add a filter
+    } else {
+        $sql[] = " deleted = 0 ";
+    }
+    
+    
+    
     
     if (! empty($sql)) {
         $query .= ' WHERE ' . implode(' AND ', $sql);

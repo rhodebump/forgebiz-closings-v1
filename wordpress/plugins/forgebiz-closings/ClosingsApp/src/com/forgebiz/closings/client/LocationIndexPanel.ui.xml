@@ -1,4 +1,5 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:c="urn:import:com.google.gwt.user.cellview.client"
     xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
   <g:HTMLPanel>
@@ -8,7 +9,9 @@
     
       		<g:Button ui:field="createLocationButton">Create Location</g:Button>
     
-      
+              <c:CellTable
+            pageSize='15'
+            ui:field='cellTable' />
           		  		
       		
 </g:HTMLPanel>
