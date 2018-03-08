@@ -9,6 +9,7 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -47,7 +48,33 @@ import com.google.gwt.user.datepicker.client.DateBox;
 public class ClosingIndexPanel extends Composite {
 	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
 
+	
+
+	public ClickHandler createNewClosingHandler = new ClickHandler() {
+		public void onClick(ClickEvent event) {
+			// new closing panel
+			// how to swap out the panel?
+			closingsApp.fetchClosingSettings(newClosingCallback);
+
+		}
+	};
+	
+	
+	
+	//we need to create a closing first, 
 	AsyncCallback newClosingCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+		}
+
+		public void onSuccess(Object response) {
+			GWT.log("newClosingCallback.onSuccess");
+			Closing closing = (Closing) JavaScriptObject.createObject().cast();
+			ClosingPanel.saveClosing(closing, newClosingCallback2);
+
+		}
+	};
+	
+	AsyncCallback newClosingCallback2= new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
 		}
 
@@ -62,8 +89,9 @@ public class ClosingIndexPanel extends Composite {
 
 			DateBox closingDateBox = new DateBox();
 			ListBox locationListBox = new ListBox();
+			Closing closing  = null;
 			ClosingPanel closingPanel = new ClosingPanel(closingsApp, closingSettings, openCashPanel, closeCashPanel,
-					salesPanel, incomePanel, saveButton, closingDateBox, locationListBox);
+					salesPanel, incomePanel, saveButton, closingDateBox, locationListBox, closing);
 			openCashPanel.setClosingPanel(closingPanel);
 			closeCashPanel.setClosingPanel(closingPanel);
 			RootPanel.get("closingsMain").clear();
@@ -71,6 +99,7 @@ public class ClosingIndexPanel extends Composite {
 
 		}
 	};
+	
 
 	@UiField
 	ClosingsApp closingsApp;
@@ -91,14 +120,7 @@ public class ClosingIndexPanel extends Composite {
 
 	@UiField
 	Button searchButton = new Button("Search");
-	public ClickHandler createNewClosingHandler = new ClickHandler() {
-		public void onClick(ClickEvent event) {
-			// new closing panel
-			// how to swap out the panel?
-			closingsApp.fetchClosingSettings(newClosingCallback);
 
-		}
-	};
 
 	AsyncCallback gotLocationsCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {

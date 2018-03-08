@@ -82,7 +82,7 @@ public class ClosingPanel extends Composite {
 	
 	public ClosingPanel(ClosingsApp closingsApp, ClosingSettings closingSettings, CashPanel openCashPanel,
 			CashPanel closeCashPanel, SalesPanel salesPanel, IncomePanel incomePanel, Button saveButton,
-			DateBox closingDateBox, ListBox locationListBox) {
+			DateBox closingDateBox, ListBox locationListBox, Closing closing) {
 		this.closingsApp = closingsApp;
 		this.closingSettings = closingSettings;
 		this.openCashPanel = openCashPanel;
@@ -141,13 +141,13 @@ public class ClosingPanel extends Composite {
 			closing.setSales8(ClosingsApp.getDoubleValue(salesPanel.income8TextBox));
 			closing.setSales9(ClosingsApp.getDoubleValue(salesPanel.income9TextBox));
 
-			saveClosing(closing);
+			saveClosing(closing,null);
 		}
 	};
 
-	private void saveClosing(Closing closing) {
+	public static void saveClosing(Closing closing,AsyncCallback callback) {
 		String url = URL
-				.encode("http://localhost:8080//wp-json/forgebiz-closings/v1/closing/" + closingSettings.getId());
+				.encode("http://localhost:8080//wp-json/forgebiz-closings/v1/closing/" + closing.getId());
 		GWT.log("url = " + url);
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
@@ -156,30 +156,34 @@ public class ClosingPanel extends Composite {
 		GWT.log(" JsonUtils.stringify1");
 		String postData = JsonUtils.stringify(closing);
 		GWT.log(" JsonUtils.stringify2");
-		closingsApp.displayMessage("postData: " + postData);
+		//closingsApp.displayMessage("postData: " + postData);
 		GWT.log("postData:" + postData);
 		try {
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
-					closingsApp.displayError(
-							"Couldn't retrieve JSON : http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings"
-									+ exception.getMessage());
+					//closingsApp.displayError(
+					//		"Couldn't retrieve JSON : http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings"
+					//				+ exception.getMessage());
 				}
 
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
 						GWT.log("good result " + response.getStatusText());
-						closingsApp.displayMessage(response.getText());
+						//closingsApp.displayMessage(response.getText());
+						callback.onSuccess(response);
+						
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
-						closingsApp.displayMessage(
-								"Couldn't retrieve JSON (http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings"
-										+ response.getStatusText() + ")");
+						callback.onFailure(null);
+						
+						//closingsApp.displayMessage(
+							//	"Couldn't retrieve JSON (http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings"
+							//			+ response.getStatusText() + ")");
 					}
 				}
 			});
 		} catch (RequestException e) {
-			closingsApp.displayError("Couldn't retrieve JSON : " + e.getMessage());
+			//closingsApp.displayError("Couldn't retrieve JSON : " + e.getMessage());
 		}
 	}
 
