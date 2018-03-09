@@ -185,5 +185,24 @@ public final native String getCloseDate()/*-{
 return this.close_date;
 }-*/;
 
+
+  public final native void setDeleted(boolean deleted) /*-{
+  this.deleted = deleted;
+  }-*/;
+
+public final native boolean getDeleted()/*-{
+return this.deleted;
+}-*/;
+
+
+  public final native void setSubmitted(boolean submitted) /*-{
+  this.submitted = submitted;
+  }-*/;
+
+public final native boolean getSubmitted()/*-{
+return this.submitted;
+}-*/;
+
+  
 	
 }

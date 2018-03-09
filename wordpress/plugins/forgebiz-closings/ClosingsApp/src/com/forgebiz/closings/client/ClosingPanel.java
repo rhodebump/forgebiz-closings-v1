@@ -24,10 +24,33 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class ClosingPanel extends Composite {
+	
+	/*
+	 <g:Button  ui:field="saveButton">Save</g:Button>
+ <g:Button  ui:field="submitButton">Submit</g:Button>
+ 
+ <g:Button  ui:field="deleteButton">Delete</g:Button>
+ */
+ 
 	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
 
 	@UiField(provided = true)
 	Button saveButton;
+	
+	@UiField(provided = true)
+	Button submitButton;
+
+		@UiField(provided = true)
+	Button deleteButton;
+	
+	@UiField
+	TextBox openerNameTextBox;
+	@UiField
+	TextBox closerNameTextBox;	
+	
+	@UiField	
+	TextArea notesTextArea;
+	
 
 	private ClosingSettings closingSettings = null;
 	@UiField(provided = true)
@@ -91,6 +114,10 @@ public class ClosingPanel extends Composite {
 		this.incomePanel = incomePanel;
 		this.saveButton = saveButton;
 		this.saveButton.addClickHandler(this.saveHandler);
+		this.submitButton.addClickHandler(submitHandler);
+		this.deleteButton.addClickHandler(deleteHandler);		
+		
+		
 		initWidget((Widget) binder.createAndBindUi(this));
 		GWT.log("closingpanel");
 		closingsApp.fetchLocations(gotLocationsCallback);
@@ -108,19 +135,114 @@ public class ClosingPanel extends Composite {
 		double totalCash = closeCashTotal - openCashTotal;
 		GWT.log("totalCash " + totalCash);
 
-		this.incomePanel.setCashTotalCash(totalCash);
+		
+		//total a is sales
+		//total b is income
+		
+		//this.incomePanel.setCashTotalCash(totalCash);
+		incomePanel.calculateAll();
+		//    closing.totalB = closing.incomeTotal;
+		double income_total = incomePanel.getTotal();
+		
+		salesPanel.calculateAll();
+		double sales_total = salesPanel.getTotal();
+		
+		double difference = income_total - sales_total;
+		closing.setDifference(difference);
+		
+		/*
+		
+    calculateOpenTotals(closing);
+    calculateClosingTotals(closing);
+    calculateIncomeTotals(closing);
+    calculateSalesTotals(closing);
+    calculateDiffTotal(closing);
+    
+    function calculateDiffTotal(closing) {
+    console.log("calculateDiffTotal");
+    var totala, totalb, total, difference;
+    totala = parseFloat(closing.totalA);
+    console.log("calculateDiffTotal totala=" + totala);
+    totalb = parseFloat(closing.totalB);
+    console.log("calculateDiffTotal totalB=" + totalb);
+    total = totala - totalb;
+    console.log("calculateDiffTotal total=" + total);
+    difference = total.toFixed(2);
+    console.log("calculateDiffTotal difference=" + difference);
+    closing.difference = difference;
+}
+
+
+
+    */
+    
 	}
 
 	@UiTemplate("ClosingPanel.ui.xml")
 	static abstract interface MyBinder extends UiBinder<Widget, ClosingPanel> {
 	}
-	
+
+		
+	public ClickHandler submitHandler = new ClickHandler() {
+		public void onClick(ClickEvent event) {
+			closing.setSubmitted(true);
+			saveClosing(closing,null);
+			
+		}
+	}
+			
+		public ClickHandler deleteHandler = new ClickHandler() {
+		public void onClick(ClickEvent event) {
+			closing.setDeleted(true);
+			saveClosing(closing,null);
+			
+		}
+	}
 	
 
 	public ClickHandler saveHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("saveHandler.onClick");
-			Closing closing = (Closing) JavaScriptObject.createObject().cast();
+			
+			/*
+			
+
+		close_total decimal(15,2) NOT NULL,
+		closing_date  datetime NOT NULL,
+		date_created  datetime NOT NULL,
+
+		difference decimal(15,2) NOT NULL,
+		gross_sales decimal(15,2) NOT NULL,
+		
+		income_cash_store decimal(15,2) NOT NULL,
+		income_total decimal(15,2) NOT NULL,
+		last_update datetime default NULL,
+		location_id bigint(20) NOT NULL,
+
+
+		open_total decimal(15,2) NOT NULL,
+		sub_total_sales decimal(15,2) NOT NULL,
+		totala decimal(15,2) NOT NULL,
+		totalb decimal(15,2) NOT NULL,
+		total_tips decimal(15,2) NOT NULL,
+		*/
+		
+			closing.setCloseTotal();
+			closing.setClosingDate();
+			closing.setDifference();
+			closing.setGrossSales();
+			closing.setIncomeCash();
+			closing.setIncomeTotal();
+			closing.setLocationId();
+			closing.setLastUpdate();
+			closing.setOpenTotal();
+			closing.setTotalSales();
+		
+			
+			closing.setTotalA();
+			closing.setTotalB();
+			
+			//Closing closing = (Closing) JavaScriptObject.createObject().cast();
 			closing.setIncome1(ClosingsApp.getDoubleValue(incomePanel.income1TextBox));
 			closing.setIncome2(ClosingsApp.getDoubleValue(incomePanel.income2TextBox));
 			closing.setIncome3(ClosingsApp.getDoubleValue(incomePanel.income3TextBox));
@@ -141,9 +263,65 @@ public class ClosingPanel extends Composite {
 			closing.setSales8(ClosingsApp.getDoubleValue(salesPanel.income8TextBox));
 			closing.setSales9(ClosingsApp.getDoubleValue(salesPanel.income9TextBox));
 
+			
+			/*
+					close_1_cent decimal(15,2) NOT NULL,
+		close_5_cents decimal(15,2) NOT NULL,	
+		close_10_cents decimal(15,2) NOT NULL,	
+		close_25_cents decimal(15,2) NOT NULL,		
+		close_1_dollar decimal(15,2) NOT NULL,	
+		close_5_dollars decimal(15,2) NOT NULL,			
+		close_20_dollars decimal(15,2) NOT NULL,					
+		close_50_dollars decimal(15,2) NOT NULL,					
+		close_100_dollars decimal(15,2) NOT NULL,
+		
+				open_100_dollars decimal(15,2) NOT NULL,
+		open_10_cents decimal(15,2) NOT NULL,
+		open_10_dollars decimal(15,2) NOT NULL,
+		open_1_cent decimal(15,2) NOT NULL,
+		open_1_dollar decimal(15,2) NOT NULL,
+		open_20_dollars decimal(15,2) NOT NULL,
+		open_25_cents decimal(15,2) NOT NULL,
+		open_50_dollars decimal(15,2) NOT NULL,
+		open_5_cents decimal(15,2) NOT NULL,
+		open_5_dollars decimal(15,2) NOT NULL,
+		
+		
+		*/
+		//openCashPanel
+		
+		closing.setOpen1Cent(ClosingsApp.getDoubleValue(openCashPanel.income9TextBox));
+		closing.setOpen5Cents(ClosingsApp.getDoubleValue(openCashPanel.income9TextBox));
+		closing.setOpen25Cents(ClosingsApp.getDoubleValue(openCashPanel.income9TextBox));
+		closing.setOpen1Dollar(ClosingsApp.getDoubleValue(openCashPanel.income9TextBox));
+		closing.setOpen5Dollars(ClosingsApp.getDoubleValue(openCashPanel.income9TextBox));
+		closing.setOpen10Dollars(ClosingsApp.getDoubleValue(openCashPanel.income9TextBox));
+		closing.setOpen20Dollars(ClosingsApp.getDoubleValue(openCashPanel.income9TextBox));
+		closing.setOpen50Dollars(ClosingsApp.getDoubleValue(openCashPanel.income9TextBox));
+		closing.setOpen100Dollars(ClosingsApp.getDoubleValue(openCashPanel.income9TextBox));
+
+		closing.setClose1Cent(ClosingsApp.getDoubleValue(closeCashPanel.income9TextBox));
+		closing.setClose5Cents(ClosingsApp.getDoubleValue(closeCashPanel.income9TextBox));
+		closing.setClose25Cents(ClosingsApp.getDoubleValue(closeCashPanel.income9TextBox));
+		closing.setClose1Dollar(ClosingsApp.getDoubleValue(closeCashPanel.income9TextBox));
+		closing.setClose5Dollars(ClosingsApp.getDoubleValue(closeCashPanel.income9TextBox));
+		closing.setClose10Dollars(ClosingsApp.getDoubleValue(closeCashPanel.income9TextBox));
+		closing.setClose20Dollars(ClosingsApp.getDoubleValue(closeCashPanel.income9TextBox));
+		closing.setClose50Dollars(ClosingsApp.getDoubleValue(closeCashPanel.income9TextBox));
+		closing.setClose100Dollars(ClosingsApp.getDoubleValue(closeCashPanel.income9TextBox));
+		
+		
+		//	saveClosing(openCashPanel);
+		//	saveClosing(closeCashPanel);			
+		
+			closing.setOpenerName(openerNameTextBox.getValue());
+			closing.setCloserName(closerNameTextBox.getValue());			
+			closing.setNotes(notesTextArea.getValue());
+			
 			saveClosing(closing,null);
 		}
 	};
+	
 
 	public static void saveClosing(Closing closing,AsyncCallback callback) {
 		String url = URL

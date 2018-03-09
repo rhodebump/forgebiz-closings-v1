@@ -44,43 +44,75 @@ import com.google.gwt.user.datepicker.client.DateBox;
 //import com.google.gwt.view.client.ProvidesKey;
 //import com.google.gwt.view.client.SelectionModel;
 //import com.google.gwt.view.client.SingleSelectionModel;
+import com.ndg.gwt.*;
 
 public class ClosingIndexPanel extends Composite {
 	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
 
-	
+	AsyncCallback gotSettingsCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+		}
 
+		public void onSuccess(Object response) {
+			Closing closing = (Closing) JavaScriptObject.createObject().cast();
+				ClosingSettings closingSettings = (ClosingSettings) response;
+			editClosing( closing,  closingSettings);
+
+
+		}
+	};
+	
+	
+/*
+	
+	public void createClosing() {
+    SomeServiceAsync someService = GWT.create(SomeService.class);
+    ParallelCallback fooCallback = new ParallelCallback();
+    ParallelCallback barCallback = new ParallelCallback();
+    ParentCallback parent = new ParentCallback(fooCallback, barCallback) {
+        public void handleSuccess() {
+            doSomething(getCallbackData(1), getCallbackData(2));
+        }
+    };
+    someService.foo(fooCallback);
+    someService.bar(barCallback);
+}
+*/
+
+/*
+	public void createClosing() {
+   // SomeServiceAsync someService = GWT.create(SomeService.class);
+    ParallelCallback fooCallback = new ParallelCallback();
+    ParallelCallback barCallback = new ParallelCallback();
+    ParentCallback parent = new ParentCallback(fooCallback, barCallback) {
+        public void handleSuccess() {
+            editClosing(getCallbackData(1), getCallbackData(2));
+        }
+    };
+    //someService.foo(fooCallback);
+    Closing closing = (Closing) JavaScriptObject.createObject().cast();
+	ClosingPanel.saveClosing(closing, fooCallback);
+		
+	ClosingsApp.fetchClosingSettings(barCallback);
+    //someService.bar(barCallback);
+}
+
+*/
 	public ClickHandler createNewClosingHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			// new closing panel
 			// how to swap out the panel?
-			closingsApp.fetchClosingSettings(newClosingCallback);
-
+			//closingsApp.fetchClosingSettings(newClosingCallback);
+			//createClosing();
+			//Closing closing = (Closing) JavaScriptObject.createObject().cast();
+				ClosingsApp.fetchClosingSettings(gotSettingsCallback);
 		}
 	};
 	
 	
-	
-	//we need to create a closing first, 
-	AsyncCallback newClosingCallback = new AsyncCallback() {
-		public void onFailure(Throwable throwable) {
-		}
 
-		public void onSuccess(Object response) {
-			GWT.log("newClosingCallback.onSuccess");
-			Closing closing = (Closing) JavaScriptObject.createObject().cast();
-			ClosingPanel.saveClosing(closing, newClosingCallback2);
-
-		}
-	};
-	
-	AsyncCallback newClosingCallback2= new AsyncCallback() {
-		public void onFailure(Throwable throwable) {
-		}
-
-		public void onSuccess(Object response) {
-			GWT.log("newClosingCallback.onSuccess");
-			ClosingSettings closingSettings = (ClosingSettings) response;
+	private void editClosing(Closing closing, ClosingSettings closingSettings) {
+					//ClosingSettings closingSettings = (ClosingSettings) response;
 			CashPanel openCashPanel = new CashPanel();
 			CashPanel closeCashPanel = new CashPanel();
 			SalesPanel salesPanel = new SalesPanel(closingSettings);
@@ -89,7 +121,7 @@ public class ClosingIndexPanel extends Composite {
 
 			DateBox closingDateBox = new DateBox();
 			ListBox locationListBox = new ListBox();
-			Closing closing  = null;
+			//Closing closing  = null;
 			ClosingPanel closingPanel = new ClosingPanel(closingsApp, closingSettings, openCashPanel, closeCashPanel,
 					salesPanel, incomePanel, saveButton, closingDateBox, locationListBox, closing);
 			openCashPanel.setClosingPanel(closingPanel);
@@ -97,10 +129,8 @@ public class ClosingIndexPanel extends Composite {
 			RootPanel.get("closingsMain").clear();
 			RootPanel.get("closingsMain").add(closingPanel);
 
-		}
-	};
-	
 
+	}
 	@UiField
 	ClosingsApp closingsApp;
 

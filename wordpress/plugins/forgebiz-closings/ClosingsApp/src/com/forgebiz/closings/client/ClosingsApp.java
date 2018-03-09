@@ -22,6 +22,16 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ClosingsApp implements EntryPoint {
 
+	
+	private static ClosingApp closingApp = null;
+	
+	
+	public static ClosingApp getInstance() {
+
+		return closingApp;
+		
+	}
+	
 	// final Label errorLabel = new Label();
 
 	public static int getIntValue(TextBox textBox) {
@@ -42,6 +52,8 @@ public class ClosingsApp implements EntryPoint {
 		return 0.0D;
 	}
 
+	private SimplePanel closingsMain  = new SimplePanel();
+	
 	private VerticalPanel messagesPanel = new VerticalPanel();
 
 	public void displayMessage(String error) {
@@ -79,7 +91,7 @@ public class ClosingsApp implements EntryPoint {
 		rb.setHeader("X-WP-Nonce", NONCE);
 	}
 
-	public void fetchClosingSettings(AsyncCallback callback) {
+	public static void fetchClosingSettings(AsyncCallback callback) {
 		String JSON_URL2 = JSON_BASE + "/closing-settings/1";
 		String url = URL.encode(JSON_URL2);
 
@@ -90,7 +102,7 @@ public class ClosingsApp implements EntryPoint {
 		try {
 			builder.sendRequest(null, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
-					displayError("Couldn't retrieve JSON : " + JSON_URL2 + exception.getMessage());
+					//displayError("Couldn't retrieve JSON : " + JSON_URL2 + exception.getMessage());
 				}
 
 				public void onResponseReceived(Request request, Response response) {
@@ -99,18 +111,19 @@ public class ClosingsApp implements EntryPoint {
 						JsArray<ClosingSettings> records = JsonUtils
 								.<JsArray<ClosingSettings>>safeEval(response.getText());
 						ClosingSettings closingSettings = records.get(0);
-						displayMessage(response.getText());
+						//displayMessage(response.getText());
 						callback.onSuccess(closingSettings);
 
 					} else {
-						GWT.log("bad result " + response.getStatusCode());
+						//GWT.log("bad result " + response.getStatusCode());
 						callback.onFailure(new Exception(response.getStatusText()));
 
 					}
 				}
 			});
 		} catch (RequestException e) {
-			displayError("Couldn't retrieve JSON : " + e.getMessage());
+			//displayError("Couldn't retrieve JSON : " + e.getMessage());
+				callback.onFailure(e);
 		}
 
 	}
@@ -157,9 +170,7 @@ public class ClosingsApp implements EntryPoint {
 	public ClickHandler searchClosingsHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("search handler");
-			ClosingIndexPanel closingsIndexPanel = new ClosingIndexPanel(ClosingsApp.this);
-			RootPanel.get("closingsMain").clear();
-			RootPanel.get("closingsMain").add(closingsIndexPanel);
+			swapMain(closingsIndexPanel);
 		}
 	};
 
@@ -172,10 +183,8 @@ public class ClosingsApp implements EntryPoint {
 		public void onSuccess(Object response) {
 			GWT.log("openSettingCallback.onSuccess");
 			ClosingSettings closingSettings = (ClosingSettings) response;
-			ClosingSettingsPanel csp = new ClosingSettingsPanel(ClosingsApp.this, closingSettings);
-
-			RootPanel.get("closingsMain").clear();
-			RootPanel.get("closingsMain").add(csp);
+			ClosingSettingsPanel closingSettingsPanel = new ClosingSettingsPanel(ClosingsApp.this, closingSettings);
+			swapMain(closingSettingsPanel);
 
 		}
 	};
@@ -188,22 +197,21 @@ public class ClosingsApp implements EntryPoint {
 	};
 
 	Button locationsButton = new Button("Locations");
+	private ClosingIndexPanel closingsIndexPanel = null;
 
-	public ClickHandler locationsHandler = new ClickHandler() {
-		public void onClick(ClickEvent event) {
-			// new closing panel
-			// how to swap out the panel?
-			// fetchClosingSettings(newClosingCallback);
 
-		}
-	};
+	
+	public ClosingApp() {
+		this.closingApp = this;
+	}
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
 		initSettings();
-
+		this.closingsIndexPanel = new ClosingIndexPanel(ClosingsApp.this);
+			
 		RootPanel.get("messagesPanel").add(messagesPanel);
 		// RootPanel.get("closingsNav").add(createClosingButton);
 
@@ -211,9 +219,27 @@ public class ClosingsApp implements EntryPoint {
 		searchClosingsButton.addClickHandler(searchClosingsHandler);
 		RootPanel.get("closingsNav").add(searchClosingsButton);
 		RootPanel.get("closingsNav").add(locationsButton);
+		locationsButton..addClickHandler(locationsHandler);
+		RootPanel.get("closingsMain").add(closingsMain);
 
 		settingButton.addClickHandler(settingHandler);
 
+	}
+	
+	private ClickHandler locationsHandler = new ClickHandler() {
+	public void onClick(ClickEvent event) {
+		// new closing panel
+		// how to swap out the panel?
+		// fetchClosingSettings(newClosingCallback);
+		LocationIndexPanel locationIndexPanel = new LocationIndexPanel();
+		swapMain(locationIndexPanel);
+
+	}
+	};
+	public void swapMain(Panel panel) {
+			closingsMain.clear();
+			closingsMain.add(panel);
+			messagesPanel.clear();
 	}
 
 }

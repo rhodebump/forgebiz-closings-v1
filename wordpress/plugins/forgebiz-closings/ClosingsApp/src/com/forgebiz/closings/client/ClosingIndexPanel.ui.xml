@@ -6,22 +6,33 @@
 
 
 
+   <table>
+   <tr>
+   <td>
+     			<label>Start Date</label><br/>
+                     <datepicker:DateBox ui:field="startDatePicker"/>   
+   </td>
+   <td>
+        			<label>End Date		</label><br/>
+                     <datepicker:DateBox ui:field="endDatePicker"/>
+   </td>
    
+   <td>
+   	<label>Location</label><br/>
+       <g:ListBox ui:field="locationListBox"/>
+       
+       <br/>
+       <label><g:SimpleCheckBox ui:field="showDeleted"/><span>Show Deleted</span></label>
+   </td>
+   </tr>
 
-     			<label>Start Date</label>
-                     <datepicker:DateBox ui:field="startDatePicker"/>
+</table>
      			
 
-     			<label>End Date		</label>
-                     <datepicker:DateBox ui:field="endDatePicker"/>
-     	
-                 <g:ListBox ui:field="locationListBox"/>
-
-
-      		<label><g:SimpleCheckBox ui:field="showDeleted"/><span>Show Deleted</span></label>
-    		
-      		<g:Button ui:field="searchButton">Search</g:Button>
+<g:Button ui:field="searchButton">Search</g:Button>
     
+<g:Button ui:field="createButton">Create Closing</g:Button>
+
 
 <g:SimplePanel ui:field="resultsPanel"></g:SimplePanel>
     

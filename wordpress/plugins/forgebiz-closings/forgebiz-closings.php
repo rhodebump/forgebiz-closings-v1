@@ -90,9 +90,8 @@ function fbc_install()
 		opener_name varchar(255) NOT NULL,
 		sub_total_sales decimal(15,2) NOT NULL,
 		submitted bit(1) NOT NULL,
-		totala decimal(15,2) NOT NULL,
-		totalb decimal(15,2) NOT NULL,
-		total_tips decimal(15,2) NOT NULL,
+		sales_total decimal(15,2) NOT NULL,
+		income_total decimal(15,2) NOT NULL
 		PRIMARY KEY  (id)
 	) $charset_collate;";
     
@@ -142,7 +141,8 @@ function fbc_install()
 		close_total_label varchar(100) NOT NULL,
 		closer_name_label varchar(100) NOT NULL,
 		difference_label varchar(100) NOT NULL,
-		gross_sales_label varchar(100) NOT NULL,
+		total_sales_label varchar(100) NOT NULL,
+		total_income_label varchar(100) NOT NULL,		
 		opener_name_label varchar(255) NOT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
@@ -434,6 +434,27 @@ add_action('rest_api_init', function () {
     
     $table_name = getLocationTableName($wpdb);
     
+    $data =  array(
+        'name' => $request['name'],
+        'notification_email_addresses' => $request['notification_email_addresses']);
+    $format = array(
+        
+        '%s',
+        '%s');
+        
+            
+    $id = $_GET['id'];
+    if ($id) {
+        $data[] =   'ID' => $request['id'];
+        $format[] =  '%d';
+    }
+
+    $result = $wpdb->replace($table_name,$data, $format);    
+    
+
+    
+    
+    /*
     $result = $wpdb->update($table_name, array(
         'name' => $request['name'],
         'notification_email_addresses' => $request['notification_email_addresses']
@@ -448,6 +469,9 @@ add_action('rest_api_init', function () {
     ), array(
         '%d'
     ));
+    */
+    
+    
     
     // echo $wpdb->last_error;
     // die();
@@ -474,7 +498,10 @@ function save_closing($request)
     
     $table_name = getClosingTableName($wpdb);
     
-    $result = $wpdb->update($table_name, array(
+    //wpdb::replace( string $table, array $data, array|string $format = null )
+    //wpdb::update( string $table, array $data, array $where, array|string $format = null, array|string $where_format = null )
+    
+    $data = array(
         'sales_1' => $request['sales_1'],
         'sales_2' => $request['sales_2'],
         'sales_3' => $request['sales_3'],
@@ -492,7 +519,77 @@ function save_closing($request)
         'income_5' => $request['income_5'],
         'income_7' => $request['income_7'],
         'income_8' => $request['income_8'],
-        'income_9' => $request['income_9']
+        'income_9' => $request['income_9'],
+        
+        
+        'submitted' => $request['submitted'],
+        'deleted' => $request['deleted']
+        ) ;
+        
+    $format = array(
+        
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        
+        '%d',
+        '%d' 
+    
+    );
+    
+        
+    $id = $_GET['id'];
+    if ($id) {
+        $data[] =   'ID' => $request['id'];
+        $format[] =  '%d';
+    }
+    
+    
+    
+    $result = $wpdb->replace($table_name,$data, $format);    
+    
+
+    
+    /*
+        $result = $wpdb->replace($table_name, array(
+        'sales_1' => $request['sales_1'],
+        'sales_2' => $request['sales_2'],
+        'sales_3' => $request['sales_3'],
+        'sales_4' => $request['sales_4'],
+        'sales_5' => $request['sales_5'],
+        'sales_6' => $request['sales_6'],
+        'sales_7' => $request['sales_7'],
+        'sales_8' => $request['sales_8'],
+        'sales_9' => $request['sales_9'],
+        'income_1' => $request['income_1'],
+        'income_2' => $request['income_2'],
+        'income_3' => $request['income_3'],
+        'income_4' => $request['income_4'],
+        'income_5' => $request['income_5'],
+        'income_5' => $request['income_5'],
+        'income_7' => $request['income_7'],
+        'income_8' => $request['income_8'],
+        'income_9' => $request['income_9'],
+        
+        
+        'submitted' => $request['submitted'],
+        'deleted' => $request['deleted']      
     
     ), array(
         'ID' => $request['id']
@@ -516,11 +613,15 @@ function save_closing($request)
         '%d',
         '%d',
         '%d',
-        '%d'
+        '%d',
+        
+        '%d',
+        '%d' 
     
     ), array(
         '%d'
     ));
+    */
     
     // echo $wpdb->last_error;
     // die();
@@ -552,7 +653,9 @@ function save_closing_settings($request)
     global $wpdb;
     // wp_forgebiz_labels
     // $data = array("where" => "do we go");
-    $closing_settings_table_name = getClosingSettingTableName($wpdb);
+    $table_name = getClosingSettingTableName($wpdb);
+    
+    /*
     
     // https://codeable.io/how-to-import-json-into-wordpress/
     $result = $wpdb->update($closing_settings_table_name, array(
@@ -640,6 +743,101 @@ function save_closing_settings($request)
     ), array(
         '%d'
     ));
+    
+    */
+    
+    $data = array(
+        'show_sales_1' => $request['show_sales_1'],
+        'show_sales_2' => $request['show_sales_2'],
+        'show_sales_3' => $request['show_sales_3'],
+        'show_sales_4' => $request['show_sales_4'],
+        'show_sales_5' => $request['show_sales_5'],
+        'show_sales_6' => $request['show_sales_6'],
+        'show_sales_7' => $request['show_sales_7'],
+        'show_sales_8' => $request['show_sales_8'],
+        'show_sales_9' => $request['show_sales_9'],
+        'sales_label_1' => $request['sales_label_1'],
+        'sales_label_2' => $request['sales_label_2'],
+        'sales_label_3' => $request['sales_label_3'],
+        'sales_label_4' => $request['sales_label_4'],
+        'sales_label_5' => $request['sales_label_5'],
+        'sales_label_6' => $request['sales_label_6'],
+        'sales_label_7' => $request['sales_label_7'],
+        'sales_label_8' => $request['sales_label_8'],
+        'sales_label_9' => $request['sales_label_7'],
+        'show_income_1' => $request['show_income_1'],
+        'show_income_2' => $request['show_income_2'],
+        'show_income_3' => $request['show_income_3'],
+        'show_income_4' => $request['show_income_4'],
+        'show_income_5' => $request['show_income_5'],
+        'show_income_6' => $request['show_income_6'],
+        'show_income_7' => $request['show_income_7'],
+        'show_income_8' => $request['show_income_8'],
+        'show_income_9' => $request['show_income_9'],
+        'income_label_1' => $request['income_label_1'],
+        'income_label_2' => $request['income_label_2'],
+        'income_label_3' => $request['income_label_3'],
+        'income_label_4' => $request['income_label_4'],
+        'income_label_5' => $request['income_label_5'],
+        'income_label_6' => $request['income_label_6'],
+        'income_label_7' => $request['income_label_7'],
+        'income_label_8' => $request['income_label_8'],
+        'income_label_9' => $request['income_label_9']
+    
+    );
+    
+    
+    $format = array(
+        
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s');
+    
+            
+    $id = $_GET['id'];
+    if ($id) {
+        $data[] =   'ID' => $request['id'];
+        $format[] =  '%d';
+    }
+    
+    
+        $result = $wpdb->replace($table_name,$data, $format);   
     
     // echo $wpdb->last_error;
     // die();

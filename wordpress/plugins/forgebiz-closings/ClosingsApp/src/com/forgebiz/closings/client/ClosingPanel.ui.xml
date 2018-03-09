@@ -4,6 +4,13 @@
     xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
   <g:HTMLPanel>
+  opener name
+  <g:TextBox ui:field="openerNameTextBox"></g:TextBox>
+  
+  <g:TextBox ui:field="closerNameTextBox"></g:TextBox>  
+
+  <g:TextArea ui:field="notesTextArea"></g:TextArea>
+  
 
                     <datepicker:DateBox ui:field="closingDateBox"/>
                         <g:ListBox ui:field="locationListBox"/>
@@ -40,8 +47,12 @@
 </table>
 
 
- <g:Button  ui:field="saveButton">Save</g:Button>
 
+
+ <g:Button  ui:field="saveButton">Save</g:Button>
+ <g:Button  ui:field="submitButton">Submit</g:Button>
+ 
+ <g:Button  ui:field="deleteButton">Delete</g:Button>
       		
 </g:HTMLPanel>
 
