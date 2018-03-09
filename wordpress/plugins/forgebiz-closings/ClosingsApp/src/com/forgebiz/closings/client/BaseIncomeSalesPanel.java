@@ -50,7 +50,7 @@ public class BaseIncomeSalesPanel extends VerticalPanel {
 	}
 
 	MyHandler handler = new MyHandler();
-	private ClosingPanel closingPanel;
+	protected ClosingPanel closingPanel;
 
 	private void addKeyUpHandler(TextBox textBox) {
 		textBox.addKeyUpHandler(this.handler);

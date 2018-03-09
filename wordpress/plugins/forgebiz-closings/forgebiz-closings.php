@@ -149,7 +149,7 @@ function fbc_install()
     
     dbDelta($label_sql);
     
-    $table_name = getLocationTableName();
+    $table_name = getLocationTableName($wpdb);
     
     $location_sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -410,7 +410,7 @@ add_action('rest_api_init', function () {
         }
     ));
     
-    register_rest_route('forgebiz-closings/v1', '/location/(?P<id>\d+)', array(
+    register_rest_route('forgebiz-closings/v1', '/location/save', array(
         'methods' => 'POST',
         'callback' => 'location_save',
         'permission_callback' => function () {
@@ -435,7 +435,7 @@ add_action('rest_api_init', function () {
     $table_name = getLocationTableName($wpdb);
     
     $data =  array(
-        'name' => $request['name'],
+        'location_name' => $request['location_name'],
         'notification_email_addresses' => $request['notification_email_addresses']);
     $format = array(
         
@@ -445,7 +445,8 @@ add_action('rest_api_init', function () {
             
     $id = $_GET['id'];
     if ($id) {
-        $data[] =   'ID' => $request['id'];
+        //$data[] =   'ID' => $request['id'];
+        $data['ID'] = $request['id'];
         $format[] =  '%d';
     }
 
@@ -472,22 +473,22 @@ add_action('rest_api_init', function () {
     */
     
     
-    
-    // echo $wpdb->last_error;
-    // die();
+    //Table 'wordpress.wp_forgebiz_location' doesn't exist
+    echo $wpdb->last_error;
+    die();
     
     if (false === $result) {
         
         $data = $wpdb->last_error;
     }
     
-    $debug = var_export($wpdb->last_query, true);
+   // $debug = var_export($wpdb->last_query, true);
     
     // if ($wpdb->last_error) {
     // die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
     // }
     
-    return new WP_REST_Response($debug, 200);
+    return new WP_REST_Response($result, 200);
 }
 
 function save_closing($request)
@@ -523,7 +524,8 @@ function save_closing($request)
         
         
         'submitted' => $request['submitted'],
-        'deleted' => $request['deleted']
+        'deleted' => $request['deleted'],
+        'last_update' =>  current_time( 'mysql' )
         ) ;
         
     $format = array(
@@ -549,15 +551,23 @@ function save_closing($request)
         '%d',
         
         '%d',
-        '%d' 
+        '%d',
+        '%s'
     
     );
     
         
     $id = $_GET['id'];
     if ($id) {
-        $data[] =   'ID' => $request['id'];
+        //$data[] =   'ID' => $request['id'];
+        $data['ID'] = $request['id'];
         $format[] =  '%d';
+    } else {
+        $data['last_update'] = current_time( 'mysql' );
+        $format[] =  '%s';
+        
+
+        
     }
     
     
@@ -832,7 +842,8 @@ function save_closing_settings($request)
             
     $id = $_GET['id'];
     if ($id) {
-        $data[] =   'ID' => $request['id'];
+        //$data[] =   'ID' => $request['id'];
+        $data['ID'] = $request['id'];
         $format[] =  '%d';
     }
     
@@ -894,9 +905,9 @@ function closings_search($request)
         $sql[] = " closing_date <= '$endDate' ";
     }
     
-    $location_id = $_GET['location_id'];
-    if ($endDate) {
-        $sql[] = " location_id = 'location_id' ";
+    $location_name = $_GET['location_name'];
+    if ($location_name) {
+        $sql[] = " location_name = '$location_name' ";
     }
     $deleted = $_GET['deleted'];
     if ($deleted) {

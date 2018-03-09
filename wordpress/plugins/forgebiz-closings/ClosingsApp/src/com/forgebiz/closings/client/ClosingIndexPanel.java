@@ -113,26 +113,29 @@ public class ClosingIndexPanel extends Composite {
 
 	private void editClosing(Closing closing, ClosingSettings closingSettings) {
 					//ClosingSettings closingSettings = (ClosingSettings) response;
-			CashPanel openCashPanel = new CashPanel();
-			CashPanel closeCashPanel = new CashPanel();
-			SalesPanel salesPanel = new SalesPanel(closingSettings);
-			IncomePanel incomePanel = new IncomePanel(closingSettings);
-			Button saveButton = new Button();
+			//CashPanel openCashPanel = new CashPanel();
+			//CashPanel closeCashPanel = new CashPanel();
+			//SalesPanel salesPanel = new SalesPanel(closingSettings);
+			//IncomePanel incomePanel = new IncomePanel(closingSettings);
+			//Button saveButton = new Button();
 
-			DateBox closingDateBox = new DateBox();
-			ListBox locationListBox = new ListBox();
+			//DateBox closingDateBox = new DateBox();
+			//ListBox locationListBox = new ListBox();
+			ClosingPanel closingPanel = new ClosingPanel();
+			closingPanel.setClosing(closing);
+			
+			ClosingsApp.getInstance().swapMain(closingPanel);
+			
 			//Closing closing  = null;
-			ClosingPanel closingPanel = new ClosingPanel(closingsApp, closingSettings, openCashPanel, closeCashPanel,
-					salesPanel, incomePanel, saveButton, closingDateBox, locationListBox, closing);
-			openCashPanel.setClosingPanel(closingPanel);
-			closeCashPanel.setClosingPanel(closingPanel);
-			RootPanel.get("closingsMain").clear();
-			RootPanel.get("closingsMain").add(closingPanel);
+		//	ClosingPanel closingPanel = new ClosingPanel(closingsApp, closingSettings, openCashPanel, closeCashPanel,
+		//			salesPanel, incomePanel, saveButton, closingDateBox, locationListBox, closing);
+			//openCashPanel.setClosingPanel(closingPanel);
+			//closeCashPanel.setClosingPanel(closingPanel);
+			//RootPanel.get("closingsMain").clear();
+			//RootPanel.get("closingsMain").add(closingPanel);
 
 
 	}
-	@UiField
-	ClosingsApp closingsApp;
 
 
 	@UiField
@@ -145,7 +148,7 @@ public class ClosingIndexPanel extends Composite {
 	@UiField
 	DateBox endDatePicker = new DateBox();
 
-	@UiField(provided = true)
+	@UiField
 	ListBox locationListBox;
 
 	@UiField
@@ -297,10 +300,11 @@ public class ClosingIndexPanel extends Composite {
 	        }
 	      }, new FieldUpdater<Closing, String>() {
 	        @Override
-	        public void update(int index, Closing object, String value) {
+	        public void update(int index, Closing closing, String value) {
 	         // Window.alert("You clicked " + object.getId());
-				closingsApp.fetchClosingSettings(newClosingCallback);
-				
+				//closingsApp.fetchClosingSettings(newClosingCallback);
+				ClosingPanel closingPanel = new ClosingPanel();
+				closingPanel.setClosing(closing);
 	        }
 	      });
 
@@ -337,8 +341,8 @@ public class ClosingIndexPanel extends Composite {
 	private ClickHandler searchHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("searchHandler.onClick");
-
-			String url = URL.encode("http://localhost:8080/wp-json/forgebiz-closings/v1/closing/search");
+			String base = ClosingsApp.getURL("/closing/search");
+			String url = URL.encode(base);
 			url = url + "?location_id=" + locationListBox.getSelectedValue();
 			url = url + "&start_date=" + startDatePicker.getValue().toString();
 			url = url + "&end_date=" + endDatePicker.getValue().toString();
@@ -352,7 +356,7 @@ public class ClosingIndexPanel extends Composite {
 			try {
 				builder.sendRequest(null, new RequestCallback() {
 					public void onError(Request request, Throwable exception) {
-						closingsApp.displayError("Couldn't retrieve JSON : " + exception.getMessage());
+						ClosingsApp.getInstance().displayError("Couldn't retrieve JSON : " + exception.getMessage());
 					}
 
 					public void onResponseReceived(Request request, Response response) {
@@ -360,15 +364,14 @@ public class ClosingIndexPanel extends Composite {
 							GWT.log("good result " + response.getStatusText());
 
 							displayClosings(response);
-							closingsApp.displayError(response.getText());
 						} else {
 							GWT.log("bad result " + response.getStatusCode());
-							closingsApp.displayError("Couldn't retrieve JSON (" + response.getStatusText() + ")");
+							ClosingsApp.getInstance().displayError("Couldn't retrieve JSON (" + response.getStatusText() + ")");
 						}
 					}
 				});
 			} catch (RequestException e) {
-				closingsApp.displayError("Couldn't retrieve JSON : " + e.getMessage());
+				ClosingsApp.getInstance().displayError("Couldn't retrieve JSON : " + e.getMessage());
 			}
 		}
 	};

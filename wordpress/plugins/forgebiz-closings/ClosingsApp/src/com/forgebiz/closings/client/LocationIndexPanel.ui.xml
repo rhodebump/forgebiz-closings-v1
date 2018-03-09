@@ -11,7 +11,7 @@
     
               <c:CellTable
             pageSize='15'
-            ui:field='cellTable' />
+            ui:field='resultsTable' />
           		  		
       		
 </g:HTMLPanel>

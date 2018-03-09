@@ -15,11 +15,10 @@ public class IncomePanel extends BaseIncomeSalesPanel {
 		this.cashTotalTextBox.setValue(new Double(d).toString());
 	}
 
-	private ClosingPanel closingPanel;
+	//private ClosingPanel closingPanel;
 
-
-	public IncomePanel(ClosingSettings closingSettings) {
-		super();
+//ClosingSettings closingSettings
+	public void setClosingSettings(ClosingSettings closingSettings) {
 		add(this.cashTotalLabel);
 		add(this.cashTotalTextBox);
 		this.cashTotalTextBox.setEnabled(false);
@@ -46,21 +45,20 @@ public class IncomePanel extends BaseIncomeSalesPanel {
 		add(this.totalLabel);
 		add(this.totalTextBox);
 		this.totalTextBox.setEnabled(false);
+		
+		
+	}
+	public IncomePanel() {
+		super();
+
 	}
 
-	private Integer getIntegerValue(TextBox textBox) {
-		try {
-			return Integer.valueOf(Integer.parseInt(textBox.getValue()));
-		} catch (Exception e) {
-			GWT.log("returning 0 for " + textBox.getName());
-		}
-		return Integer.valueOf(0);
-	}
+
 
 	public void calculateAll() {
 		GWT.log("calculateAll2");
 		double total = 0.0D;
-		total += getIntegerValue(this.income1TextBox).intValue();
+		total += ClosingsApp.getIntValue(this.income1TextBox);
 
 		this.totalTextBox.setText(new Double(total).toString());
 	}

@@ -222,40 +222,36 @@ public class ClosingSettingsPanel extends VerticalPanel {
 
 
 	private void saveClosingSettings(ClosingSettings closingSettings) {
+		String base = ClosingsApp.getURL("/closing-settings/" + closingSettings.getId());
 		String url = URL
-				.encode("http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings/" + closingSettings.getId());
-		GWT.log("url = " + url);
+				.encode(base);
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		ClosingsApp.setNonce(builder);
 		builder.setHeader("Content-Type", "application/json");
-		GWT.log(" JsonUtils.stringify1");
 		String postData = JsonUtils.stringify(closingSettings);
-		GWT.log(" JsonUtils.stringify2");
-		closingsApp.displayMessage("postData: " + postData);
+		//closingsApp.displayMessage("postData: " + postData);
 		GWT.log("postData:" + postData);
 		try {
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					closingsApp.displayError(
-							"Couldn't retrieve JSON : http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings"
+							"Could not save settings:"
 									+ exception.getMessage());
 				}
 
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
 						GWT.log("good result " + response.getStatusText());
-						closingsApp.displayMessage(response.getText());
+						closingsApp.displayMessage("Settings saved");
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
-						closingsApp.displayMessage(
-								"Couldn't retrieve JSON (http://localhost:8080//wp-json/forgebiz-closings/v1/closing-settings"
-										+ response.getStatusText() + ")");
+						closingsApp.displayMessage(response.getText());
 					}
 				}
 			});
 		} catch (RequestException e) {
-			closingsApp.displayError("Couldn't retrieve JSON : " + e.getMessage());
+			closingsApp.displayError("Could not save settings:" + e.getMessage());
 		}
 	}
 

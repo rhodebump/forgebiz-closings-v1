@@ -1,5 +1,7 @@
 package com.forgebiz.closings.client;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.JavaScriptObject;
 
 public class Closing
@@ -202,6 +204,108 @@ return this.deleted;
 public final native boolean getSubmitted()/*-{
 return this.submitted;
 }-*/;
+
+public final  native void setDifference(double difference)/*-{
+this.difference = difference;
+}-*/;
+
+public final  native void setOpenerName(String opener_name) /*-{
+	this.opener_name = opener_name;
+	}-*/;
+
+public final  native void setNotes(String notes)  /*-{
+this.notes = notes;
+}-*/;
+
+public final  native void setCloserName(String closer_name) /*-{
+this.closer_name = closer_name;
+}-*/;
+
+public final  native void setOpen1Cent(double open_1_cent)   /*-{
+this.open_1_cent = open_1_cent;
+}-*/;
+
+public final  native void setOpen5Cents(double open_5_cents)   /*-{
+this.open_5_cents = open_5_cents;
+}-*/;
+public final  native void setOpen25Cents(double open_25_cents)   /*-{
+this.open_25_cents = open_25_cents;
+}-*/;
+
+public final  native void setOpen1Dollar(double open_1_dollar)   /*-{
+this.open_1_dollar = open_1_dollar;
+}-*/;
+
+public final  native void setOpen100Dollars(double open_100_dollars)   /*-{
+this.open_100_dollars = open_100_dollars;
+}-*/;
+
+public final  native void setOpen50Dollars(double open_50_dollars)   /*-{
+this.open_50_dollars = open_50_dollars;
+}-*/;
+
+public final  native void setOpen10Dollars(double open_10_dollars)   /*-{
+this.open_10_dollars = open_10_dollars;
+}-*/;
+
+public final  native void setOpen20Dollars(double open_20_dollars)   /*-{
+this.open_10_dollars = open_10_dollars;
+}-*/;
+
+public final  native void setOpen5Dollars(double open_5_dollars)   /*-{
+this.open_5_dollars = open_5_dollars;
+}-*/;
+public final  native void setClose1Cent(double close_1_cent)   /*-{
+this.close_1_cent = close_1_cent;
+}-*/;
+
+public final  native void setClose5Cents(double close_5_cents)   /*-{
+this.close_5_cents = close_5_cents;
+}-*/;
+public final  native void setClose25Cents(double close_25_cents)   /*-{
+this.close_25_cents = close_25_cents;
+}-*/;
+
+public final  native void setClose1Dollar(double close_1_dollar)   /*-{
+this.close_1_dollar = close_1_dollar;
+}-*/;
+
+public final  native void setClose100Dollars(double close_100_dollars)   /*-{
+this.close_100_dollars = close_100_dollars;
+}-*/;
+
+public final  native void setClose50Dollars(double close_50_dollars)   /*-{
+this.close_50_dollars = close_50_dollars;
+}-*/;
+
+public final  native void setClose10Dollars(double close_10_dollars)   /*-{
+this.close_10_dollars = close_10_dollars;
+}-*/;
+
+public final  native void setClose20Dollars(double close_20_dollars)   /*-{
+this.close_10_dollars = close_10_dollars;
+}-*/;
+
+public final  native void setClose5Dollars(double close_5_dollars)   /*-{
+this.close_5_dollars = close_5_dollars;
+}-*/;
+
+public final  native void setLocationName(String location_name)   /*-{
+this.location_name = location_name;
+}-*/;
+
+public final  native void setClosingDate(Date closing_date)    /*-{
+this.closing_date = closing_date;
+}-*/;
+
+public final  native void setIncomeTotal(double income_total)     /*-{
+this.income_total = income_total;
+}-*/;
+
+public final  native void setSalesTotal(double sales_total)    /*-{
+this.sales_total = sales_total;
+}-*/;
+
 
   
 	

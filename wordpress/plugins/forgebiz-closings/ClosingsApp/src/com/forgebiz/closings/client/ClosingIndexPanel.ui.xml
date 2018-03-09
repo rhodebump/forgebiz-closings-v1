@@ -22,7 +22,7 @@
        <g:ListBox ui:field="locationListBox"/>
        
        <br/>
-       <label><g:SimpleCheckBox ui:field="showDeleted"/><span>Show Deleted</span></label>
+       <label><g:SimpleCheckBox ui:field="showDeletedCheckbox"/><span>Show Deleted</span></label>
    </td>
    </tr>
 

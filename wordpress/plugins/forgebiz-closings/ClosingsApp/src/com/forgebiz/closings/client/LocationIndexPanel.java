@@ -9,7 +9,6 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -31,13 +30,7 @@ public class LocationIndexPanel extends Composite {
 	}
 
 	@UiField
-	CellTable<Location> table;
-
-	@UiField
-	ClosingsApp closingsApp;
-
-	@UiField
-	Button searchButton;
+	CellTable<Location> resultsTable;
 	@UiField
 	Button createLocationButton;
 
@@ -56,25 +49,25 @@ public class LocationIndexPanel extends Composite {
 				locations.add(location);
 
 			}
-			table.setRowCount(records.length(), true);
-			table.setRowData(0, locations);
+			resultsTable.setRowCount(records.length(), true);
+			resultsTable.setRowData(0, locations);
 
 		}
 	};
 
 	public ClickHandler createNewLocationHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
-			LocationPanel locationPanel = new LocationPanel(closingsApp);
-
+			LocationPanel locationPanel = new LocationPanel();
+			ClosingsApp.getInstance().swapMain(locationPanel);
 		}
 	};
 
 
-	public @UiConstructor  LocationIndexPanel(ClosingsApp closingsApp) {
+	public  LocationIndexPanel() {
 		initWidget((Widget) binder.createAndBindUi(this));
 
 		createLocationButton.addClickHandler(this.createNewLocationHandler);
-		closingsApp.fetchLocations(gotLocationsCallback);
+		ClosingsApp.fetchLocations(gotLocationsCallback);
 
 		// opener
 		// closer
@@ -85,7 +78,7 @@ public class LocationIndexPanel extends Composite {
 		// actions, edit
 
 		// JsArray<Closing> records =(JsArray<Closing>) response;
-		CellTable<Location> table = new CellTable<Location>();
+		//CellTable<Location> table = new CellTable<Location>();
 
 		/*
 		 * SelectionModel<Closing> selectionModel = new SingleSelectionModel<Closing>(
@@ -111,7 +104,7 @@ public class LocationIndexPanel extends Composite {
 				return closing.getLocationName();
 			}
 		};
-		table.addColumn(openerColumn, "Name");
+		resultsTable.addColumn(openerColumn, "Name");
 
 		TextColumn<Location> closerColumn = new TextColumn<Location>() {
 			@Override
@@ -119,23 +112,26 @@ public class LocationIndexPanel extends Composite {
 				return closing.getNotificationEmailAddresses();
 			}
 		};
-		table.addColumn(closerColumn, "Notifications");
+		resultsTable.addColumn(closerColumn, "Notifications");
 
 		Column<Location, String> bc = addColumn(new ButtonCell(), "Edit", new GetValue<String>() {
 			@Override
 			public String getValue(Location contact) {
-				return "Click " + contact.getId();
+				return "Edit";
 			}
 		}, new FieldUpdater<Location, String>() {
 			@Override
-			public void update(int index, Location object, String value) {
+			public void update(int index, Location location, String value) {
 				// Window.alert("You clicked " + object.getId());
 				// closingsApp.fetchClosingSettings(newClosingCallback);
+				LocationPanel locationPanel = new LocationPanel();
+				locationPanel.setLocation(location);
+				ClosingsApp.getInstance().swapMain(locationPanel);;
 
 			}
 		});
 
-		table.addColumn(bc, "Actions");
+		resultsTable.addColumn(bc, "Actions");
 
 		// Set the total row count. You might send an RPC request to determine the
 		// total row count.

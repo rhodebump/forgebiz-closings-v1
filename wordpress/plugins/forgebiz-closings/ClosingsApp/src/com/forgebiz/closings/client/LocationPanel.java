@@ -25,13 +25,11 @@ public class LocationPanel extends VerticalPanel {
 	Label notificationsLabel = new Label("Notification Email Addresses");
 	TextBox notificationsTextarea = new TextBox();
 
-
-	private ClosingsApp closingsApp;
+	Location location = (Location) JavaScriptObject.createObject().cast();
 	Button saveButton = new Button("Save");
 
-	public LocationPanel(ClosingsApp closingsApp) {
+	public LocationPanel() {
 		super();
-		this.closingsApp = closingsApp;
 		add(locationNameLabel);
 		add(locationNameTextBox);
 		add(notificationsLabel);
@@ -43,7 +41,7 @@ public class LocationPanel extends VerticalPanel {
 	public ClickHandler saveHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("saveHandler.onClick");
-			Location location = (Location) JavaScriptObject.createObject().cast();
+			
 			location.setLocationName(locationNameTextBox.getValue());
 			location.setNotificationEmailAddresses(notificationsTextarea.getValue());
 
@@ -51,26 +49,31 @@ public class LocationPanel extends VerticalPanel {
 		}
 	};
 	
+	public void setLocation(Location location) {
+		this.location = location;
+		locationNameTextBox.setValue(location.getLocationName());
+		notificationsTextarea.setValue(location.getNotificationEmailAddresses());
+		
+	}
+	
 	
 	
 	private void saveLocation(Location location) {
+		String base = ClosingsApp.getURL("/location/save");
+		
 		String url = URL
-				.encode("http://localhost:8080//wp-json/forgebiz-closings/v1/location/" + location.getId());
-		GWT.log("url = " + url);
+				.encode(base);
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		ClosingsApp.setNonce(builder);
 		builder.setHeader("Content-Type", "application/json");
-		GWT.log(" JsonUtils.stringify1");
 		String postData = JsonUtils.stringify(location);
-		GWT.log(" JsonUtils.stringify2");
-		closingsApp.displayMessage("postData: " + postData);
-		GWT.log("postData:" + postData);
+		GWT.log("postData: " + postData);
 		try {
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
 					
-					closingsApp.displayError(
+					ClosingsApp.getInstance().displayError(
 							"Could not save location "
 									+ exception.getMessage());
 				}
@@ -78,17 +81,18 @@ public class LocationPanel extends VerticalPanel {
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
 						GWT.log("good result " + response.getStatusText());
-						closingsApp.displayMessage(response.getText());
+						
+						ClosingsApp.getInstance().displayMessage("Location was saved");
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
-						closingsApp.displayMessage(
+						ClosingsApp.getInstance().displayMessage(
 								"Could not save location "
 										+ response.getStatusText() );
 					}
 				}
 			});
 		} catch (RequestException e) {
-			closingsApp.displayError("Couldn't retrieve JSON : " + e.getMessage());
+			ClosingsApp.getInstance().displayError("Could not save location:"+ e.getMessage());
 		}
 	}
 	
