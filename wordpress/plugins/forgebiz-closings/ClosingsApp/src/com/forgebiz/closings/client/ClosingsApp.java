@@ -193,6 +193,8 @@ public class ClosingsApp implements EntryPoint {
 	public ClickHandler searchClosingsHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("search handler");
+
+			ClosingIndexPanel closingsIndexPanel = new ClosingIndexPanel(ClosingsApp.this);
 			swapMain(closingsIndexPanel);
 		}
 	};
@@ -206,7 +208,7 @@ public class ClosingsApp implements EntryPoint {
 		public void onSuccess(Object response) {
 			GWT.log("openSettingCallback.onSuccess");
 			ClosingSettings closingSettings = (ClosingSettings) response;
-			ClosingSettingsPanel closingSettingsPanel = new ClosingSettingsPanel(ClosingsApp.this, closingSettings);
+			ClosingSettingsPanel closingSettingsPanel = new ClosingSettingsPanel( closingSettings);
 			swapMain(closingSettingsPanel);
 
 		}
@@ -220,7 +222,7 @@ public class ClosingsApp implements EntryPoint {
 	};
 
 	Button locationsButton = new Button("Locations");
-	private ClosingIndexPanel closingsIndexPanel = null;
+	//private ClosingIndexPanel closingsIndexPanel = null;
 
 
 	
@@ -233,7 +235,7 @@ public class ClosingsApp implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		initSettings();
-		this.closingsIndexPanel = new ClosingIndexPanel(ClosingsApp.this);
+
 			
 		RootPanel.get("messagesPanel").add(messagesPanel);
 		// RootPanel.get("closingsNav").add(createClosingButton);
@@ -262,11 +264,15 @@ public class ClosingsApp implements EntryPoint {
 	
 
 
-	
+	public void clearMain() {
+		closingsMain.clear();
+		messagesPanel.clear();
+	}
 	public void swapMain(Widget panel) {
-			closingsMain.clear();
+
+		clearMain();
 			closingsMain.add(panel);
-			messagesPanel.clear();
+
 	}
 
 }

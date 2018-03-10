@@ -15,9 +15,7 @@ public class IncomePanel extends BaseIncomeSalesPanel {
 		this.cashTotalTextBox.setValue(new Double(d).toString());
 	}
 
-	//private ClosingPanel closingPanel;
 
-//ClosingSettings closingSettings
 	public void setClosingSettings(ClosingSettings closingSettings) {
 		add(this.cashTotalLabel);
 		add(this.cashTotalTextBox);

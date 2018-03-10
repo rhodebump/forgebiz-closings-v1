@@ -12,6 +12,7 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimpleCheckBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -75,9 +76,13 @@ public class ClosingSettingsPanel extends VerticalPanel {
 	TextBox income_9_labelTextBox = new TextBox();
 
 	Button saveButton = new Button("Save");
-
+	Button cancelButton = new Button("Cancel");
+	
+	
 	Button loadPresetButton = new Button("Load Settings for Pottery Store");
 
+	
+	
 	ClosingSettings closingSettings = null;
 
 	public ClickHandler saveHandler = new ClickHandler() {
@@ -160,7 +165,7 @@ public class ClosingSettingsPanel extends VerticalPanel {
 			closingSettings
 					.setShowIncome9(showIncome9CheckBox.getValue().booleanValue());
 			GWT.log("saveHandler.onClick5");
-			saveClosingSettings(closingSettings);
+			saveClosingSettings();
 		}
 	};
 
@@ -221,7 +226,7 @@ public class ClosingSettingsPanel extends VerticalPanel {
 
 
 
-	private void saveClosingSettings(ClosingSettings closingSettings) {
+	private void saveClosingSettings() {
 		String base = ClosingsApp.getURL("/closing-settings/" + closingSettings.getId());
 		String url = URL
 				.encode(base);
@@ -235,23 +240,26 @@ public class ClosingSettingsPanel extends VerticalPanel {
 		try {
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
-					closingsApp.displayError(
+					ClosingsApp.getInstance().displayError(
 							"Could not save settings:"
 									+ exception.getMessage());
 				}
 
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
-						GWT.log("good result " + response.getStatusText());
-						closingsApp.displayMessage("Settings saved");
+						GWT.log("good result " + response.getStatusText());						
+						ClosingsApp.getInstance().clearMain();
+						ClosingsApp.getInstance().displayMessage("Settings successfully saved");
+						
+						
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
-						closingsApp.displayMessage(response.getText());
+						ClosingsApp.getInstance().displayMessage(response.getText());
 					}
 				}
 			});
 		} catch (RequestException e) {
-			closingsApp.displayError("Could not save settings:" + e.getMessage());
+			ClosingsApp.getInstance().displayError("Could not save settings:" + e.getMessage());
 		}
 	}
 
@@ -273,14 +281,19 @@ public class ClosingSettingsPanel extends VerticalPanel {
 		vp.add(checkbox);
 		Label textboxLabel = new Label("Label for " + prompt);
 		vp.add(textboxLabel);
-		//textbox.setValue(labelText);
 		textbox.setValue(labelText);
 		vp.add(textbox);
 	}
 	
-	private ClosingsApp closingsApp = null;
-	public ClosingSettingsPanel(ClosingsApp closingsApp,ClosingSettings closingSettings) {
-		this.closingsApp = closingsApp;
+	public ClickHandler cancelHandler = new ClickHandler() {
+		public void onClick(ClickEvent event) {
+			ClosingsApp.getInstance().clearMain();
+
+		}
+	};
+	public ClosingSettingsPanel(ClosingSettings closingSettings) {
+
+		
 		this.closingSettings = closingSettings;
 		initControl(this.showSales1CheckBox, this.sales_1_labelTextBox, closingSettings.getSalesLabel1(),
 				closingSettings.getShowSales1(), "Sales #1");
@@ -320,8 +333,14 @@ public class ClosingSettingsPanel extends VerticalPanel {
 		initControl(this.showIncome9CheckBox, this.income_9_labelTextBox, closingSettings.getIncomeLabel9(),
 				closingSettings.getShowIncome9(),"Income #9");
 
-		add(this.saveButton);
-		this.saveButton.addClickHandler(this.saveHandler);
+
+		HorizontalPanel hp =new HorizontalPanel();
+		add(hp);
+		hp.add(saveButton);
+		hp.add(cancelButton);
+		
+		cancelButton.addClickHandler(cancelHandler);		
+		saveButton.addClickHandler(this.saveHandler);
 
 		add(this.loadPresetButton);
 		this.loadPresetButton.addClickHandler(this.loadPresetHandler);

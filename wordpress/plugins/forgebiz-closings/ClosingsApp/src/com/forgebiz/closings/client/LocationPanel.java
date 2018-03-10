@@ -11,31 +11,66 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class LocationPanel extends VerticalPanel {
 	
 
+	Button deleteButton  = new Button("Delete");
+	
+
 	Label locationNameLabel = new Label("Location Name");
 	TextBox locationNameTextBox = new TextBox();
 
 	Label notificationsLabel = new Label("Notification Email Addresses");
-	TextBox notificationsTextarea = new TextBox();
+	TextArea notificationsTextarea = new TextArea();
 
 	Location location = (Location) JavaScriptObject.createObject().cast();
 	Button saveButton = new Button("Save");
+	Button cancelButton = new Button("Cancel");	
+	
+	
+	
+	
+	public ClickHandler cancelHandler = new ClickHandler() {
+		public void onClick(ClickEvent event) {
+			ClosingsApp.getInstance().clearMain();
 
+		}
+	};
+	
+	
+	public ClickHandler deleteHandler = new ClickHandler() {
+		public void onClick(ClickEvent event) {
+			location.setDeleted(true);
+			saveLocation(location, "Location successfully deleted");
+
+		}
+	};
 	public LocationPanel() {
 		super();
 		add(locationNameLabel);
 		add(locationNameTextBox);
 		add(notificationsLabel);
 		add(notificationsTextarea);
-		add(saveButton);
+
+		HorizontalPanel hp =new HorizontalPanel();
+		add(hp);
+		hp.add(saveButton);
+		hp.add(cancelButton);
+		hp.add(deleteButton);
+		
+		cancelButton.addClickHandler(cancelHandler);
+		
 		saveButton.addClickHandler(this.saveHandler);
+		deleteButton.addClickHandler(deleteHandler);
+		
 	}
 	
 	public ClickHandler saveHandler = new ClickHandler() {
@@ -45,7 +80,7 @@ public class LocationPanel extends VerticalPanel {
 			location.setLocationName(locationNameTextBox.getValue());
 			location.setNotificationEmailAddresses(notificationsTextarea.getValue());
 
-			saveLocation(location);
+			saveLocation(location, "Location successfully saved");
 		}
 	};
 	
@@ -58,7 +93,7 @@ public class LocationPanel extends VerticalPanel {
 	
 	
 	
-	private void saveLocation(Location location) {
+	private void saveLocation(Location location, String message) {
 		String base = ClosingsApp.getURL("/location/save");
 		
 		String url = URL
@@ -81,8 +116,8 @@ public class LocationPanel extends VerticalPanel {
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
 						GWT.log("good result " + response.getStatusText());
-						
-						ClosingsApp.getInstance().displayMessage("Location was saved");
+						ClosingsApp.getInstance().clearMain();
+						ClosingsApp.getInstance().displayMessage(message);
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
 						ClosingsApp.getInstance().displayMessage(

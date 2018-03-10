@@ -35,5 +35,11 @@ public class Location extends JavaScriptObject
   	return this.id;
   	}-*/;
   	
+    public final native void setDeleted(boolean deleted) /*-{
+    this.deleted = deleted;
+    }-*/;
 
+  public final native boolean getDeleted()/*-{
+  return this.deleted;
+  }-*/;
 }

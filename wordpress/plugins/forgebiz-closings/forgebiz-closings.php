@@ -154,7 +154,8 @@ function fbc_install()
     $location_sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		location_name varchar(100) NOT NULL,
-		notification_email_addresses varchar(255) NOT NULL,		
+		notification_email_addresses varchar(255) NOT NULL,	
+		deleted  bit(1) NOT NULL DEFAULT 0,	
 		PRIMARY KEY  (id)
 	) $charset_collate;";
     
@@ -210,10 +211,14 @@ function fbc_install_data()
         'close_total_label' => 'close_total_label',
         'closer_name_label' => 'closer_name_label',
         'difference_label' => 'difference_label',
-        'gross_sales_label' => 'gross_sales_label',
+        'total_income_label' => 'total_income_label',
         'opener_name_label' => 'opener_name_label'
     
     ));
+    
+     if ($wpdb->last_error) {
+     die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
+     }
     
     $table_name = getLocationTableName($wpdb);
     $wpdb->insert($table_name, array(
@@ -428,7 +433,7 @@ add_action('rest_api_init', function () {
 
     function location_save($request)
 {
-    $data = json_decode(file_get_contents("php://input"));
+    //$data = json_decode(file_get_contents("php://input"));
     
     global $wpdb;
     
@@ -443,39 +448,22 @@ add_action('rest_api_init', function () {
         '%s');
         
             
-    $id = $_GET['id'];
+    $id = $request['id'];
     if ($id) {
-        //$data[] =   'ID' => $request['id'];
         $data['ID'] = $request['id'];
         $format[] =  '%d';
     }
+    
+    $deleted = $request['deleted'];
+    if ($deleted) {
+        $data['deleted'] =  $deleted;
+        $format[] =  '%d';
+    }
+    
+
 
     $result = $wpdb->replace($table_name,$data, $format);    
-    
 
-    
-    
-    /*
-    $result = $wpdb->update($table_name, array(
-        'name' => $request['name'],
-        'notification_email_addresses' => $request['notification_email_addresses']
-    
-    ), array(
-        'ID' => $request['id']
-    ), array(
-        
-        '%s',
-        '%s'
-    
-    ), array(
-        '%d'
-    ));
-    */
-    
-    
-    //Table 'wordpress.wp_forgebiz_location' doesn't exist
-    echo $wpdb->last_error;
-    die();
     
     if (false === $result) {
         
@@ -488,7 +476,7 @@ add_action('rest_api_init', function () {
     // die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
     // }
     
-    return new WP_REST_Response($result, 200);
+    return new WP_REST_Response($data, 200);
 }
 
 function save_closing($request)
@@ -557,7 +545,7 @@ function save_closing($request)
     );
     
         
-    $id = $_GET['id'];
+    $id = $request['id'];
     if ($id) {
         //$data[] =   'ID' => $request['id'];
         $data['ID'] = $request['id'];
@@ -665,96 +653,7 @@ function save_closing_settings($request)
     // $data = array("where" => "do we go");
     $table_name = getClosingSettingTableName($wpdb);
     
-    /*
-    
-    // https://codeable.io/how-to-import-json-into-wordpress/
-    $result = $wpdb->update($closing_settings_table_name, array(
-        'show_sales_1' => $request['show_sales_1'],
-        'show_sales_2' => $request['show_sales_2'],
-        'show_sales_3' => $request['show_sales_3'],
-        'show_sales_4' => $request['show_sales_4'],
-        'show_sales_5' => $request['show_sales_5'],
-        'show_sales_6' => $request['show_sales_6'],
-        'show_sales_7' => $request['show_sales_7'],
-        'show_sales_8' => $request['show_sales_8'],
-        'show_sales_9' => $request['show_sales_9'],
-        'sales_label_1' => $request['sales_label_1'],
-        'sales_label_2' => $request['sales_label_2'],
-        'sales_label_3' => $request['sales_label_3'],
-        'sales_label_4' => $request['sales_label_4'],
-        'sales_label_5' => $request['sales_label_5'],
-        'sales_label_6' => $request['sales_label_6'],
-        'sales_label_7' => $request['sales_label_7'],
-        'sales_label_8' => $request['sales_label_8'],
-        'sales_label_9' => $request['sales_label_7'],
-        'show_income_1' => $request['show_income_1'],
-        'show_income_2' => $request['show_income_2'],
-        'show_income_3' => $request['show_income_3'],
-        'show_income_4' => $request['show_income_4'],
-        'show_income_5' => $request['show_income_5'],
-        'show_income_6' => $request['show_income_6'],
-        'show_income_7' => $request['show_income_7'],
-        'show_income_8' => $request['show_income_8'],
-        'show_income_9' => $request['show_income_9'],
-        'income_label_1' => $request['income_label_1'],
-        'income_label_2' => $request['income_label_2'],
-        'income_label_3' => $request['income_label_3'],
-        'income_label_4' => $request['income_label_4'],
-        'income_label_5' => $request['income_label_5'],
-        'income_label_6' => $request['income_label_6'],
-        'income_label_7' => $request['income_label_7'],
-        'income_label_8' => $request['income_label_8'],
-        'income_label_9' => $request['income_label_9']
-    
-    ), array(
-        'ID' => $request['id']
-    ), array(
-        
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s'
-    
-    ), array(
-        '%d'
-    ));
-    
-    */
+
     
     $data = array(
         'show_sales_1' => $request['show_sales_1'],
@@ -840,9 +739,8 @@ function save_closing_settings($request)
         '%s');
     
             
-    $id = $_GET['id'];
+    $id = $request['id'];
     if ($id) {
-        //$data[] =   'ID' => $request['id'];
         $data['ID'] = $request['id'];
         $format[] =  '%d';
     }
@@ -864,7 +762,7 @@ function save_closing_settings($request)
     // die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
     // }
     
-    return new WP_REST_Response($debug, 200);
+    return new WP_REST_Response($data, 200);
 }
 
 function location_search($request)
@@ -877,6 +775,14 @@ function location_search($request)
     SELECT $table_name.* 
     FROM $table_name
  ";
+
+        $sql[] = " deleted = 0 ";
+        
+        if (! empty($sql)) {
+            $query .= ' WHERE ' . implode(' AND ', $sql);
+        }
+        
+    
     
     $query_results = $wpdb->get_results($query, OBJECT);
     
@@ -894,22 +800,22 @@ function closings_search($request)
     FROM $table_name
  ";
     
-    $startDate = $_GET['start_date'];
+    $startDate = $request['start_date'];
     
     if ($startDate) {
         $sql[] = " closing_date >= '$startDate' ";
     }
     
-    $endDate = $_GET['end_date'];
+    $endDate = $request['end_date'];
     if ($endDate) {
         $sql[] = " closing_date <= '$endDate' ";
     }
     
-    $location_name = $_GET['location_name'];
+    $location_name = $request['location_name'];
     if ($location_name) {
         $sql[] = " location_name = '$location_name' ";
     }
-    $deleted = $_GET['deleted'];
+    $deleted = $request['deleted'];
     if ($deleted) {
         //so need to show deleted and non-deleted, so let's not add a filter
     } else {
