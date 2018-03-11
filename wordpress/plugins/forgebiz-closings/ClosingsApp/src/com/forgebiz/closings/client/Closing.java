@@ -249,7 +249,7 @@ this.open_10_dollars = open_10_dollars;
 }-*/;
 
 public final  native void setOpen20Dollars(double open_20_dollars)   /*-{
-this.open_10_dollars = open_10_dollars;
+this.open_20_dollars = open_20_dollars;
 }-*/;
 
 public final  native void setOpen5Dollars(double open_5_dollars)   /*-{
@@ -283,7 +283,7 @@ this.close_10_dollars = close_10_dollars;
 }-*/;
 
 public final  native void setClose20Dollars(double close_20_dollars)   /*-{
-this.close_10_dollars = close_10_dollars;
+this.close_20_dollars = close_20_dollars;
 }-*/;
 
 public final  native void setClose5Dollars(double close_5_dollars)   /*-{

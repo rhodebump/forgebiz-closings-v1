@@ -20,10 +20,12 @@
    <td>
    	<label>Location</label><br/>
        <g:ListBox ui:field="locationListBox"/>
-       
-       <br/>
-       <label><g:SimpleCheckBox ui:field="showDeletedCheckbox"/><span>Show Deleted</span></label>
    </td>
+      <td>
+        			<label>Deleted		</label><br/>
+     <g:SimpleCheckBox ui:field="showDeletedCheckbox"/>
+   </td>
+   
    </tr>
 
 </table>

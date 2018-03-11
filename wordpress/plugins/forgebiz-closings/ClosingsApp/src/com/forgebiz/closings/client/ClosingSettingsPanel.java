@@ -235,7 +235,6 @@ public class ClosingSettingsPanel extends VerticalPanel {
 		ClosingsApp.setNonce(builder);
 		builder.setHeader("Content-Type", "application/json");
 		String postData = JsonUtils.stringify(closingSettings);
-		//closingsApp.displayMessage("postData: " + postData);
 		GWT.log("postData:" + postData);
 		try {
 			builder.sendRequest(postData, new RequestCallback() {
@@ -268,21 +267,22 @@ public class ClosingSettingsPanel extends VerticalPanel {
 		
 		DecoratorPanel decPanel = new DecoratorPanel();
 		add(decPanel);
-		VerticalPanel vp = new VerticalPanel();
-		decPanel.add(vp);
+		HorizontalPanel horizontalPanel = new HorizontalPanel();
+		decPanel.add(horizontalPanel);
 		if (display == false) {
 			checkbox.setValue(false);
 		} else {
 			checkbox.setValue(true);
 		}
 		
-		Label checkboxLabel = new Label("Display " + prompt);
-		vp.add(checkboxLabel);
-		vp.add(checkbox);
+		//checkbox.set
+		Label checkboxLabel = new Label("Display?");
+		horizontalPanel.add(checkboxLabel);
+		horizontalPanel.add(checkbox);
 		Label textboxLabel = new Label("Label for " + prompt);
-		vp.add(textboxLabel);
+		horizontalPanel.add(textboxLabel);
 		textbox.setValue(labelText);
-		vp.add(textbox);
+		horizontalPanel.add(textbox);
 	}
 	
 	public ClickHandler cancelHandler = new ClickHandler() {

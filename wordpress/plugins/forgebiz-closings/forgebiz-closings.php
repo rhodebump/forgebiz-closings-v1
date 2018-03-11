@@ -154,7 +154,7 @@ function fbc_install()
     $location_sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		location_name varchar(100) NOT NULL,
-		notification_email_addresses varchar(255) NOT NULL,	
+		notification_email_addresses varchar(1000) NOT NULL,	
 		deleted  bit(1) NOT NULL DEFAULT 0,	
 		PRIMARY KEY  (id)
 	) $charset_collate;";
@@ -216,9 +216,9 @@ function fbc_install_data()
     
     ));
     
-     if ($wpdb->last_error) {
-     die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
-     }
+    if ($wpdb->last_error) {
+        die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
+    }
     
     $table_name = getLocationTableName($wpdb);
     $wpdb->insert($table_name, array(
@@ -407,9 +407,9 @@ add_action('rest_api_init', function () {
         }
     ));
     
-    register_rest_route('forgebiz-closings/v1', '/closing/(?P<id>\d+)', array(
+    register_rest_route('forgebiz-closings/v1', '/closing/save', array(
         'methods' => 'POST',
-        'callback' => 'save_closing',
+        'callback' => 'closing_save',
         'permission_callback' => function () {
             return current_user_can('edit_others_posts');
         }
@@ -431,46 +431,43 @@ add_action('rest_api_init', function () {
     ));
 });
 
-    function location_save($request)
+function location_save($request)
 {
-    //$data = json_decode(file_get_contents("php://input"));
-    
+    // $data = json_decode(file_get_contents("php://input"));
     global $wpdb;
     
     $table_name = getLocationTableName($wpdb);
     
-    $data =  array(
+    $data = array(
         'location_name' => $request['location_name'],
-        'notification_email_addresses' => $request['notification_email_addresses']);
+        'notification_email_addresses' => $request['notification_email_addresses']
+    );
     $format = array(
         
         '%s',
-        '%s');
-        
-            
+        '%s'
+    );
+    
     $id = $request['id'];
     if ($id) {
         $data['ID'] = $request['id'];
-        $format[] =  '%d';
+        $format[] = '%d';
     }
     
     $deleted = $request['deleted'];
     if ($deleted) {
-        $data['deleted'] =  $deleted;
-        $format[] =  '%d';
+        $data['deleted'] = $deleted;
+        $format[] = '%d';
     }
     
-
-
-    $result = $wpdb->replace($table_name,$data, $format);    
-
+    $result = $wpdb->replace($table_name, $data, $format);
     
     if (false === $result) {
         
         $data = $wpdb->last_error;
     }
     
-   // $debug = var_export($wpdb->last_query, true);
+    // $debug = var_export($wpdb->last_query, true);
     
     // if ($wpdb->last_error) {
     // die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
@@ -479,7 +476,7 @@ add_action('rest_api_init', function () {
     return new WP_REST_Response($data, 200);
 }
 
-function save_closing($request)
+function closing_save($request)
 {
     $data = json_decode(file_get_contents("php://input"));
     
@@ -487,8 +484,8 @@ function save_closing($request)
     
     $table_name = getClosingTableName($wpdb);
     
-    //wpdb::replace( string $table, array $data, array|string $format = null )
-    //wpdb::update( string $table, array $data, array $where, array|string $format = null, array|string $where_format = null )
+    // wpdb::replace( string $table, array $data, array|string $format = null )
+    // wpdb::update( string $table, array $data, array $where, array|string $format = null, array|string $where_format = null )
     
     $data = array(
         'sales_1' => $request['sales_1'],
@@ -510,12 +507,11 @@ function save_closing($request)
         'income_8' => $request['income_8'],
         'income_9' => $request['income_9'],
         
-        
         'submitted' => $request['submitted'],
         'deleted' => $request['deleted'],
-        'last_update' =>  current_time( 'mysql' )
-        ) ;
-        
+        'last_update' => current_time('mysql')
+    );
+    
     $format = array(
         
         '%d',
@@ -544,82 +540,39 @@ function save_closing($request)
     
     );
     
-        
     $id = $request['id'];
     if ($id) {
-        //$data[] =   'ID' => $request['id'];
+        // $data[] = 'ID' => $request['id'];
         $data['ID'] = $request['id'];
-        $format[] =  '%d';
+        $format[] = '%d';
     } else {
-        $data['last_update'] = current_time( 'mysql' );
-        $format[] =  '%s';
-        
 
-        
+        $data['date_created'] = current_time('mysql');
+        $format[] = '%s';
     }
     
-    
-    
-    $result = $wpdb->replace($table_name,$data, $format);    
+    $result = $wpdb->replace($table_name, $data, $format);
+    $submitted = $request['submitted'];
+    if ($submitted) {
+        
+        // need to send notifications
+        // lookup location
+        $locations = get_location_by_id($location_id);
+        $location = $locations[0];
+        $notification_email_addresses = $location['notification_email_addresses'];
+        $email_address_array = explode("\n", $notification_email_addresses);
+        $body = get_closing_body($data);
+        
+        foreach ($email_address_array as $email_address) {
+            $subject = 'forgebiz closing submit notification';
+            $headers = array(
+                'Content-Type: text/html; charset=UTF-8'
+            );
+            wp_mail($email_address, $subject, $body, $headers);
+        }
+    }
     
 
-    
-    /*
-        $result = $wpdb->replace($table_name, array(
-        'sales_1' => $request['sales_1'],
-        'sales_2' => $request['sales_2'],
-        'sales_3' => $request['sales_3'],
-        'sales_4' => $request['sales_4'],
-        'sales_5' => $request['sales_5'],
-        'sales_6' => $request['sales_6'],
-        'sales_7' => $request['sales_7'],
-        'sales_8' => $request['sales_8'],
-        'sales_9' => $request['sales_9'],
-        'income_1' => $request['income_1'],
-        'income_2' => $request['income_2'],
-        'income_3' => $request['income_3'],
-        'income_4' => $request['income_4'],
-        'income_5' => $request['income_5'],
-        'income_5' => $request['income_5'],
-        'income_7' => $request['income_7'],
-        'income_8' => $request['income_8'],
-        'income_9' => $request['income_9'],
-        
-        
-        'submitted' => $request['submitted'],
-        'deleted' => $request['deleted']      
-    
-    ), array(
-        'ID' => $request['id']
-    ), array(
-        
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        
-        '%d',
-        '%d' 
-    
-    ), array(
-        '%d'
-    ));
-    */
     
     // echo $wpdb->last_error;
     // die();
@@ -638,6 +591,30 @@ function save_closing($request)
     return new WP_REST_Response($debug, 200);
 }
 
+function get_closing_body($closing)
+{
+    $body = "<h1>Closing details</h1>";
+    $body .= "<table>";
+   
+
+    $keys = array_keys($closing);
+    
+    foreach ($keys as $key) {
+        $keyvalue = $closing[$key];
+        $body .= "<tr>";
+        $body .= "<td>";
+        $body .= $key;
+        $body .= "</td>";
+        $body .= "<td>";
+        $body .= $keyvalue;
+        $body .= "</td>";
+        $body .= "<tr>";
+    }
+    $body .= "</table>";
+    
+    return $body;
+}
+
 function save_closing_settings($request)
 {
     
@@ -652,8 +629,6 @@ function save_closing_settings($request)
     // wp_forgebiz_labels
     // $data = array("where" => "do we go");
     $table_name = getClosingSettingTableName($wpdb);
-    
-
     
     $data = array(
         'show_sales_1' => $request['show_sales_1'],
@@ -695,7 +670,6 @@ function save_closing_settings($request)
     
     );
     
-    
     $format = array(
         
         '%d',
@@ -736,17 +710,16 @@ function save_closing_settings($request)
         '%s',
         '%s',
         '%s',
-        '%s');
+        '%s'
+    );
     
-            
     $id = $request['id'];
     if ($id) {
         $data['ID'] = $request['id'];
-        $format[] =  '%d';
+        $format[] = '%d';
     }
     
-    
-        $result = $wpdb->replace($table_name,$data, $format);   
+    $result = $wpdb->replace($table_name, $data, $format);
     
     // echo $wpdb->last_error;
     // die();
@@ -775,24 +748,43 @@ function location_search($request)
     SELECT $table_name.* 
     FROM $table_name
  ";
-
-        $sql[] = " deleted = 0 ";
-        
-        if (! empty($sql)) {
-            $query .= ' WHERE ' . implode(' AND ', $sql);
-        }
-        
     
+    $sql[] = " deleted = 0 ";
+    
+    if (! empty($sql)) {
+        $query .= ' WHERE ' . implode(' AND ', $sql);
+    }
     
     $query_results = $wpdb->get_results($query, OBJECT);
     
     return new WP_REST_Response($query_results, 200);
 }
 
+function get_location_by_id($id)
+{
+    global $wpdb;
+    
+    $table_name = getLocationTableName($wpdb);
+    
+    $query = "
+    SELECT $table_name.*
+    FROM $table_name
+ ";
+    
+    $sql[] = " id = $id ";
+    
+    if (! empty($sql)) {
+        $query .= ' WHERE ' . implode(' AND ', $sql);
+    }
+    
+    $query_results = $wpdb->get_results($query, OBJECT);
+    return $query_results;
+}
+
 function closings_search($request)
 {
     global $wpdb;
-
+    
     $table_name = getClosingTableName($wpdb);
     
     $query = "
@@ -811,19 +803,27 @@ function closings_search($request)
         $sql[] = " closing_date <= '$endDate' ";
     }
     
+    if (!$startDate && !$enddate) {
+        //no date parms submitted, let's default to yesterday
+      //  $sql[] = " closing_date >= '$startDate' ";
+        
+    }
+    
     $location_name = $request['location_name'];
     if ($location_name) {
         $sql[] = " location_name = '$location_name' ";
     }
     $deleted = $request['deleted'];
     if ($deleted) {
-        //so need to show deleted and non-deleted, so let's not add a filter
+        // so need to show deleted and non-deleted, so let's not add a filter
     } else {
         $sql[] = " deleted = 0 ";
     }
     
-    
-    
+    $id = $request['id'];
+    if ($id) {
+        $sql[] = " id = $id ";
+    }
     
     if (! empty($sql)) {
         $query .= ' WHERE ' . implode(' AND ', $sql);

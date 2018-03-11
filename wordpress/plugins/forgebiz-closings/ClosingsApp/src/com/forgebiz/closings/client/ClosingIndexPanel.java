@@ -1,12 +1,12 @@
 package com.forgebiz.closings.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.cell.client.AbstractEditableCell;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -17,11 +17,9 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -34,113 +32,26 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 //import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimpleCheckBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-//import com.google.gwt.view.client.DefaultSelectionEventManager;
-//import com.google.gwt.view.client.MultiSelectionModel;
-//import com.google.gwt.view.client.ProvidesKey;
-//import com.google.gwt.view.client.SelectionModel;
-//import com.google.gwt.view.client.SingleSelectionModel;
-import com.ndg.gwt.*;
 
 public class ClosingIndexPanel extends Composite {
 	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
 
-	AsyncCallback gotSettingsCallback = new AsyncCallback() {
-		public void onFailure(Throwable throwable) {
-		}
-
-		public void onSuccess(Object response) {
-			Closing closing = (Closing) JavaScriptObject.createObject().cast();
-				ClosingSettings closingSettings = (ClosingSettings) response;
-			editClosing( closing,  closingSettings);
-
-
-		}
-	};
-	
-	
-/*
-	
-	public void createClosing() {
-    SomeServiceAsync someService = GWT.create(SomeService.class);
-    ParallelCallback fooCallback = new ParallelCallback();
-    ParallelCallback barCallback = new ParallelCallback();
-    ParentCallback parent = new ParentCallback(fooCallback, barCallback) {
-        public void handleSuccess() {
-            doSomething(getCallbackData(1), getCallbackData(2));
-        }
-    };
-    someService.foo(fooCallback);
-    someService.bar(barCallback);
-}
-*/
-
-/*
-	public void createClosing() {
-   // SomeServiceAsync someService = GWT.create(SomeService.class);
-    ParallelCallback fooCallback = new ParallelCallback();
-    ParallelCallback barCallback = new ParallelCallback();
-    ParentCallback parent = new ParentCallback(fooCallback, barCallback) {
-        public void handleSuccess() {
-            editClosing(getCallbackData(1), getCallbackData(2));
-        }
-    };
-    //someService.foo(fooCallback);
-    Closing closing = (Closing) JavaScriptObject.createObject().cast();
-	ClosingPanel.saveClosing(closing, fooCallback);
-		
-	ClosingsApp.fetchClosingSettings(barCallback);
-    //someService.bar(barCallback);
-}
-
-*/
 	public ClickHandler createNewClosingHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
-			// new closing panel
-			// how to swap out the panel?
-			//closingsApp.fetchClosingSettings(newClosingCallback);
-			//createClosing();
-			//Closing closing = (Closing) JavaScriptObject.createObject().cast();
-				ClosingsApp.fetchClosingSettings(gotSettingsCallback);
-		}
-	};
-	
-	
-
-	private void editClosing(Closing closing, ClosingSettings closingSettings) {
-					//ClosingSettings closingSettings = (ClosingSettings) response;
-			//CashPanel openCashPanel = new CashPanel();
-			//CashPanel closeCashPanel = new CashPanel();
-			//SalesPanel salesPanel = new SalesPanel(closingSettings);
-			//IncomePanel incomePanel = new IncomePanel(closingSettings);
-			//Button saveButton = new Button();
-
-			//DateBox closingDateBox = new DateBox();
-			//ListBox locationListBox = new ListBox();
+			GWT.log("createNewClosingHandler click");
+			Closing closing = (Closing) JavaScriptObject.createObject().cast();
 			ClosingPanel closingPanel = new ClosingPanel();
 			closingPanel.setClosing(closing);
-			
 			ClosingsApp.getInstance().swapMain(closingPanel);
-			
-			//Closing closing  = null;
-		//	ClosingPanel closingPanel = new ClosingPanel(closingsApp, closingSettings, openCashPanel, closeCashPanel,
-		//			salesPanel, incomePanel, saveButton, closingDateBox, locationListBox, closing);
-			//openCashPanel.setClosingPanel(closingPanel);
-			//closeCashPanel.setClosingPanel(closingPanel);
-			//RootPanel.get("closingsMain").clear();
-			//RootPanel.get("closingsMain").add(closingPanel);
-
-
-	}
-
+			// ClosingsApp.fetchClosingSettings(gotSettingsCallback);
+		}
+	};
 
 	@UiField
 	SimpleCheckBox showDeletedCheckbox;
-	
 
 	@UiField
 	DateBox startDatePicker = new DateBox();
@@ -154,6 +65,8 @@ public class ClosingIndexPanel extends Composite {
 	@UiField
 	Button searchButton = new Button("Search");
 
+	@UiField
+	Button createButton = new Button("Create Closing");
 
 	AsyncCallback gotLocationsCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
@@ -163,6 +76,8 @@ public class ClosingIndexPanel extends Composite {
 			GWT.log("openSettingCallback.onSuccess");
 
 			JsArray<Location> records = (JsArray<Location>) response;
+			locationListBox.addItem("All Locations", "");
+
 			for (int i = 0; i < records.length(); i++) {
 				Location location = records.get(i);
 
@@ -188,39 +103,8 @@ public class ClosingIndexPanel extends Composite {
 			closings.add(records.get(i));
 		}
 
-		//opener
-		//closer
-		//close date
-		//gross sales
-		//trips
-		//sales tax
-		//actions, edit
-		
-		// JsArray<Closing> records =(JsArray<Closing>) response;
 		CellTable<Closing> table = new CellTable<Closing>();
-		
-		/*
-		 SelectionModel<Closing> selectionModel = new SingleSelectionModel<Closing>(
-		        KEY_PROVIDER);
-		 table.setSelectionModel(selectionModel,
-		        DefaultSelectionEventManager.<Closing> createCheckboxManager());
-		    
-		    
 
-
-		 Column<Closing, Boolean> checkColumn = new Column<Closing, Boolean>(
-			        new CheckboxCell(true, false)) {
-			      @Override
-			      public Boolean getValue(Closing object) {
-			        // Get the value from the selection model.
-			        return selectionModel.isSelected(object);
-			      }
-			    };
-			    table.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
-			    
-			    */
-		
-		
 		// Create name column.
 		TextColumn<Closing> openerColumn = new TextColumn<Closing>() {
 			@Override
@@ -229,7 +113,7 @@ public class ClosingIndexPanel extends Composite {
 			}
 		};
 		table.addColumn(openerColumn, "Opener");
-		
+
 		TextColumn<Closing> closerColumn = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
@@ -237,7 +121,7 @@ public class ClosingIndexPanel extends Composite {
 			}
 		};
 		table.addColumn(closerColumn, "Closer");
-		
+
 		TextColumn<Closing> closeDateColumn = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
@@ -252,8 +136,7 @@ public class ClosingIndexPanel extends Composite {
 			}
 		};
 		table.addColumn(sales1Column, "Sales 1");
-		
-		
+
 		TextColumn<Closing> sales2Column = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
@@ -261,7 +144,7 @@ public class ClosingIndexPanel extends Composite {
 			}
 		};
 		table.addColumn(sales2Column, "Sales 2");
-		TextColumn<Closing> income1Column  = new TextColumn<Closing>() {
+		TextColumn<Closing> income1Column = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
 				return new Double(closing.getIncome1()).toString();
@@ -275,41 +158,21 @@ public class ClosingIndexPanel extends Composite {
 			}
 		};
 		table.addColumn(income2Column, "Income 2");
-		//http://samples.gwtproject.org/samples/Showcase/Showcase.html#!CwCellSampler
-		
-		/*
-	    Column<Closing, ButtonCell> column = new Column<Closing, ButtonCell>(cell) {
-	        @Override
-	        public C getValue(Closing object) {
-	          return getter.getValue(object);
-	        }
-	      };
-	      column.setFieldUpdater(fieldUpdater);
-	      if (cell instanceof AbstractEditableCell<?, ?>) {
-	        editableCells.add((AbstractEditableCell<?, ?>) cell);
-	      }
-	      table.addColumn(column, "Actiosn");
-	    }
-		
-*/
-		
-		Column<Closing, String> bc= addColumn(new ButtonCell(), "Edit", new GetValue<String>() {
-	        @Override
-	        public String getValue(Closing contact) {
-	          return "Click " + contact.getId();
-	        }
-	      }, new FieldUpdater<Closing, String>() {
-	        @Override
-	        public void update(int index, Closing closing, String value) {
-	         // Window.alert("You clicked " + object.getId());
-				//closingsApp.fetchClosingSettings(newClosingCallback);
+
+		Column<Closing, String> bc = addColumn(new ButtonCell(), "Edit", new GetValue<String>() {
+			@Override
+			public String getValue(Closing contact) {
+				return "View";
+			}
+		}, new FieldUpdater<Closing, String>() {
+			@Override
+			public void update(int index, Closing closing, String value) {
 				ClosingPanel closingPanel = new ClosingPanel();
 				closingPanel.setClosing(closing);
-	        }
-	      });
+			}
+		});
 
-	    
-	      table.addColumn(bc, "Actions");
+		table.addColumn(bc, "Actions");
 
 		// Set the total row count. You might send an RPC request to determine the
 		// total row count.
@@ -337,23 +200,36 @@ public class ClosingIndexPanel extends Composite {
 		// contactList.addColumn(column, headerText);
 		return column;
 	}
+	// 2016-08-02 15:37 ISO 8601
+	// MySQL retrieves and displays DATETIME values in 'YYYY-MM-DD HH:MM:SS'
+
+	private String getDate(DateBox dateBox) {
+		if (dateBox.getValue() == null) {
+
+			return "";
+		} else {
+			DateTimeFormat dtf = DateTimeFormat.getFormat("yyyy-MM-dd");
+			return dtf.format(dateBox.getValue());
+		}
+
+	}
 
 	private ClickHandler searchHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			GWT.log("searchHandler.onClick");
-			String base = ClosingsApp.getURL("/closing/search");
-			String url = URL.encode(base);
-			url = url + "?location_id=" + locationListBox.getSelectedValue();
-			url = url + "&start_date=" + startDatePicker.getValue().toString();
-			url = url + "&end_date=" + endDatePicker.getValue().toString();
-			url = url + "&deleted=" + showDeletedCheckbox.getValue().toString();
-			
-
-
-			GWT.log("url = " + url);
-			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-			ClosingsApp.setNonce(builder);
 			try {
+				String base = ClosingsApp.getURL("/closing/search");
+				String url = URL.encode(base);
+
+				url = url + "?location_id=" + locationListBox.getSelectedValue();
+				url = url + "&start_date=" + getDate(startDatePicker);
+				url = url + "&end_date=" + getDate(endDatePicker);
+				url = url + "&deleted=" + showDeletedCheckbox.getValue().toString();
+
+				GWT.log("url = " + url);
+				RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+				ClosingsApp.setNonce(builder);
+
 				builder.sendRequest(null, new RequestCallback() {
 					public void onError(Request request, Throwable exception) {
 						ClosingsApp.getInstance().displayError("Couldn't retrieve JSON : " + exception.getMessage());
@@ -366,30 +242,30 @@ public class ClosingIndexPanel extends Composite {
 							displayClosings(response);
 						} else {
 							GWT.log("bad result " + response.getStatusCode());
-							ClosingsApp.getInstance().displayError("Couldn't retrieve JSON (" + response.getStatusText() + ")");
+							ClosingsApp.getInstance()
+									.displayError("Couldn't retrieve JSON (" + response.getStatusText() + ")");
 						}
 					}
 				});
-			} catch (RequestException e) {
-				ClosingsApp.getInstance().displayError("Couldn't retrieve JSON : " + e.getMessage());
+			} catch (Exception e) {
+				ClosingsApp.getInstance().displayError("Closing search failure : " + e.getMessage());
 			}
 		}
 	};
 
-	public ClosingIndexPanel(ClosingsApp closingsApp) {
+	// DateTimeFormat dtf = DateTimeFormat.getFormat("yyyy-MM-dd");
+	public ClosingIndexPanel() {
+
+		this.searchButton.addClickHandler(searchHandler);
+
+		ClosingsApp.getInstance().fetchLocations(gotLocationsCallback);
 		initWidget((Widget) binder.createAndBindUi(this));
-		this.startDatePicker.setFormat(
-				new DateBox.DefaultFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT)));
-		this.endDatePicker.setFormat(
-				new DateBox.DefaultFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT)));
+		this.startDatePicker.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
+		this.endDatePicker.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
 
-		this.searchButton.addClickHandler(this.searchHandler);
-
-		Button createClosingButton = new Button("New Closing");
-
-		createClosingButton.addClickHandler(this.createNewClosingHandler);
-
-		closingsApp.fetchLocations(gotLocationsCallback);
+		createButton.addClickHandler(this.createNewClosingHandler);
+		startDatePicker.setValue(new Date());
+		searchButton.click();
 
 	}
 

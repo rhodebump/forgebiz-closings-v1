@@ -11,7 +11,6 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -30,7 +29,9 @@ public class LocationPanel extends VerticalPanel {
 
 	Label notificationsLabel = new Label("Notification Email Addresses");
 	TextArea notificationsTextarea = new TextArea();
-
+	Label notificationsHelp = new Label("Enter each email address on its own line (ie user1@forgebiz.com\nuser2@forgebiz.com\nuser3@forgebiz.com");
+	
+	
 	Location location = (Location) JavaScriptObject.createObject().cast();
 	Button saveButton = new Button("Save");
 	Button cancelButton = new Button("Cancel");	
@@ -60,6 +61,7 @@ public class LocationPanel extends VerticalPanel {
 		add(notificationsLabel);
 		add(notificationsTextarea);
 
+		
 		HorizontalPanel hp =new HorizontalPanel();
 		add(hp);
 		hp.add(saveButton);

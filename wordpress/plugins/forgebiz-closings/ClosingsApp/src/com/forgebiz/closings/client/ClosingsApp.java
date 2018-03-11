@@ -194,7 +194,7 @@ public class ClosingsApp implements EntryPoint {
 		public void onClick(ClickEvent event) {
 			GWT.log("search handler");
 
-			ClosingIndexPanel closingsIndexPanel = new ClosingIndexPanel(ClosingsApp.this);
+			ClosingIndexPanel closingsIndexPanel = new ClosingIndexPanel();
 			swapMain(closingsIndexPanel);
 		}
 	};

@@ -4,7 +4,7 @@
     xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
   <g:HTMLPanel>
-  opener name
+
   <g:TextBox ui:field="openerNameTextBox"></g:TextBox>
   
   <g:TextBox ui:field="closerNameTextBox"></g:TextBox>  

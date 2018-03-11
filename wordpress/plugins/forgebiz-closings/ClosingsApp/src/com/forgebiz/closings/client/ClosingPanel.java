@@ -1,6 +1,7 @@
 package com.forgebiz.closings.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -17,24 +18,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsDate;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class ClosingPanel extends Composite {
 
 	private Closing closing = null;
-	/*
-	 * <g:Button ui:field="saveButton">Save</g:Button> <g:Button
-	 * ui:field="submitButton">Submit</g:Button>
-	 * 
-	 * <g:Button ui:field="deleteButton">Delete</g:Button>
-	 */
+
 
 	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
 
@@ -55,7 +47,6 @@ public class ClosingPanel extends Composite {
 	@UiField
 	TextArea notesTextArea;
 
-	private ClosingSettings closingSettings = null;
 	@UiField
 	CashPanel openCashPanel;
 	@UiField
@@ -73,13 +64,7 @@ public class ClosingPanel extends Composite {
 	@UiField
 	ListBox locationListBox = new ListBox();
 
-	/*
-	 * ListBox lb = new ListBox(); lb.addItem("foo"); lb.addItem("bar");
-	 * lb.addItem("baz"); lb.addItem("toto"); lb.addItem("tintin");
-	 * 
-	 * // Make enough room for all five items (setting this value to 1 turns it //
-	 * into a drop-down list). lb.setVisibleItemCount(5);
-	 */
+
 	AsyncCallback gotLocationsCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
 		}
@@ -97,23 +82,46 @@ public class ClosingPanel extends Composite {
 
 		}
 	};
+	
+	AsyncCallback saveClosingCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+			ClosingsApp.getInstance().displayError("Closing save failure:" + throwable.getMessage());
+		}
 
-	/*
-	 * ClosingsApp closingsApp, ClosingSettings closingSettings, CashPanel
-	 * openCashPanel, CashPanel closeCashPanel, SalesPanel salesPanel, IncomePanel
-	 * incomePanel, Button saveButton, DateBox closingDateBox, ListBox
-	 * locationListBox, Closing closing
-	 * 
-	 */
+		public void onSuccess(Object response) {
+			ClosingsApp.getInstance().displayError("Closing saved successfully");
+
+		}
+	};
+	
+	
+	AsyncCallback gotClosingSettingCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+		}
+
+		public void onSuccess(Object response) {
+			ClosingSettings closingSettings = (ClosingSettings) response;
+			
+			incomePanel.setClosingSettings(closingSettings);
+			incomePanel.setClosingPanel(ClosingPanel.this);
+			salesPanel.setClosingSettings(closingSettings);
+			salesPanel.setClosingPanel(ClosingPanel.this);
+
+		}
+	};
+
+
 	public ClosingPanel() {
-
-		this.saveButton.addClickHandler(this.saveHandler);
+		initWidget((Widget) binder.createAndBindUi(this));
+		
+		this.saveButton.addClickHandler(saveHandler);
 		this.submitButton.addClickHandler(submitHandler);
 		this.deleteButton.addClickHandler(deleteHandler);
 
-		initWidget((Widget) binder.createAndBindUi(this));
+
 		GWT.log("closingpanel");
 		closingsApp.fetchLocations(gotLocationsCallback);
+		closingsApp.fetchClosingSettings(gotClosingSettingCallback);
 
 	}
 
@@ -144,30 +152,7 @@ public class ClosingPanel extends Composite {
 		double difference = income_total - sales_total;
 		closing.setDifference(difference);
 
-		/*
-		 * double difference = 0.0D; closing.setDifference(difference);
-		 * closing.setGrossSales(); closing.setIncomeCash(); closing.setIncomeTotal();
-		 * closing.setOpenTotal(); closing.setTotalSales();
-		 * 
-		 */
-		/*
-		 * 
-		 * calculateOpenTotals(closing); calculateClosingTotals(closing);
-		 * calculateIncomeTotals(closing); calculateSalesTotals(closing);
-		 * calculateDiffTotal(closing);
-		 * 
-		 * function calculateDiffTotal(closing) { console.log("calculateDiffTotal"); var
-		 * totala, totalb, total, difference; totala = parseFloat(closing.totalA);
-		 * console.log("calculateDiffTotal totala=" + totala); totalb =
-		 * parseFloat(closing.totalB); console.log("calculateDiffTotal totalB=" +
-		 * totalb); total = totala - totalb; console.log("calculateDiffTotal total=" +
-		 * total); difference = total.toFixed(2);
-		 * console.log("calculateDiffTotal difference=" + difference);
-		 * closing.difference = difference; }
-		 * 
-		 * 
-		 * 
-		 */
+
 
 	}
 
@@ -178,7 +163,7 @@ public class ClosingPanel extends Composite {
 	public ClickHandler submitHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			closing.setSubmitted(true);
-			saveClosing(closing, null);
+			saveClosing(closing, saveClosingCallback);
 
 		}
 	};
@@ -195,24 +180,8 @@ public class ClosingPanel extends Composite {
 		public void onClick(ClickEvent event) {
 			GWT.log("saveHandler.onClick");
 
-			/*
-			 * 
-			 * 
-			 * close_total decimal(15,2) NOT NULL, closing_date datetime NOT NULL,
-			 * date_created datetime NOT NULL,
-			 * 
-			 * difference decimal(15,2) NOT NULL, gross_sales decimal(15,2) NOT NULL,
-			 * 
-			 * income_cash_store decimal(15,2) NOT NULL, income_total decimal(15,2) NOT
-			 * NULL, last_update datetime default NULL, location_id bigint(20) NOT NULL,
-			 * 
-			 * 
-			 * open_total decimal(15,2) NOT NULL, sub_total_sales decimal(15,2) NOT NULL,
-			 * totala decimal(15,2) NOT NULL, totalb decimal(15,2) NOT NULL, total_tips
-			 * decimal(15,2) NOT NULL,
-			 */
 
-			// JsDate closingDate = JsDate.create((double) closingDateBox.getValue());
+
 
 			closing.setClosingDate(closingDateBox.getValue());
 
@@ -239,23 +208,7 @@ public class ClosingPanel extends Composite {
 			closing.setSales8(ClosingsApp.getDoubleValue(salesPanel.income8TextBox));
 			closing.setSales9(ClosingsApp.getDoubleValue(salesPanel.income9TextBox));
 
-			/*
-			 * close_1_cent decimal(15,2) NOT NULL, close_5_cents decimal(15,2) NOT NULL,
-			 * close_10_cents decimal(15,2) NOT NULL, close_25_cents decimal(15,2) NOT NULL,
-			 * close_1_dollar decimal(15,2) NOT NULL, close_5_dollars decimal(15,2) NOT
-			 * NULL, close_20_dollars decimal(15,2) NOT NULL, close_50_dollars decimal(15,2)
-			 * NOT NULL, close_100_dollars decimal(15,2) NOT NULL,
-			 * 
-			 * open_100_dollars decimal(15,2) NOT NULL, open_10_cents decimal(15,2) NOT
-			 * NULL, open_10_dollars decimal(15,2) NOT NULL, open_1_cent decimal(15,2) NOT
-			 * NULL, open_1_dollar decimal(15,2) NOT NULL, open_20_dollars decimal(15,2) NOT
-			 * NULL, open_25_cents decimal(15,2) NOT NULL, open_50_dollars decimal(15,2) NOT
-			 * NULL, open_5_cents decimal(15,2) NOT NULL, open_5_dollars decimal(15,2) NOT
-			 * NULL,
-			 * 
-			 * 
-			 */
-			// openCashPanel
+
 
 			closing.setOpen1Cent(ClosingsApp.getDoubleValue(openCashPanel.open1Cent));
 			closing.setOpen5Cents(ClosingsApp.getDoubleValue(openCashPanel.open5Cents));
@@ -281,12 +234,12 @@ public class ClosingPanel extends Composite {
 			closing.setCloserName(closerNameTextBox.getValue());
 			closing.setNotes(notesTextArea.getValue());
 
-			saveClosing(closing, null);
+			saveClosing(closing, saveClosingCallback);
 		}
 	};
 
 	public static void saveClosing(Closing closing, AsyncCallback callback) {
-		String base = ClosingsApp.getURL("closing/" + closing.getId());
+		String base = ClosingsApp.getURL("/closing/save");
 		
 		String url = URL.encode(base);
 		GWT.log("url = " + url);
@@ -314,7 +267,7 @@ public class ClosingPanel extends Composite {
 
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
-						callback.onFailure(new Exception( response.getText()));
+						callback.onFailure(new Exception( "Closing Save error: " + response.getStatusCode()));
 
 					}
 				}

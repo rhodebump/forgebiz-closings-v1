@@ -8,13 +8,11 @@ public class SalesPanel extends BaseIncomeSalesPanel {
 	Label totalLabel = new Label("Total (Total B)");
 	TextBox totalTextBox = new TextBox();
 
-	private ClosingPanel closingPanel;
 
 	public SalesPanel() {
 	}
-
-	public SalesPanel(ClosingSettings closingSettings) {
-		super();
+	
+	public void setClosingSettings(ClosingSettings closingSettings) {
 		initControl(income1Label, income1TextBox, closingSettings.getShowSales1(),
 				closingSettings.getSalesLabel1());
 		initControl(income2Label, income2TextBox, closingSettings.getShowSales2(),
@@ -37,7 +35,12 @@ public class SalesPanel extends BaseIncomeSalesPanel {
 		add(totalLabel);
 		add(totalTextBox);
 		totalTextBox.setEnabled(false);
+		
+		
 	}
+	
+	
+
 
 	public void calculateAll() {
 		GWT.log("calculateAll2");
@@ -46,7 +49,5 @@ public class SalesPanel extends BaseIncomeSalesPanel {
 		this.totalTextBox.setText(new Double(total).toString());
 	}
 
-	public void setClosingPanel(ClosingPanel closingPanel) {
-		this.closingPanel = closingPanel;
-	}
+
 }
