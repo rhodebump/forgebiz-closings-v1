@@ -823,10 +823,7 @@ function closings_search($request)
         $last_error = var_export($wpdb->last_error, true);
         return new WP_REST_Response($last_error, 500);
     }
-    $data = array(
-        "querystr" => $querystr
-    );
-    // data.push();
+
     
     return new WP_REST_Response($query_results, 200);
 }

@@ -1,5 +1,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:datepicker='urn:import:com.google.gwt.user.datepicker.client'
+             xmlns:cellview='urn:import:com.google.gwt.user.cellview.client'
     xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
   <g:HTMLPanel>
@@ -36,7 +37,7 @@
 <g:Button ui:field="createButton">Create Closing</g:Button>
 
 
-<g:SimplePanel ui:field="resultsPanel"></g:SimplePanel>
+<cellview:CellTable ui:field="table"/>
     
       
           		  		

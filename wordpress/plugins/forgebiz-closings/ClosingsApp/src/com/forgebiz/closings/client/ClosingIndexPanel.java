@@ -43,13 +43,18 @@ public class ClosingIndexPanel extends Composite {
 		public void onClick(ClickEvent event) {
 			GWT.log("createNewClosingHandler click");
 			Closing closing = (Closing) JavaScriptObject.createObject().cast();
+			closing.setSubmitted(false);
+			closing.setDeleted(false);
 			ClosingPanel closingPanel = new ClosingPanel();
 			closingPanel.setClosing(closing);
 			ClosingsApp.getInstance().swapMain(closingPanel);
 			// ClosingsApp.fetchClosingSettings(gotSettingsCallback);
 		}
 	};
-
+	@UiField
+	CellTable<Closing> table;
+	
+	
 	@UiField
 	SimpleCheckBox showDeletedCheckbox;
 
@@ -103,81 +108,14 @@ public class ClosingIndexPanel extends Composite {
 			closings.add(records.get(i));
 		}
 
-		CellTable<Closing> table = new CellTable<Closing>();
 
-		// Create name column.
-		TextColumn<Closing> openerColumn = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return closing.getOpenerName();
-			}
-		};
-		table.addColumn(openerColumn, "Opener");
 
-		TextColumn<Closing> closerColumn = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return closing.getCloserName();
-			}
-		};
-		table.addColumn(closerColumn, "Closer");
-
-		TextColumn<Closing> closeDateColumn = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return closing.getCloseDate();
-			}
-		};
-		table.addColumn(closeDateColumn, "Close Date");
-		TextColumn<Closing> sales1Column = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return new Double(closing.getSales1()).toString();
-			}
-		};
-		table.addColumn(sales1Column, "Sales 1");
-
-		TextColumn<Closing> sales2Column = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return new Double(closing.getSales2()).toString();
-			}
-		};
-		table.addColumn(sales2Column, "Sales 2");
-		TextColumn<Closing> income1Column = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return new Double(closing.getIncome1()).toString();
-			}
-		};
-		table.addColumn(income1Column, "Income 1");
-		TextColumn<Closing> income2Column = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return new Double(closing.getIncome2()).toString();
-			}
-		};
-		table.addColumn(income2Column, "Income 2");
-
-		Column<Closing, String> bc = addColumn(new ButtonCell(), "Edit", new GetValue<String>() {
-			@Override
-			public String getValue(Closing contact) {
-				return "View";
-			}
-		}, new FieldUpdater<Closing, String>() {
-			@Override
-			public void update(int index, Closing closing, String value) {
-				ClosingPanel closingPanel = new ClosingPanel();
-				closingPanel.setClosing(closing);
-			}
-		});
-
-		table.addColumn(bc, "Actions");
 
 		// Set the total row count. You might send an RPC request to determine the
 		// total row count.
 		table.setRowCount(records.length(), true);
 		table.setRowData(0, closings);
+
 
 	}
 
@@ -261,6 +199,77 @@ public class ClosingIndexPanel extends Composite {
 	// DateTimeFormat dtf = DateTimeFormat.getFormat("yyyy-MM-dd");
 	public ClosingIndexPanel() {
 		initWidget((Widget) binder.createAndBindUi(this));
+		
+
+		// Create name column.
+		TextColumn<Closing> openerColumn = new TextColumn<Closing>() {
+			@Override
+			public String getValue(Closing closing) {
+				return closing.getOpenerName();
+			}
+		};
+		table.addColumn(openerColumn, "Opener");
+
+		TextColumn<Closing> closerColumn = new TextColumn<Closing>() {
+			@Override
+			public String getValue(Closing closing) {
+				return closing.getCloserName();
+			}
+		};
+		table.addColumn(closerColumn, "Closer");
+
+		TextColumn<Closing> closeDateColumn = new TextColumn<Closing>() {
+			@Override
+			public String getValue(Closing closing) {
+				return closing.getCloseDate();
+			}
+		};
+		table.addColumn(closeDateColumn, "Close Date");
+		TextColumn<Closing> sales1Column = new TextColumn<Closing>() {
+			@Override
+			public String getValue(Closing closing) {
+				return new Double(closing.getSales1()).toString();
+			}
+		};
+		table.addColumn(sales1Column, "Sales 1");
+
+		TextColumn<Closing> sales2Column = new TextColumn<Closing>() {
+			@Override
+			public String getValue(Closing closing) {
+				return new Double(closing.getSales2()).toString();
+			}
+		};
+		table.addColumn(sales2Column, "Sales 2");
+		TextColumn<Closing> income1Column = new TextColumn<Closing>() {
+			@Override
+			public String getValue(Closing closing) {
+				return new Double(closing.getIncome1()).toString();
+			}
+		};
+		table.addColumn(income1Column, "Income 1");
+		TextColumn<Closing> income2Column = new TextColumn<Closing>() {
+			@Override
+			public String getValue(Closing closing) {
+				return new Double(closing.getIncome2()).toString();
+			}
+		};
+		table.addColumn(income2Column, "Income 2");
+
+		Column<Closing, String> bc = addColumn(new ButtonCell(), "Edit", new GetValue<String>() {
+			@Override
+			public String getValue(Closing contact) {
+				return "View";
+			}
+		}, new FieldUpdater<Closing, String>() {
+			@Override
+			public void update(int index, Closing closing, String value) {
+				ClosingPanel closingPanel = new ClosingPanel();
+				closingPanel.setClosing(closing);
+			}
+		});
+
+		table.addColumn(bc, "Actions");
+		
 		
 		searchButton.addClickHandler(searchHandler);
 

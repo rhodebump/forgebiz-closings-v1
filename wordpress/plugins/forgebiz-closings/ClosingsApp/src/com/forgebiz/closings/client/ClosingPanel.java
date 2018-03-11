@@ -67,6 +67,7 @@ public class ClosingPanel extends Composite {
 
 	AsyncCallback gotLocationsCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
+			ClosingsApp.getInstance().displayError("Location fetch failure:" + throwable.getMessage());
 		}
 
 		public void onSuccess(Object response) {
