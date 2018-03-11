@@ -72,7 +72,6 @@ function fbc_install()
 		income_8 decimal(15,2) NOT NULL,
 		income_9 decimal(15,2) NOT NULL,		
 		income_cash_store decimal(15,2) NOT NULL,
-		income_total decimal(15,2) NOT NULL,
 		last_update datetime default NULL,
 		location_id bigint(20) NOT NULL,
 		notes varchar(2000) default NULL,
@@ -91,12 +90,16 @@ function fbc_install()
 		sub_total_sales decimal(15,2) NOT NULL,
 		submitted bit(1) NOT NULL,
 		sales_total decimal(15,2) NOT NULL,
-		income_total decimal(15,2) NOT NULL
+		income_total decimal(15,2) NOT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
     
     require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
+    if ($wpdb->last_error) {
+        die($wpdb->last_error);
+    }
+    
     
     $table_name = getClosingSettingTableName($wpdb);
     
@@ -148,6 +151,10 @@ function fbc_install()
 	) $charset_collate;";
     
     dbDelta($label_sql);
+    if ($wpdb->last_error) {
+        die($wpdb->last_error);
+    }
+    
     
     $table_name = getLocationTableName($wpdb);
     
@@ -160,7 +167,9 @@ function fbc_install()
 	) $charset_collate;";
     
     dbDelta($location_sql);
-    
+    if ($wpdb->last_error) {
+        die($wpdb->last_error);
+    }
     add_option('fbc_db_version', $fbc_db_version);
 }
 
@@ -217,9 +226,8 @@ function fbc_install_data()
     ));
     
     if ($wpdb->last_error) {
-        die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
+        die($wpdb->last_error);
     }
-    
     $table_name = getLocationTableName($wpdb);
     $wpdb->insert($table_name, array(
         
@@ -462,16 +470,10 @@ function location_save($request)
     
     $result = $wpdb->replace($table_name, $data, $format);
     
-    if (false === $result) {
-        
-        $data = $wpdb->last_error;
+    if ($wpdb->last_error) {
+        $last_error = var_export($wpdb->last_error, true);
+        return new WP_REST_Response($last_error, 500);
     }
-    
-    // $debug = var_export($wpdb->last_query, true);
-    
-    // if ($wpdb->last_error) {
-    // die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
-    // }
     
     return new WP_REST_Response($data, 200);
 }
@@ -572,21 +574,10 @@ function closing_save($request)
         }
     }
     
-
-    
-    // echo $wpdb->last_error;
-    // die();
-    
-    if (false === $result) {
-        
-        $data = $wpdb->last_error;
+    if ($wpdb->last_error) {
+        $last_error = var_export($wpdb->last_error, true);
+        return new WP_REST_Response($last_error, 500);
     }
-    
-    $debug = var_export($wpdb->last_query, true);
-    
-    // if ($wpdb->last_error) {
-    // die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
-    // }
     
     return new WP_REST_Response($debug, 200);
 }
@@ -721,19 +712,12 @@ function save_closing_settings($request)
     
     $result = $wpdb->replace($table_name, $data, $format);
     
-    // echo $wpdb->last_error;
-    // die();
+
     
-    if (false === $result) {
-        
-        $data = $wpdb->last_error;
+    if ($wpdb->last_error) {
+        $last_error = var_export($wpdb->last_error, true);
+        return new WP_REST_Response($last_error, 500);
     }
-    
-    $debug = var_export($wpdb->last_query, true);
-    
-    // if ($wpdb->last_error) {
-    // die('error=' . var_dump($wpdb->last_query) . ',' . var_dump($wpdb->error));
-    // }
     
     return new WP_REST_Response($data, 200);
 }
@@ -756,6 +740,11 @@ function location_search($request)
     }
     
     $query_results = $wpdb->get_results($query, OBJECT);
+    if ($wpdb->last_error) {
+        $last_error = var_export($wpdb->last_error, true);
+        return new WP_REST_Response($last_error, 500);
+     }
+    
     
     return new WP_REST_Response($query_results, 200);
 }
@@ -830,7 +819,10 @@ function closings_search($request)
     }
     
     $query_results = $wpdb->get_results($query, OBJECT);
-    
+    if ($wpdb->last_error) {
+        $last_error = var_export($wpdb->last_error, true);
+        return new WP_REST_Response($last_error, 500);
+    }
     $data = array(
         "querystr" => $querystr
     );
@@ -859,8 +851,10 @@ function get_closing_settings($request)
         "querystr" => $querystr
     );
     
-    // echo $wpdb->last_error;
-    // die();
+    if ($wpdb->last_error) {
+        $last_error = var_export($wpdb->last_error, true);
+        return new WP_REST_Response($last_error, 500);
+    }
     
     return new WP_REST_Response($results, 200);
 }

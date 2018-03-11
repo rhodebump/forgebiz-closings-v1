@@ -36,7 +36,10 @@ public class LocationIndexPanel extends Composite {
 
 	AsyncCallback gotLocationsCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
+			ClosingsApp.getInstance().displayError("Location search failure: " + throwable.getMessage());
 		}
+		
+		
 
 		public void onSuccess(Object response) {
 			GWT.log("openSettingCallback.onSuccess");

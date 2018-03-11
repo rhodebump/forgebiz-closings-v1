@@ -123,8 +123,8 @@ public class LocationPanel extends VerticalPanel {
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
 						ClosingsApp.getInstance().displayMessage(
-								"Could not save location "
-										+ response.getStatusText() );
+								"Could not save location:"
+										+ response.getText() );
 					}
 				}
 			});

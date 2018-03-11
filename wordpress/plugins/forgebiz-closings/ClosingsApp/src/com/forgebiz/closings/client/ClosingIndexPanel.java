@@ -214,58 +214,64 @@ public class ClosingIndexPanel extends Composite {
 
 	}
 
+	private void searchClosings() {
+		GWT.log("searchHandler.onClick");
+		try {
+			String base = ClosingsApp.getURL("/closing/search");
+			String url = URL.encode(base);
+
+			url = url + "?location_id=" + locationListBox.getSelectedValue();
+			url = url + "&start_date=" + getDate(startDatePicker);
+			url = url + "&end_date=" + getDate(endDatePicker);
+			url = url + "&deleted=" + showDeletedCheckbox.getValue().toString();
+
+			GWT.log("url = " + url);
+			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+			ClosingsApp.setNonce(builder);
+
+			builder.sendRequest(null, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					ClosingsApp.getInstance().displayError("Closing search failure: " + exception.getMessage());
+				}
+
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode()) {
+						GWT.log("good result " + response.getStatusText());
+
+						displayClosings(response);
+					} else {
+						GWT.log("bad result " + response.getStatusCode());
+						ClosingsApp.getInstance()
+								.displayError("Closing search failure: "  + response.getText());
+					}
+				}
+			});
+		} catch (Exception e) {
+			ClosingsApp.getInstance().displayError("Closing search failure : " + e.getMessage());
+		}
+		
+		
+	}
 	private ClickHandler searchHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
-			GWT.log("searchHandler.onClick");
-			try {
-				String base = ClosingsApp.getURL("/closing/search");
-				String url = URL.encode(base);
-
-				url = url + "?location_id=" + locationListBox.getSelectedValue();
-				url = url + "&start_date=" + getDate(startDatePicker);
-				url = url + "&end_date=" + getDate(endDatePicker);
-				url = url + "&deleted=" + showDeletedCheckbox.getValue().toString();
-
-				GWT.log("url = " + url);
-				RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-				ClosingsApp.setNonce(builder);
-
-				builder.sendRequest(null, new RequestCallback() {
-					public void onError(Request request, Throwable exception) {
-						ClosingsApp.getInstance().displayError("Couldn't retrieve JSON : " + exception.getMessage());
-					}
-
-					public void onResponseReceived(Request request, Response response) {
-						if (200 == response.getStatusCode()) {
-							GWT.log("good result " + response.getStatusText());
-
-							displayClosings(response);
-						} else {
-							GWT.log("bad result " + response.getStatusCode());
-							ClosingsApp.getInstance()
-									.displayError("Couldn't retrieve JSON (" + response.getStatusText() + ")");
-						}
-					}
-				});
-			} catch (Exception e) {
-				ClosingsApp.getInstance().displayError("Closing search failure : " + e.getMessage());
-			}
+			searchClosings();
 		}
 	};
 
 	// DateTimeFormat dtf = DateTimeFormat.getFormat("yyyy-MM-dd");
 	public ClosingIndexPanel() {
-
-		this.searchButton.addClickHandler(searchHandler);
+		initWidget((Widget) binder.createAndBindUi(this));
+		
+		searchButton.addClickHandler(searchHandler);
 
 		ClosingsApp.getInstance().fetchLocations(gotLocationsCallback);
-		initWidget((Widget) binder.createAndBindUi(this));
+
 		this.startDatePicker.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
 		this.endDatePicker.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
 
 		createButton.addClickHandler(this.createNewClosingHandler);
 		startDatePicker.setValue(new Date());
-		searchButton.click();
+		searchClosings();
 
 	}
 

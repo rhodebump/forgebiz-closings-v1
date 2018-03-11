@@ -267,7 +267,7 @@ public class ClosingPanel extends Composite {
 
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
-						callback.onFailure(new Exception( "Closing Save error: " + response.getStatusCode()));
+						callback.onFailure(new Exception( "Closing Save error: " + response.getText()));
 
 					}
 				}
