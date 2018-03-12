@@ -5,11 +5,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class SalesPanel extends BaseIncomeSalesPanel {
-	Label totalLabel = new Label("Total (Total B)");
-	TextBox totalTextBox = new TextBox();
+	Label totalLabel = new Label("Total (Total A)");
+
 
 
 	public SalesPanel() {
+
 	}
 	
 	public void setClosingSettings(ClosingSettings closingSettings) {
@@ -41,13 +42,6 @@ public class SalesPanel extends BaseIncomeSalesPanel {
 	
 	
 
-
-	public void calculateAll() {
-		GWT.log("calculateAll2");
-		double total = 0.0D;
-
-		this.totalTextBox.setText(new Double(total).toString());
-	}
 
 
 }

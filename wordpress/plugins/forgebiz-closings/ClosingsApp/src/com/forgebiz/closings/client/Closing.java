@@ -301,8 +301,11 @@ this.closing_date = closing_date;
 public final  native void setIncomeTotal(double income_total)     /*-{
 this.income_total = income_total;
 }-*/;
-public final native String getIncomeTotal()/*-{
-return this.income_total;
+public final native double getIncomeTotal()/*-{
+return this.difference;
+}-*/;
+public final native double getDifference()/*-{
+return this.difference;
 }-*/;
 
 
@@ -310,7 +313,7 @@ public final  native void setSalesTotal(double sales_total)    /*-{
 this.sales_total = sales_total;
 }-*/;
 
-public final native String getSalesTotal()/*-{
+public final native double getSalesTotal()/*-{
 return this.sales_total;
 }-*/;
 

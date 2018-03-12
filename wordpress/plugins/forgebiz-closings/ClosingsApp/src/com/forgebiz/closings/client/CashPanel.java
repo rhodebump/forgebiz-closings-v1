@@ -136,6 +136,6 @@ public class CashPanel extends VerticalPanel {
 
 	private void setCashTotal(double cashTotal) {
 		this.cashTotal = cashTotal;
-		this.totalTextBox.setText(new Double(cashTotal).toString());
+		this.totalTextBox.setText(ClosingPanel.getCurrency(cashTotal));
 	}
 }

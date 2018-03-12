@@ -23,14 +23,17 @@
 
 </fbc:CashPanel>
 
-<label for="openerName">Total Sales</label><br/>
+<label for="openerName">Total Sales:(Total A)</label><br/>
       		<g:TextBox ui:field="totalSalesTextBox"></g:TextBox><br/>
       		
       		
-<label for="openerName">Total Income</label><br/>
+<label for="openerName">Total Income:(Total B)</label><br/>
       		<g:TextBox ui:field="totalIncomeTextBox"></g:TextBox><br/>
       		
+  <label for="openerName">Difference (Total A - Total B) Should be 0 (zero)!</label><br/>
+      		<g:TextBox ui:field="differenceTextBox"></g:TextBox><br/>
       		
+      		    		
       		<label for="savedaysheet">Save closing will save your changes. You can continue working on the closing until you hit submit
                     </label>
     <g:Button  ui:field="saveButton">Save</g:Button>
@@ -65,7 +68,7 @@
                         
 <h2>Step 3, Sales</h2>
     		<fbc:SalesPanel ui:field="salesPanel"></fbc:SalesPanel>
-    		
+
     <h2>Step 4, Income</h2>		
     		
       		<fbc:IncomePanel ui:field="incomePanel"></fbc:IncomePanel>

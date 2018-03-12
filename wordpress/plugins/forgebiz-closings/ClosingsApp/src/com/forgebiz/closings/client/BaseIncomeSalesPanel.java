@@ -27,6 +27,9 @@ public class BaseIncomeSalesPanel extends VerticalPanel {
 	Label income9Label = new Label();
 	public  TextBox income9TextBox = new TextBox();
 
+	TextBox totalTextBox = new TextBox();
+	
+	
 	public void setCashTotalCash(double d) {
 	}
 
@@ -63,6 +66,7 @@ public class BaseIncomeSalesPanel extends VerticalPanel {
 	}
 	
 	public void setTotal(double total) {
+		totalTextBox.setValue(ClosingPanel.getCurrency(total));
 		this.total = total;
 	}
 	public void calculateAll() {

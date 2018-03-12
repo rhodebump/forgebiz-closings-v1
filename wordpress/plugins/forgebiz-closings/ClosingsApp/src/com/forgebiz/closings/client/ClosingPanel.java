@@ -1,5 +1,6 @@
 package com.forgebiz.closings.client;
 
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
@@ -42,6 +43,9 @@ public class ClosingPanel extends Composite {
 
 	@UiField
 	Button submitButton2;
+	
+	@UiField
+	TextBox differenceTextBox;
 	
 
 	@UiField
@@ -148,6 +152,11 @@ public class ClosingPanel extends Composite {
 		GWT.log("closingpanel");
 		closingsApp.fetchLocations(gotLocationsCallback);
 		closingsApp.fetchClosingSettings(gotClosingSettingCallback);
+		totalSalesTextBox.setEnabled(false);
+		totalIncomeTextBox.setEnabled(false);
+		differenceTextBox.setEnabled(false);
+		
+		
 
 	}
 
@@ -182,17 +191,53 @@ public class ClosingPanel extends Composite {
 	
 	private void updateControls() {
 
-		totalSalesTextBox.setValue(closing.getSalesTotal());
-		totalIncomeTextBox.setValue(closing.getIncomeTotal());
+		totalSalesTextBox.setValue(getCurrency(closing.getSalesTotal()));
+		totalIncomeTextBox.setValue(getCurrency(closing.getIncomeTotal()));
+		differenceTextBox.setValue(getCurrency(closing.getDifference()));
 		
 	}
-
+	static NumberFormat fmt = NumberFormat.getCurrencyFormat();
+	public static String getCurrency(double value) {
+		
+		return fmt.format(value);
+	}
+	 
+	 
 	@UiTemplate("ClosingPanel.ui.xml")
 	static abstract interface MyBinder extends UiBinder<Widget, ClosingPanel> {
+	}
+	
+	private boolean isNullOrEmpty(String val) {
+		
+		if (val == null) {
+			return true;
+			
+		}
+		if (val.trim().equals("")) {
+			return true;
+			
+			
+		}
+		return false;
 	}
 
 	public ClickHandler submitHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
+			
+			//is it valid for submit??
+			if (isNullOrEmpty(locationListBox.getSelectedValue())) {
+				
+				ClosingsApp.getInstance().displayError("Please choose a location");
+				return;
+			}
+			//is it valid for submit??
+			if (closingDateBox.getValue() == null) {
+				
+				ClosingsApp.getInstance().displayError("Please set a date");
+				return;
+			}
+			
+			
 			closing.setSubmitted(true);
 			saveClosing(closing, saveClosingCallback);
 

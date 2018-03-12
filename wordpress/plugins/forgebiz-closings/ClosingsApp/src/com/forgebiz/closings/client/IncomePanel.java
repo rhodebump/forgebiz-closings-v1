@@ -5,8 +5,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 
 public class IncomePanel extends BaseIncomeSalesPanel {
-	Label totalLabel = new Label("Gross Sales(Total A)");
-	TextBox totalTextBox = new TextBox();
+	Label totalLabel = new Label("Total(Total B)");
+	//TextBox totalTextBox = new TextBox();
 
 	Label cashTotalLabel = new Label("Cash (total closing cash from drawer with $100 subtracted)");
 	TextBox cashTotalTextBox = new TextBox();
