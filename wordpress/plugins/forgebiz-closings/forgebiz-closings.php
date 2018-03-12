@@ -313,6 +313,11 @@ class gwtApp
         $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
         $logo = $this->get_url_to_file('ClosingsApp/war/forgebiz-logo-forge.png');
         
+        $bootstrap_main_css = $this->auto_version_file('ClosingsApp/war/css/bootstrap.css');
+
+  
+  
+        
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         
