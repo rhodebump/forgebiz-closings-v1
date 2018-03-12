@@ -22,7 +22,23 @@
 <fbc:CashPanel ui:field="openCashPanel">
 
 </fbc:CashPanel>
+
+<label for="openerName">Total Sales</label><br/>
+      		<g:TextBox ui:field="totalSalesTextBox"></g:TextBox><br/>
       		
+      		
+<label for="openerName">Total Income</label><br/>
+      		<g:TextBox ui:field="totalIncomeTextBox"></g:TextBox><br/>
+      		
+      		
+      		<label for="savedaysheet">Save closing will save your changes. You can continue working on the closing until you hit submit
+                    </label>
+    <g:Button  ui:field="saveButton">Save</g:Button>
+    <label for="submitClosingButton">Submit closing will save your changes. You will not be able to make any changes after you do this</label>
+ <g:Button  ui:field="submitButton">Submit</g:Button>
+ 
+        
+                    
 </td>
 
 <td valign="top">
@@ -63,11 +79,11 @@
 
 
 
- <g:Button  ui:field="saveButton">Save</g:Button>
- <g:Button  ui:field="submitButton">Submit</g:Button>
- 
- <g:Button  ui:field="deleteButton">Delete</g:Button>
-      		
+    <g:Button  ui:field="saveButton2">Save</g:Button>
+ <g:Button  ui:field="submitButton2">Submit</g:Button>
+
+ <g:Button  ui:field="deleteButton">Delete</g:Button>   
+   <g:Button  ui:field="cancelButton">Cancel</g:Button>       		
 </g:HTMLPanel>
 
 </ui:UiBinder>

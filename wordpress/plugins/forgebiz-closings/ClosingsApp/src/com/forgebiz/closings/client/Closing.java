@@ -301,10 +301,20 @@ this.closing_date = closing_date;
 public final  native void setIncomeTotal(double income_total)     /*-{
 this.income_total = income_total;
 }-*/;
+public final native String getIncomeTotal()/*-{
+return this.income_total;
+}-*/;
+
 
 public final  native void setSalesTotal(double sales_total)    /*-{
 this.sales_total = sales_total;
 }-*/;
+
+public final native String getSalesTotal()/*-{
+return this.sales_total;
+}-*/;
+
+
 
 
   

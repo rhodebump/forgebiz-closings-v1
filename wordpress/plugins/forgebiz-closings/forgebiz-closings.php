@@ -311,6 +311,8 @@ class gwtApp
         
         $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
         $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
+        $logo = $this->get_url_to_file('ClosingsApp/war/forgebiz-logo-forge.png');
+        
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         
@@ -388,6 +390,14 @@ class gwtApp
         // Store for Last-Modified headers
         array_push($this->versions, $mtime);
         return $url;
+    }
+    public function get_url_to_file($path_to_file)
+    {
+        $file = $this->plugin_dir . $path_to_file;
+        if (! file_exists($file))
+            return false;
+            $url = $this->plugin_url . $path_to_file;
+            return $url;
     }
 
     /**
@@ -621,6 +631,13 @@ function closing_save($request)
     }
     
     $result = $wpdb->replace($table_name, $data, $format);
+    if ($wpdb->last_error) {
+        $last_error = var_export($wpdb->last_error, true);
+        
+        return new WP_REST_Response($wpdb->last_query, 500);
+    }
+    
+    
     $submitted = $request['submitted'];
     if ($submitted) {
         
@@ -641,12 +658,9 @@ function closing_save($request)
         }
     }
     
-    if ($wpdb->last_error) {
-        $last_error = var_export($wpdb->last_error, true);
-        return new WP_REST_Response($last_error, 500);
-    }
+
     
-    return new WP_REST_Response($debug, 200);
+    return new WP_REST_Response($data, 200);
 }
 
 function get_closing_body($closing)

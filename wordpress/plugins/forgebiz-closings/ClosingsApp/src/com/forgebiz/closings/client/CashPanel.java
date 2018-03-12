@@ -99,6 +99,8 @@ public class CashPanel extends VerticalPanel {
 
 		add(this.totalLabel);
 		add(this.totalTextBox);
+		
+		totalTextBox.setEnabled(false);
 
 		GWT.log("cashpanel #2");
 	}

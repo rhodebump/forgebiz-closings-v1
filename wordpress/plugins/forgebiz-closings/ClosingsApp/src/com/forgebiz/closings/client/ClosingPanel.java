@@ -11,6 +11,7 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -35,6 +36,13 @@ public class ClosingPanel extends Composite {
 
 	@UiField
 	Button submitButton;
+	
+	@UiField
+	Button saveButton2;
+
+	@UiField
+	Button submitButton2;
+	
 
 	@UiField
 	Button deleteButton;
@@ -55,6 +63,17 @@ public class ClosingPanel extends Composite {
 	SalesPanel salesPanel;
 	@UiField
 	IncomePanel incomePanel;
+	
+	
+	@UiField
+	TextBox totalIncomeTextBox;
+	
+	@UiField
+	TextBox totalSalesTextBox;
+	
+	
+	
+	
 
 	@UiField
 	DateBox closingDateBox;
@@ -117,6 +136,10 @@ public class ClosingPanel extends Composite {
 		
 		this.saveButton.addClickHandler(saveHandler);
 		this.submitButton.addClickHandler(submitHandler);
+		this.saveButton2.addClickHandler(saveHandler);
+		this.submitButton2.addClickHandler(submitHandler);
+		
+		this.closingDateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
 		this.deleteButton.addClickHandler(deleteHandler);
 
 		this.openCashPanel.setClosingPanel(this);
@@ -154,9 +177,14 @@ public class ClosingPanel extends Composite {
 		closing.setSalesTotal(sales_total);
 		double difference = income_total - sales_total;
 		closing.setDifference(difference);
+		updateControls();
+	}
+	
+	private void updateControls() {
 
-
-
+		totalSalesTextBox.setValue(closing.getSalesTotal());
+		totalIncomeTextBox.setValue(closing.getIncomeTotal());
+		
 	}
 
 	@UiTemplate("ClosingPanel.ui.xml")

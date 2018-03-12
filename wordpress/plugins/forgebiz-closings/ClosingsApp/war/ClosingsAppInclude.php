@@ -25,7 +25,7 @@ var WordpressForgebizSettings = {
       </div>
     </noscript>
 
-
+<img src="<?php echo $logo; ?>"/>
     <div id="closingsNav"></div>
             <div id="messagesPanel"></div>
     <div id="closingsMain"></div>

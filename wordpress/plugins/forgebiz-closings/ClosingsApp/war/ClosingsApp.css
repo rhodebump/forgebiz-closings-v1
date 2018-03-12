@@ -36,3 +36,8 @@ h2 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+input:disabled  {
+	
+	background-color: #eee;
+}
