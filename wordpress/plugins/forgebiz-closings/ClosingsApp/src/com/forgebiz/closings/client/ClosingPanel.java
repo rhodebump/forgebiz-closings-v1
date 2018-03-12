@@ -119,6 +119,8 @@ public class ClosingPanel extends Composite {
 		this.submitButton.addClickHandler(submitHandler);
 		this.deleteButton.addClickHandler(deleteHandler);
 
+		this.openCashPanel.setClosingPanel(this);
+		this.closeCashPanel.setClosingPanel(this);
 
 		GWT.log("closingpanel");
 		closingsApp.fetchLocations(gotLocationsCallback);

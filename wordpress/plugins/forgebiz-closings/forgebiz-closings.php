@@ -266,9 +266,7 @@ class gwtApp
         $this->api_route = '^api/forgebiz-closings/(.*)/?'; // Matches /api/weather/{position}
         $this->base_href = '/' . basename(dirname(__FILE__)) . '/'; // Matches /wordpress-angular-plugin/
                                                                     
-        // echo $this->base_href;
-                                                                    // die;
-                                                                    // /forgebiz-closings/
+
         
         add_filter('do_parse_request', array(
             $this,
@@ -291,7 +289,40 @@ class gwtApp
             $this,
             'closings_api'
         ), 1, 3);
+        
+       add_action('admin_menu', array($this,'forgebiz_closings_page_create'),1,3);
+
     }
+    //https://wordpress.stackexchange.com/questions/16415/passing-arguments-to-a-admin-menu-page-callback
+    
+    
+    function forgebiz_closings_page_create() {
+        $page_title = 'forgebiz closings';
+        $menu_title = 'forgebiz closings';
+        $capability = 'edit_others_posts';
+        $menu_slug = 'forgebiz_closings';
+        $function = 'forgebiz_closings_page_display';
+        $icon_url = '';
+        $position = 24;
+        
+        add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
+    }
+    public  function doPageInclude() {
+        
+        $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
+        $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
+        $plugin_url = $this->plugin_url;
+        $base_href = $this->base_href;
+        
+        $page_title = 'forgebiz closings | forgebiz.com';
+        // Browser caching for our main template
+        //$ttl = DAY_IN_SECONDS;
+        //header("Cache-Control: public, max-age=$ttl");
+        // Load index view
+        include_once ($this->plugin_dir . 'ClosingsApp/war/ClosingsAppInclude.php');
+        exit();
+    }
+    
 
     public function closings_api($wp)
     {
@@ -378,7 +409,7 @@ class gwtApp
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         
-        $page_title = 'Forgebiz Closings | forgebiz.com';
+        $page_title = 'forgebiz closings | forgebiz.com';
         // Browser caching for our main template
         $ttl = DAY_IN_SECONDS;
         header("Cache-Control: public, max-age=$ttl");
@@ -387,7 +418,15 @@ class gwtApp
         exit();
     }
 } // class gwtApp
-new gwtApp();
+global $gwtApp;
+$gwtApp = new gwtApp();
+
+
+
+
+
+
+
 
 add_action('rest_api_init', function () {
     // forgebiz_closing_settings
@@ -438,12 +477,40 @@ add_action('rest_api_init', function () {
         }
     ));
 });
+    /*
+    add_action('admin_menu', 'forgebiz_closings_page_create');
 
+
+     function forgebiz_closings_page_create() {
+        $page_title = 'forgebiz closings';
+        $menu_title = 'forgebiz closings';
+        $capability = 'edit_others_posts';
+        $menu_slug = 'forgebiz_closings';
+        $function = 'forgebiz_closings_page_display';
+        $icon_url = '';
+        $position = 24;
+        
+        add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
+    }
+    
+     function forgebiz_closings_page_display() {
+        // wp_redirect( "/forgebiz-cloddsings/" );
+        // exit;
+        echo("Hello");
+    }
+    */
+    function forgebiz_closings_page_display() {
+        // wp_redirect( "/forgebiz-cloddsings/" );
+        // exit;
+        //why must i create a new gwtApp
+        $gwtApp = new gwtApp();
+        $gwtApp -> doPageInclude();
+
+    }
+    
 function location_save($request)
 {
-    // $data = json_decode(file_get_contents("php://input"));
     global $wpdb;
-    
     $table_name = getLocationTableName($wpdb);
     
     $data = array(

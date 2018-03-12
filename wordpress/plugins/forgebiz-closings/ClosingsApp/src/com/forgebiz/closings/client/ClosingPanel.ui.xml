@@ -5,19 +5,19 @@
 
   <g:HTMLPanel>
 
-  <g:TextBox ui:field="openerNameTextBox"></g:TextBox>
-  
-  <g:TextBox ui:field="closerNameTextBox"></g:TextBox>  
 
-  <g:TextArea ui:field="notesTextArea"></g:TextArea>
+
   
 
-                    <datepicker:DateBox ui:field="closingDateBox"/>
-                        <g:ListBox ui:field="locationListBox"/>
     
 <table>
 <tr>
 <td valign="top">
+
+<label for="openerName">Opener's Name</label><br/>
+  <g:TextBox name="openerName" ui:field="openerNameTextBox"></g:TextBox>
+  
+  
 <h2>Step 1, Opening Totals</h2>
 <fbc:CashPanel ui:field="openCashPanel">
 
@@ -26,13 +26,27 @@
 </td>
 
 <td valign="top">
+<label for="closerNameTextBox"> Closer's Name</label><br/>
+ 
+  <g:TextBox ui:field="closerNameTextBox"></g:TextBox>  
 <h2>Step 2, Closing Totals</h2>
       		<fbc:CashPanel ui:field="closeCashPanel">
       		
 </fbc:CashPanel>
+<label for="notesTextArea">Notes (put comments here, notes, whatever)</label><br/>
+
+  <g:TextArea ui:field="notesTextArea"></g:TextArea>
+  
+  
 </td>
 
 <td valign="top">
+<label for="closingDateBox">Date</label><br/>
+
+                    <datepicker:DateBox ui:field="closingDateBox"/><br/>
+                        <g:ListBox ui:field="locationListBox"/>
+                        
+                        
 <h2>Step 3, Sales</h2>
     		<fbc:SalesPanel ui:field="salesPanel"></fbc:SalesPanel>
     		
