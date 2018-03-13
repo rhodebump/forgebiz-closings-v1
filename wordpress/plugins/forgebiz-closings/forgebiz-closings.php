@@ -421,6 +421,7 @@ class gwtApp
             return $continue;
         $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
         $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
+        $bootstrap_main_css = $this->auto_version_file('ClosingsApp/war/css/bootstrap.css');
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         

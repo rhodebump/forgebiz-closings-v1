@@ -6,6 +6,7 @@ ini_set( 'display_errors', 1 );
 <head>
     <link type="text/css" rel="stylesheet" href="<?php echo $main_css; ?>">
     <script type="text/javascript" language="javascript" src="<?php echo $main_js; ?>"></script>
+    <link type="text/css" rel="stylesheet" href="<?php echo $bootstrap_main_css; ?>">
 </head>
 <body>
 <?php

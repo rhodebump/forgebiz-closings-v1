@@ -1,92 +1,184 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:datepicker='urn:import:com.google.gwt.user.datepicker.client'
-                  xmlns:fbc='urn:import:com.forgebiz.closings.client'
-    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-
-  <g:HTMLPanel>
-
-
-
-  
-
-    
-<table>
-<tr>
-<td valign="top">
-
-<label for="openerName">Opener's Name</label><br/>
-  <g:TextBox name="openerName" ui:field="openerNameTextBox"></g:TextBox>
-  
-  
-<h2>Step 1, Opening Totals</h2>
-<fbc:CashPanel ui:field="openCashPanel">
-
-</fbc:CashPanel>
-
-<label for="openerName">Total Sales:(Total A)</label><br/>
-      		<g:TextBox ui:field="totalSalesTextBox"></g:TextBox><br/>
-      		
-      		
-<label for="openerName">Total Income:(Total B)</label><br/>
-      		<g:TextBox ui:field="totalIncomeTextBox"></g:TextBox><br/>
-      		
-  <label for="openerName">Difference (Total A - Total B) Should be 0 (zero)!</label><br/>
-      		<g:TextBox ui:field="differenceTextBox"></g:TextBox><br/>
-      		
-      		    		
-      		<label for="savedaysheet">Save closing will save your changes. You can continue working on the closing until you hit submit
-                    </label>
-    <g:Button  ui:field="saveButton">Save</g:Button>
-    <label for="submitClosingButton">Submit closing will save your changes. You will not be able to make any changes after you do this</label>
- <g:Button  ui:field="submitButton">Submit</g:Button>
- 
-        
-                    
-</td>
-
-<td valign="top">
-<label for="closerNameTextBox"> Closer's Name</label><br/>
- 
-  <g:TextBox ui:field="closerNameTextBox"></g:TextBox>  
-<h2>Step 2, Closing Totals</h2>
-      		<fbc:CashPanel ui:field="closeCashPanel">
-      		
-</fbc:CashPanel>
-<label for="notesTextArea">Notes (put comments here, notes, whatever)</label><br/>
-
-  <g:TextArea ui:field="notesTextArea"></g:TextArea>
-  
-  
-</td>
-
-<td valign="top">
-<label for="closingDateBox">Date</label><br/>
-
-                    <datepicker:DateBox ui:field="closingDateBox"/><br/>
-                        <g:ListBox ui:field="locationListBox"/>
-                        
-                        
-<h2>Step 3, Sales</h2>
-    		<fbc:SalesPanel ui:field="salesPanel"></fbc:SalesPanel>
-
-    <h2>Step 4, Income</h2>		
-    		
-      		<fbc:IncomePanel ui:field="incomePanel"></fbc:IncomePanel>
-      		  		
-</td>
-</tr>
-
-
-</table>
+	xmlns:datepicker='urn:import:com.google.gwt.user.datepicker.client'
+	xmlns:fbc='urn:import:com.forgebiz.closings.client' xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
 
 
 
-    <g:Button  ui:field="saveButton2">Save</g:Button>
- <g:Button  ui:field="submitButton2">Submit</g:Button>
+<g:HTMLPanel>
+		<div class="container">
 
- <g:Button  ui:field="deleteButton">Delete</g:Button>   
-   <g:Button  ui:field="cancelButton">Cancel</g:Button>       		
+
+			<form name="closingForm" role="form">
+
+				<div class="row">
+					<div class="col-4">
+						<div class="form-group">
+							<label for="openerName">Opener's Name</label>
+							<g:TextBox name="openerName" styleName="form-control"
+								ui:field="openerNameTextBox"></g:TextBox>
+
+						</div>
+
+
+					</div>
+				<div class="col-4">
+						<div class="form-group">
+							<label for="closername">Closer's Name</label>
+
+							<g:TextBox name="closername" styleName="form-control"
+								ui:field="closerNameTextBox"></g:TextBox>
+
+						</div>
+					</div>
+				<div class="col-4">
+						<div class="form-group">
+							<label for="closingDate">Date</label>
+
+							<p class="input-group">
+								<datepicker:DateBox styleName="form-control"
+									ui:field="closingDateBox" />
+
+
+							</p>
+
+						</div>
+
+					</div>
+
+
+				<div class="col-4">
+						<div class="form-group">
+							<label for="closingDate">Location</label>
+							<g:ListBox styleName="formControl" ui:field="locationListBox" />
+
+						</div>
+
+					</div>
+
+
+
+
+
+				</div>
+				<div class="row">
+					<div id="opening" class="col-4">
+						<h2>Step 1, Opening Totals</h2>
+			<fbc:CashPanel ui:field="openCashPanel">
+
+		</fbc:CashPanel>
+					</div>
+					<div id="closing" class="col-4">
+						<h2>Step 2, Closing Totals</h2>
+								<fbc:CashPanel ui:field="closeCashPanel">
+
+		</fbc:CashPanel>
+					</div>
+					<div id="sales" class="col-4">
+						<h2>Step 3, Sales</h2>
+	<fbc:SalesPanel ui:field="salesPanel"></fbc:SalesPanel>
+
+					</div>
+				</div>
+				<div class="row">
+					<div id="diff" class="col-4">
+						<div class="form-group totala">
+							<label for="totalA">Gross Sales:(total A):</label>
+
+									<g:TextBox ui:field="totalSalesTextBox" styleName="formControl"></g:TextBox>
+									
+						</div>
+						<div class="form-group totalb">
+							<label for="totalB">Total Income:(total B):</label>
+		<g:TextBox ui:field="totalIncomeTextBox"></g:TextBox>
+						</div>
+						<div class="form-group">
+							<label for="difference">Difference (total a - total b) Should be 0
+								(zero)!</label>
+								<g:TextBox ui:field="differenceTextBox" styleName="formControl"></g:TextBox>
+								
+						</div>
+
+						<div class="form-group noprint">
+							<label for="savedaysheet">Save closing will save your changes. You can
+								continue working on the closing until you hit submit
+							</label>
+								<g:Button ui:field="saveButton"  styleName="btn btn-primary">Save</g:Button>
+						</div>
+						<div class="form-group noprint">
+							<label for="submitClosingButton">Submit closing will save your changes. You will
+								not be able to make any changes after you do this</label>
+
+									<g:Button ui:field="submitButton" styleName="btn btn-primary">Submit</g:Button>
+									
+						</div>
+					</div>
+					<div class="col-4">
+						<div class="form-group notes">
+							<label for="notes" class="noprint">Notes (put comments here, notes,
+								whatever)</label>
+									<g:TextArea name="notes" visibleLines="20" ui:field="notesTextArea" styleName="form-control"></g:TextArea>
+									
+						</div>
+					</div>
+					<div id="income" class="col-4">
+						<h2>Step 4, Income</h2>
+		<fbc:IncomePanel ui:field="incomePanel"></fbc:IncomePanel>
+					</div>
+				</div>
+		
+			
+			
+					<g:Button ui:field="saveButton2" styleName="btn btn-primary">Save</g:Button>
+		<g:Button ui:field="submitButton2" styleName="btn btn-primary">Submit</g:Button>
+
+		<g:Button ui:field="deleteButton" styleName="btn btn-primary">Delete</g:Button>
+		<g:Button ui:field="cancelButton" styleName="btn btn-primary" >Cancel</g:Button>
+		
+				
+
+			</form>
+
+
+
+
+
+
+
+
+
+
+
+		<label for="openerName">Total Sales:(Total A)</label>
+	
+
+
+		<label for="openerName">Total Income:(Total B)</label>
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+		</div>
 </g:HTMLPanel>
-
 </ui:UiBinder>
