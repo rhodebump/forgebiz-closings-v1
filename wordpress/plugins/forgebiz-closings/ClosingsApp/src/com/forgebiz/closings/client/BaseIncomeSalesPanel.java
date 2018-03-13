@@ -40,7 +40,9 @@ public class BaseIncomeSalesPanel extends VerticalPanel {
 			add(label);
 			add(textBox);
 			addKeyUpHandler(textBox);
+			textBox.setStyleName("form-control");
 		}
+	
 	}
 
 	class MyHandler implements KeyUpHandler {

@@ -53,12 +53,14 @@ public class CashPanel extends VerticalPanel {
 	private ClosingPanel closingPanel;
 
 	private void addKeyUpHandler(TextBox textBox) {
+		textBox.setStyleName("form-control");
 		textBox.addKeyUpHandler(this.handler);
 	}
 
 	public CashPanel() {
 		add(this.open1CentLabel);
 		add(this.open1Cent);
+
 		addKeyUpHandler(this.open1Cent);
 
 		add(this.open5CentsLabel);
