@@ -5,9 +5,9 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.*;
 
-public class CashPanel extends VerticalPanel {
+public class CashPanel extends FlowPanel {
 	Label open1CentLabel = new Label(".01");
 	TextBox open1Cent = new TextBox();
 
@@ -39,68 +39,81 @@ public class CashPanel extends VerticalPanel {
 
 	Label totalLabel = new Label("Total");
 	TextBox totalTextBox = new TextBox();
+	
+	
 
-	class MyHandler implements KeyUpHandler {
-		MyHandler() {
-		}
+    
 
-		public void onKeyUp(KeyUpEvent event) {
-			CashPanel.this.closingPanel.calculateAll();
-		}
-	}
 
-	MyHandler handler = new MyHandler();
+
+	NumberKeyUpHandler numberKeyUpHandler = new NumberKeyUpHandler();
 	private ClosingPanel closingPanel;
 
-	private void addKeyUpHandler(TextBox textBox) {
-		textBox.setStyleName("form-control");
-		textBox.addKeyUpHandler(this.handler);
+	private void addKeyUpHandler(FlowPanel fp ,TextBox textBox) {
+		//textBox.setStyleName("form-control");
+		textBox.addKeyUpHandler(numberKeyUpHandler);
+		numberKeyUpHandler.register(textBox,fp);
+
 	}
 
+	private void addFormGroup(Label label, TextBox textBox) {
+		FlowPanel fp = new FlowPanel();
+		fp.setStyleName("form-group");
+		fp.add(label);
+		fp.add(textbox);
+		textbox.setStyleName("form-control");
+		add(fp);
+		
+		addKeyUpHandler(fp,this.textBox);
+	}
 	public CashPanel() {
-		add(this.open1CentLabel);
-		add(this.open1Cent);
+		/*
+		<div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+  </div>
+  
+  <div class="form-group has-success">
+  <label class="control-label" for="inputSuccess1">Input with success</label>
+  <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
+  <span id="helpBlock2" class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+</div>
+<div class="form-group has-warning">
+  <label class="control-label" for="inputWarning1">Input with warning</label>
+  <input type="text" class="form-control" id="inputWarning1">
+</div>
+<div class="form-group has-error">
+  <label class="control-label" for="inputError1">Input with error</label>
+  <input type="text" class="form-control" id="inputError1">
+</div>
 
-		addKeyUpHandler(this.open1Cent);
 
-		add(this.open5CentsLabel);
-		add(this.open5Cents);
-		addKeyUpHandler(this.open5Cents);
+  */
+  		addFormGroup(open1CentLabel,open1Cent);
+		//add(this.open1CentLabel);
+		//add(this.open1Cent);
 
-		add(this.open10CentsLabel);
-		add(this.open10Cents);
-		addKeyUpHandler(this.open10Cents);
 
-		add(this.open25CentsLabel);
-		add(this.open25Cents);
-		addKeyUpHandler(this.open25Cents);
+  		addFormGroup(open5CentsLabel,open5Cents);
 
-		add(this.open1DollarLabel);
-		add(this.open1Dollar);
-		addKeyUpHandler(this.open1Dollar);
 
-		add(this.open5DollarsLabel);
-		add(this.open5Dollars);
-		addKeyUpHandler(this.open5Dollars);
+		  		addFormGroup(open10CentsLabel,open10Cents);
+		  		
+		  		addFormGroup(open25CentsLabel,open25Cents);
 
-		add(this.open10DollarsLabel);
-		add(this.open10Dollars);
-		addKeyUpHandler(this.open10Dollars);
+		  		addFormGroup(open1DollarLabel,open1Dollar);
 
-		add(this.open20DollarsLabel);
-		add(this.open20Dollars);
-		addKeyUpHandler(this.open20Dollars);
+		  		addFormGroup(open5DollarsLabel,open5Dollars);
 
-		add(this.open50DollarsLabel);
-		add(this.open50Dollars);
-		addKeyUpHandler(this.open50Dollars);
+		  		addFormGroup(open10DollarsLabel,open10Dollars);
 
-		add(this.open100DollarsLabel);
-		add(this.open100Dollars);
-		addKeyUpHandler(this.open100Dollars);
+		  		addFormGroup(open20DollarsLabel,open20Dollars);
+		  		addFormGroup(open50DollarsLabel,open50Dollars);
 
-		add(this.totalLabel);
-		add(this.totalTextBox);
+		  		addFormGroup(open100DollarsLabel,open100Dollars);
+		  		addFormGroup(totalLabel,totalTextBox);
+
+
 		
 		totalTextBox.setEnabled(false);
 

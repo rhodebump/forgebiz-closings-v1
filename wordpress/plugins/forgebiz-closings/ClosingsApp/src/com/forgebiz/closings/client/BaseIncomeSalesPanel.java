@@ -5,9 +5,9 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.*;
 
-public class BaseIncomeSalesPanel extends VerticalPanel {
+public class BaseIncomeSalesPanel extends FlowPanel {
 	Label income1Label = new Label();
 	public TextBox income1TextBox = new TextBox();
 	Label income2Label = new Label();
@@ -37,29 +37,35 @@ public class BaseIncomeSalesPanel extends VerticalPanel {
 		
 		if (showControl != false) {
 			label.setText(labelText);
-			add(label);
-			add(textBox);
-			addKeyUpHandler(textBox);
+			labelText.removeStyle(".gwt-Label");
+			//add(label);
+			//add(textBox);
+			//numberKeyUpHandler.addKeyUpHandler("todo", textBox);
 			textBox.setStyleName("form-control");
+			addFormGroup(lable,textBox);
 		}
 	
 	}
-
-	class MyHandler implements KeyUpHandler {
-		MyHandler() {
-		}
-
-		public void onKeyUp(KeyUpEvent event) {
-			BaseIncomeSalesPanel.this.closingPanel.calculateAll();
-		}
+	private void addFormGroup(Label label, TextBox textBox) {
+		FlowPanel fp = new FlowPanel();
+		fp.setStyleName("form-group");
+		fp.add(label);
+		fp.add(textbox);
+		textbox.setStyleName("form-control");
+		add(fp);
+		
+		addKeyUpHandler(fp,textBox);
 	}
+	private void addKeyUpHandler(FlowPanel fp ,TextBox textBox) {
+		//textBox.setStyleName("form-control");
 
-	MyHandler handler = new MyHandler();
-	protected ClosingPanel closingPanel;
+		numberKeyUpHandler.addKeyUpHandler(textBox,fp);
 
-	private void addKeyUpHandler(TextBox textBox) {
-		textBox.addKeyUpHandler(this.handler);
 	}
+	NumberKeyUpHandler numberKeyUpHandler = new NumberKeyUpHandler();
+
+
+
 
 
 	private double total =  0.0D;
@@ -88,5 +94,6 @@ public class BaseIncomeSalesPanel extends VerticalPanel {
 
 	public void setClosingPanel(ClosingPanel closingPanel) {
 		this.closingPanel = closingPanel;
+		numberKeyUpHandler.setClosingPanel(closingPanel);
 	}
 }

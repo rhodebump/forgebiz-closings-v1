@@ -109,6 +109,9 @@ public class ClosingIndexPanel extends Composite {
 		}
 
 
+		//what about totals?
+		//should we add up a subtotal for each type and add it as a closing?
+		
 
 
 		// Set the total row count. You might send an RPC request to determine the
@@ -232,6 +235,27 @@ public class ClosingIndexPanel extends Composite {
 			}
 		};
 		table.addColumn(sales1Column, "Sales 1");
+		
+		    Header<String> sales1Header = new Header<String>(new TextCell()) {
+      @Override
+      public String getValue() {
+        List<ContactInfo> items = dataGrid.getVisibleItems();
+        if (items.size() == 0) {
+          return "";
+        } else {
+          double totalSales1 = 0.0D;
+          for (Closing item : items) {
+            totalSales1 += item.getSales1();
+          }
+          return "Sales 1 Total: " + totalSales1;
+        }
+      }
+    };
+    dataGrid.addColumn(ageColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(constants
+        .cwDataGridColumnAge())), ageFooter);
+    dataGrid.setColumnWidth(ageColumn, 7, Unit.EM);
+    
+    
 
 		TextColumn<Closing> sales2Column = new TextColumn<Closing>() {
 			@Override
