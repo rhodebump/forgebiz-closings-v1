@@ -61,7 +61,5 @@ public class IncomePanel extends BaseIncomeSalesPanel {
 		this.totalTextBox.setText(new Double(total).toString());
 	}
 
-	public void setClosingPanel(ClosingPanel closingPanel) {
-		this.closingPanel = closingPanel;
-	}
+
 }

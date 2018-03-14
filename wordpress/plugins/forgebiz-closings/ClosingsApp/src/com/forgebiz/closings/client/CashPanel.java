@@ -1,11 +1,12 @@
 package com.forgebiz.closings.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.*;
 
 public class CashPanel extends FlowPanel {
 	Label open1CentLabel = new Label(".01");
@@ -39,20 +40,14 @@ public class CashPanel extends FlowPanel {
 
 	Label totalLabel = new Label("Total");
 	TextBox totalTextBox = new TextBox();
-	
-	
-
-    
-
-
 
 	NumberKeyUpHandler numberKeyUpHandler = new NumberKeyUpHandler();
-	private ClosingPanel closingPanel;
+	// private ClosingPanel closingPanel;
 
-	private void addKeyUpHandler(FlowPanel fp ,TextBox textBox) {
-		//textBox.setStyleName("form-control");
+	private void addKeyUpHandler(FlowPanel fp, TextBox textBox) {
+		// textBox.setStyleName("form-control");
 		textBox.addKeyUpHandler(numberKeyUpHandler);
-		numberKeyUpHandler.register(textBox,fp);
+		numberKeyUpHandler.addKeyUpHandler(textBox, fp);
 
 	}
 
@@ -60,67 +55,70 @@ public class CashPanel extends FlowPanel {
 		FlowPanel fp = new FlowPanel();
 		fp.setStyleName("form-group");
 		fp.add(label);
-		fp.add(textbox);
-		textbox.setStyleName("form-control");
-		add(fp);
+		label.setStyleName("control-label");
+		fp.add(textBox);
+		textBox.setStyleName("form-control");
+		//  <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		//  <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>
+		//<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
 		
-		addKeyUpHandler(fp,this.textBox);
+		Element spanElement = DOM.createSpan();
+		SpanElement mySpanElement = SpanElement.as(spanElement );
+		
+		mySpanElement.addClassName("glyphicon glyphicon-ok form-control-feedback");
+		fp.getElement().appendChild(mySpanElement);
+		//fp.add(mySpanElement.);
+		add(fp);
+
+		addKeyUpHandler(fp, textBox);
 	}
+
 	public CashPanel() {
 		/*
-		<div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-  </div>
-  
-  <div class="form-group has-success">
-  <label class="control-label" for="inputSuccess1">Input with success</label>
-  <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
-  <span id="helpBlock2" class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
-</div>
-<div class="form-group has-warning">
-  <label class="control-label" for="inputWarning1">Input with warning</label>
-  <input type="text" class="form-control" id="inputWarning1">
-</div>
-<div class="form-group has-error">
-  <label class="control-label" for="inputError1">Input with error</label>
-  <input type="text" class="form-control" id="inputError1">
-</div>
+		 * <div class="form-group"> <label for="exampleInputEmail1">Email
+		 * address</label> <input type="email" class="form-control"
+		 * id="exampleInputEmail1" placeholder="Email"> </div>
+		 * 
+		 * <div class="form-group has-success"> <label class="control-label"
+		 * for="inputSuccess1">Input with success</label> <input type="text"
+		 * class="form-control" id="inputSuccess1" aria-describedby="helpBlock2"> <span
+		 * id="helpBlock2" class="help-block">A block of help text that breaks onto a
+		 * new line and may extend beyond one line.</span> </div> <div
+		 * class="form-group has-warning"> <label class="control-label"
+		 * for="inputWarning1">Input with warning</label> <input type="text"
+		 * class="form-control" id="inputWarning1"> </div> <div
+		 * class="form-group has-error"> <label class="control-label"
+		 * for="inputError1">Input with error</label> <input type="text"
+		 * class="form-control" id="inputError1"> </div>
+		 * 
+		 * 
+		 */
+		addFormGroup(open1CentLabel, open1Cent);
+		// add(this.open1CentLabel);
+		// add(this.open1Cent);
 
+		addFormGroup(open5CentsLabel, open5Cents);
 
-  */
-  		addFormGroup(open1CentLabel,open1Cent);
-		//add(this.open1CentLabel);
-		//add(this.open1Cent);
+		addFormGroup(open10CentsLabel, open10Cents);
 
+		addFormGroup(open25CentsLabel, open25Cents);
 
-  		addFormGroup(open5CentsLabel,open5Cents);
+		addFormGroup(open1DollarLabel, open1Dollar);
 
+		addFormGroup(open5DollarsLabel, open5Dollars);
 
-		  		addFormGroup(open10CentsLabel,open10Cents);
-		  		
-		  		addFormGroup(open25CentsLabel,open25Cents);
+		addFormGroup(open10DollarsLabel, open10Dollars);
 
-		  		addFormGroup(open1DollarLabel,open1Dollar);
+		addFormGroup(open20DollarsLabel, open20Dollars);
+		addFormGroup(open50DollarsLabel, open50Dollars);
 
-		  		addFormGroup(open5DollarsLabel,open5Dollars);
+		addFormGroup(open100DollarsLabel, open100Dollars);
+		addFormGroup(totalLabel, totalTextBox);
 
-		  		addFormGroup(open10DollarsLabel,open10Dollars);
-
-		  		addFormGroup(open20DollarsLabel,open20Dollars);
-		  		addFormGroup(open50DollarsLabel,open50Dollars);
-
-		  		addFormGroup(open100DollarsLabel,open100Dollars);
-		  		addFormGroup(totalLabel,totalTextBox);
-
-
-		
 		totalTextBox.setEnabled(false);
 
 		GWT.log("cashpanel #2");
 	}
-
-
 
 	public void calculateAll() {
 		GWT.log("calculateAll2");
@@ -140,7 +138,7 @@ public class CashPanel extends FlowPanel {
 	}
 
 	public void setClosingPanel(ClosingPanel closingPanel) {
-		this.closingPanel = closingPanel;
+		numberKeyUpHandler.setClosingPanel(closingPanel);
 	}
 
 	double cashTotal = 0.0D;

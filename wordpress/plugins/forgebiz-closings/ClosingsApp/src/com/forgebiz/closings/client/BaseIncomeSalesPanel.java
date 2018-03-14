@@ -1,11 +1,9 @@
 package com.forgebiz.closings.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.*;
 
 public class BaseIncomeSalesPanel extends FlowPanel {
 	Label income1Label = new Label();
@@ -37,12 +35,12 @@ public class BaseIncomeSalesPanel extends FlowPanel {
 		
 		if (showControl != false) {
 			label.setText(labelText);
-			labelText.removeStyle(".gwt-Label");
+			label.removeStyleName(".gwt-Label");
 			//add(label);
 			//add(textBox);
 			//numberKeyUpHandler.addKeyUpHandler("todo", textBox);
 			textBox.setStyleName("form-control");
-			addFormGroup(lable,textBox);
+			addFormGroup(label,textBox);
 		}
 	
 	}
@@ -50,18 +48,13 @@ public class BaseIncomeSalesPanel extends FlowPanel {
 		FlowPanel fp = new FlowPanel();
 		fp.setStyleName("form-group");
 		fp.add(label);
-		fp.add(textbox);
-		textbox.setStyleName("form-control");
+		fp.add(textBox);
+		textBox.setStyleName("form-control");
 		add(fp);
 		
-		addKeyUpHandler(fp,textBox);
-	}
-	private void addKeyUpHandler(FlowPanel fp ,TextBox textBox) {
-		//textBox.setStyleName("form-control");
-
 		numberKeyUpHandler.addKeyUpHandler(textBox,fp);
-
 	}
+
 	NumberKeyUpHandler numberKeyUpHandler = new NumberKeyUpHandler();
 
 
@@ -93,7 +86,6 @@ public class BaseIncomeSalesPanel extends FlowPanel {
 	}
 
 	public void setClosingPanel(ClosingPanel closingPanel) {
-		this.closingPanel = closingPanel;
 		numberKeyUpHandler.setClosingPanel(closingPanel);
 	}
 }

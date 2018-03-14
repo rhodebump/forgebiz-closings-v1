@@ -20,11 +20,14 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.cellview.client.SafeHtmlHeader;
 import com.google.gwt.user.cellview.client.TextColumn;
 //import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -234,26 +237,12 @@ public class ClosingIndexPanel extends Composite {
 				return new Double(closing.getSales1()).toString();
 			}
 		};
-		table.addColumn(sales1Column, "Sales 1");
+
+		Header<String> sales1Footer = new ClosingHeader("Sales 1",table,ColumnType.SALES_1);
+
+		table.addColumn(sales1Column, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Sales 1")), sales1Footer);
 		
-		    Header<String> sales1Header = new Header<String>(new TextCell()) {
-      @Override
-      public String getValue() {
-        List<ContactInfo> items = dataGrid.getVisibleItems();
-        if (items.size() == 0) {
-          return "";
-        } else {
-          double totalSales1 = 0.0D;
-          for (Closing item : items) {
-            totalSales1 += item.getSales1();
-          }
-          return "Sales 1 Total: " + totalSales1;
-        }
-      }
-    };
-    dataGrid.addColumn(ageColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(constants
-        .cwDataGridColumnAge())), ageFooter);
-    dataGrid.setColumnWidth(ageColumn, 7, Unit.EM);
+
     
     
 
@@ -263,14 +252,25 @@ public class ClosingIndexPanel extends Composite {
 				return new Double(closing.getSales2()).toString();
 			}
 		};
-		table.addColumn(sales2Column, "Sales 2");
+		
+		Header<String> sales2Footer = new ClosingHeader("Sales 2",table,ColumnType.SALES_2);
+		//table.addColumn(sales2Column, "Sales 2");
+		table.addColumn(sales2Column, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Sales 2")), sales2Footer);
+		
 		TextColumn<Closing> income1Column = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
 				return new Double(closing.getIncome1()).toString();
 			}
 		};
-		table.addColumn(income1Column, "Income 1");
+		//table.addColumn(income1Column, "Income 1");
+		
+		Header<String> income1Footer = new ClosingHeader("Income 1",table,ColumnType.INCOME_1);
+		//table.addColumn(sales2Column, "Sales 2");
+		table.addColumn(income1Column, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Income 1")), income1Footer);
+		
+		
+		
 		TextColumn<Closing> income2Column = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
@@ -297,7 +297,7 @@ public class ClosingIndexPanel extends Composite {
 		
 		searchButton.addClickHandler(searchHandler);
 
-		ClosingsApp.getInstance().fetchLocations(gotLocationsCallback);
+		ClosingsApp.fetchLocations(gotLocationsCallback);
 
 		this.startDatePicker.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
 		this.endDatePicker.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));

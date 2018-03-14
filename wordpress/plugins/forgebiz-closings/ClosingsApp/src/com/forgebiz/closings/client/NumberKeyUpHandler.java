@@ -1,55 +1,50 @@
+package com.forgebiz.closings.client;
 
-	package com.forgebiz.closings.client;
-import com.google.gwt.core.client.GWT;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.*;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
-	public class NumberKeyUpHandler implements KeyUpHandler {
-		
-			private ClosingPanel closingPanel = null;
-			
-			
+public class NumberKeyUpHandler implements KeyUpHandler {
 
-			
-		public void 	addKeyUpHandler(FlowPanel fp ,TextBox textBox) {
-		flowPanelMap.put(textBox,fp);
-		textBox.addKeyUpHandler(numberKeyUpHandler);
+	private ClosingPanel closingPanel = null;
 
+	public void addKeyUpHandler(TextBox textBox, FlowPanel fp) {
+		flowPanelMap.put(textBox, fp);
+		textBox.addKeyUpHandler(this);
 
 	}
-	
+
 	public void setClosingPanel(ClosingPanel closingPanel) {
 		this.closingPanel = closingPanel;
 	}
-		Map<TextBox,FlowPanel> flowPanelMap = new HashMap<TextBox,FlowPanel> ();
-		public void onKeyUp(KeyUpEvent event) {
-			         Object sender = event.getSource();
-			if (sender instanceof Widget) {
-				     Widget widget = (Widget) sender;
-				       FlowPanel fp = flowPanelMap.get(widget);
-	
-			
+
+	Map<TextBox, FlowPanel> flowPanelMap = new HashMap<TextBox, FlowPanel>();
+
+	public void onKeyUp(KeyUpEvent event) {
+		Object sender = event.getSource();
+		if (sender instanceof Widget) {
+			TextBox widget = (TextBox) sender;
+			FlowPanel fp = flowPanelMap.get(widget);
+
+			boolean valid = ClosingsApp.isValidNumber(widget);
 			if (valid) {
 				fp.removeStyleName("has-error");
-				fp.setStyleName("has-success");
-				
+				fp.addStyleName("has-success");
+
 			} else {
-				p.removeStyleName("has-success");
-				fp.setStyleName("has-error");
-			}
-			
-			fp.addStyleName("has-feedback");
-			
-			closingPanel.calculateAll();
+				fp.removeStyleName("has-success");
+				fp.addStyleName("has-error");
 			}
 
+			fp.addStyleName("has-feedback");
+
+			closingPanel.calculateAll();
 		}
+
 	}
-	
-	
+}

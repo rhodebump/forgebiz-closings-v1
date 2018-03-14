@@ -16,7 +16,6 @@ import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -52,6 +51,15 @@ public class ClosingsApp implements EntryPoint {
 
 		return closingsApp;
 
+	}
+	public static boolean isValidNumber(TextBox textBox) {
+		try {
+			Double.parseDouble(textBox.getValue());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
 	}
 
 	// final Label errorLabel = new Label();

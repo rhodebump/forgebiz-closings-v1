@@ -150,8 +150,8 @@ public class ClosingPanel extends Composite {
 		this.closeCashPanel.setClosingPanel(this);
 
 		GWT.log("closingpanel");
-		closingsApp.fetchLocations(gotLocationsCallback);
-		closingsApp.fetchClosingSettings(gotClosingSettingCallback);
+		ClosingsApp.fetchLocations(gotLocationsCallback);
+		ClosingsApp.fetchClosingSettings(gotClosingSettingCallback);
 		totalSalesTextBox.setEnabled(false);
 		totalIncomeTextBox.setEnabled(false);
 		differenceTextBox.setEnabled(false);
