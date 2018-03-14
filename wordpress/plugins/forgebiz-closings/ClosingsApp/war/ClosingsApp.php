@@ -6,8 +6,24 @@ ini_set( 'display_errors', 1 );
 <head>
 <meta content="width=device-width,initial-scale=1" name="viewport">
     <link type="text/css" rel="stylesheet" href="<?php echo $main_css; ?>">
-    <script type="text/javascript" language="javascript" src="<?php echo $main_js; ?>"></script>
-    <link type="text/css" rel="stylesheet" href="<?php echo $bootstrap_main_css; ?>">
+        <script type="text/javascript" language="javascript" src="<?php echo $main_js; ?>"></script>
+     
+           <link  rel="stylesheet" href="<?php echo $bootstrap_main_css; ?>">
+
+   
+<!--
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+     
+      
+                  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        
+    -->
+<!-- Latest compiled and minified CSS -->
+<!--
+
+-->
+
 </head>
 <body>
 <?php
@@ -34,8 +50,6 @@ var WordpressForgebizSettings = {
             <div id="messagesPanel"></div>
     <div id="closingsMain"></div>
     
-
-
 
 
 </body>

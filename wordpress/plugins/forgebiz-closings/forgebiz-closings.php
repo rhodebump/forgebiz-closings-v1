@@ -313,7 +313,7 @@ class gwtApp
         $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
         $logo = $this->get_url_to_file('ClosingsApp/war/forgebiz-logo-forge.png');
         
-        $bootstrap_main_css = $this->auto_version_file('ClosingsApp/war/css/bootstrap.css');
+        $bootstrap_main_css = $this->get_url_to_file('ClosingsApp/war/css/bootstrap.min.css');
 
   
   
@@ -421,7 +421,11 @@ class gwtApp
             return $continue;
         $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
         $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
-        $bootstrap_main_css = $this->auto_version_file('ClosingsApp/war/css/bootstrap.css');
+             $logo = $this->get_url_to_file('ClosingsApp/war/forgebiz-logo-forge.png');
+             
+        //$bootstrap_main_css = $this->auto_version_file('ClosingsApp/war/css/bootstrap.min.css');
+        $bootstrap_main_css = $this->auto_version_file('ClosingsApp/war/css/bootstrap.min.css');
+        
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         
