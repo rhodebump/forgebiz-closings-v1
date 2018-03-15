@@ -262,9 +262,11 @@ public class ClosingPanel extends Composite {
 
 
 
+			;
 
-			closing.setClosingDate(closingDateBox.getValue());
-
+			closing.setClosingDate(closingDateBox.getTextBox().getValue());
+			GWT.log("closingDateBox.getValue())=" +closingDateBox.getTextBox().getValue());
+			
 			closing.setLocationName(locationListBox.getSelectedValue());
 
 			// Closing closing = (Closing) JavaScriptObject.createObject().cast();

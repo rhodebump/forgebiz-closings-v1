@@ -187,8 +187,8 @@ public final native String getCloserName()/*-{
 	}-*/;
 
 
-public final native String getCloseDate()/*-{
-return this.close_date;
+public final native String getClosingDate()/*-{
+return this.closing_date;
 }-*/;
 
 
@@ -329,7 +329,7 @@ public final  native void setLocationName(String location_name)   /*-{
 this.location_name = location_name;
 }-*/;
 
-public final  native void setClosingDate(Date closing_date)    /*-{
+public final  native void setClosingDate(String closing_date)    /*-{
 this.closing_date = closing_date;
 }-*/;
 

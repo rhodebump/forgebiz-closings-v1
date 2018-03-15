@@ -678,8 +678,9 @@ function closing_save($request)
         '%d',
         '%d',
         '%d',
+        '%d',
         
-        
+        '%s',
         '%s',
         '%s',
         '%s',
@@ -692,7 +693,6 @@ function closing_save($request)
     
     $id = $request['id'];
     if ($id) {
-        // $data[] = 'ID' => $request['id'];
         $data['ID'] = $request['id'];
         $format[] = '%d';
     } else {

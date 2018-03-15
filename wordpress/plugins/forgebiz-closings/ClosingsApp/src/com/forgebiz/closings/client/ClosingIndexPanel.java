@@ -218,7 +218,7 @@ public class ClosingIndexPanel extends Composite {
 		TextColumn<Closing> closerColumn = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
-				return closing.getCloserName();
+				return closing.getOpenerName();
 			}
 		};
 		table.addColumn(closerColumn, "Closer");
@@ -226,10 +226,13 @@ public class ClosingIndexPanel extends Composite {
 		TextColumn<Closing> closeDateColumn = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
-				return closing.getCloseDate();
+				return closing.getClosingDate();
 			}
 		};
 		table.addColumn(closeDateColumn, "Close Date");
+		
+		
+		
 		TextColumn<Closing> sales1Column = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
