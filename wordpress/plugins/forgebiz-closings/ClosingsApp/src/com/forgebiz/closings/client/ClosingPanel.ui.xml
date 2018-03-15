@@ -16,7 +16,7 @@
 
 
 				<div class="row">
-					<div class="col-xs-4">
+					<div class="col-4">
 						<div class="form-group">
 			
 							<label for="openerName">Opener's Name</label>
@@ -28,7 +28,7 @@
 
 
 					</div>
-				<div class="col-xs-4">
+				<div class="col-4">
 						<div class="form-group">
 							<label for="closername">Closer's Name</label>
 
@@ -37,7 +37,7 @@
 
 						</div>
 					</div>
-				<div class="col-xs-4">
+				<div class="col-4">
 						<div class="form-group">
 							<label for="closingDate">Date</label>
 
@@ -53,7 +53,7 @@
 					</div>
 
 
-				<div class="col-xs-4">
+				<div class="col-4">
 						<div class="form-group">
 							<label for="closingDate">Location</label>
 							<g:ListBox styleName="formControl" ui:field="locationListBox" />
@@ -68,26 +68,26 @@
 
 				</div>
 				<div class="row">
-					<div id="opening" class="col-xs-4">
+					<div id="opening" class="col-4">
 						<h2>Step 1, Opening Totals</h2>
 			<fbc:CashPanel ui:field="openCashPanel">
 
 		</fbc:CashPanel>
 					</div>
-					<div id="closing" class="col-xs-4">
+					<div id="closing" class="col-4">
 						<h2>Step 2, Closing Totals</h2>
 								<fbc:CashPanel ui:field="closeCashPanel">
 
 		</fbc:CashPanel>
 					</div>
-					<div id="sales" class="col-xs-4">
+					<div id="sales" class="col-4">
 						<h2>Step 3, Sales</h2>
 	<fbc:SalesPanel ui:field="salesPanel"></fbc:SalesPanel>
 
 					</div>
 				</div>
 				<div class="row">
-					<div id="diff" class="col-xs-4">
+					<div id="diff" class="col-4">
 						<div class="form-group totala">
 							<label for="totalA">Gross Sales:(total A):</label>
 
@@ -119,7 +119,7 @@
 									
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-4">
 						<div class="form-group notes">
 							<label for="notes" class="noprint">Notes (put comments here, notes,
 								whatever)</label>
@@ -127,7 +127,7 @@
 									
 						</div>
 					</div>
-					<div id="income" class="col-xs-4">
+					<div id="income" class="col-4">
 						<h2>Step 4, Income</h2>
 		<fbc:IncomePanel ui:field="incomePanel"></fbc:IncomePanel>
 					</div>

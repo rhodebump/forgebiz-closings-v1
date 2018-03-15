@@ -28,6 +28,10 @@ extends JavaScriptObject
   	return this.income_1;
   	}-*/;
     
+    
+
+    
+    
     public final native double getIncome2()/*-{
   	return this.income_2;
   	}-*/;
@@ -259,6 +263,37 @@ public final  native void setClose1Cent(double close_1_cent)   /*-{
 this.close_1_cent = close_1_cent;
 }-*/;
 
+
+
+public final  native void setOpen10Cents(double open_10_cents)   /*-{
+this.open_10_cents = open_10_cents;
+}-*/;
+
+public final  native void setClose10Cents(double close_10_cents)   /*-{
+this.close_10_cents = close_10_cents;
+}-*/;
+
+public final native double getOpen10Cents()/*-{
+	return this.open_10_cents;
+	}-*/;
+
+public final native double getClose10Cents()/*-{
+	return this.close_10_cents;
+	}-*/;
+
+
+public final  native void setOpenCashTotal(double open_cash_total)   /*-{
+this.open_cash_total = open_cash_total;
+}-*/;
+
+
+public final  native void setCloseCashTotal(double close_cash_total)   /*-{
+this.close_cash_total = close_cash_total;
+}-*/;
+
+
+
+
 public final  native void setClose5Cents(double close_5_cents)   /*-{
 this.close_5_cents = close_5_cents;
 }-*/;
@@ -316,6 +351,8 @@ this.sales_total = sales_total;
 public final native double getSalesTotal()/*-{
 return this.sales_total;
 }-*/;
+
+
 
 
 

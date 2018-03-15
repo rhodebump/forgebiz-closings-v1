@@ -144,8 +144,7 @@ public class ClosingIndexPanel extends Composite {
 		// contactList.addColumn(column, headerText);
 		return column;
 	}
-	// 2016-08-02 15:37 ISO 8601
-	// MySQL retrieves and displays DATETIME values in 'YYYY-MM-DD HH:MM:SS'
+
 
 	private String getDate(DateBox dateBox) {
 		if (dateBox.getValue() == null) {

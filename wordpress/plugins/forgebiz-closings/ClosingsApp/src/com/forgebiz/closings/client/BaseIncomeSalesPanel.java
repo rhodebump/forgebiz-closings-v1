@@ -35,25 +35,14 @@ public class BaseIncomeSalesPanel extends FlowPanel {
 		
 		if (showControl != false) {
 			label.setText(labelText);
-			label.removeStyleName(".gwt-Label");
-			//add(label);
-			//add(textBox);
-			//numberKeyUpHandler.addKeyUpHandler("todo", textBox);
-			textBox.setStyleName("form-control");
-			addFormGroup(label,textBox);
+			add(NumberPanelHelper.getFlowPanel( label,  textBox));
+			textBox.addKeyUpHandler(numberKeyUpHandler);
+			
+			
 		}
 	
 	}
-	private void addFormGroup(Label label, TextBox textBox) {
-		FlowPanel fp = new FlowPanel();
-		fp.setStyleName("form-group");
-		fp.add(label);
-		fp.add(textBox);
-		textBox.setStyleName("form-control");
-		add(fp);
-		
-		numberKeyUpHandler.addKeyUpHandler(textBox,fp);
-	}
+
 
 	NumberKeyUpHandler numberKeyUpHandler = new NumberKeyUpHandler();
 

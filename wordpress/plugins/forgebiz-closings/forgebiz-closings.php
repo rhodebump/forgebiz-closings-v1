@@ -55,7 +55,7 @@ function fbc_install()
 		close_20_dollars decimal(15,2) NOT NULL,					
 		close_50_dollars decimal(15,2) NOT NULL,					
 		close_100_dollars decimal(15,2) NOT NULL,
-		close_total decimal(15,2) NOT NULL,
+		close_cash_total decimal(15,2) NOT NULL,
 		closer_name varchar(100) default NULL, 
 		closing_date  datetime NOT NULL,
 		date_created  datetime NOT NULL,
@@ -85,7 +85,7 @@ function fbc_install()
 		open_50_dollars decimal(15,2) NOT NULL,
 		open_5_cents decimal(15,2) NOT NULL,
 		open_5_dollars decimal(15,2) NOT NULL,
-		open_total decimal(15,2) NOT NULL,
+		open_cash_total decimal(15,2) NOT NULL,
 		opener_name varchar(255) NOT NULL,
 		sub_total_sales decimal(15,2) NOT NULL,
 		submitted bit(1) NOT NULL,
@@ -312,10 +312,7 @@ class gwtApp
         $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
         $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
         $logo = $this->get_url_to_file('ClosingsApp/war/forgebiz-logo-forge.png');
-        
-        $bootstrap_main_css = $this->get_url_to_file('ClosingsApp/war/css/bootstrap.min.css');
 
-  
   
         
         $plugin_url = $this->plugin_url;
@@ -422,9 +419,7 @@ class gwtApp
         $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
         $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
              $logo = $this->get_url_to_file('ClosingsApp/war/forgebiz-logo-forge.png');
-             
-        //$bootstrap_main_css = $this->auto_version_file('ClosingsApp/war/css/bootstrap.min.css');
-        $bootstrap_main_css = $this->auto_version_file('ClosingsApp/war/css/bootstrap.min.css');
+
         
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
@@ -586,6 +581,7 @@ function closing_save($request)
         'sales_7' => $request['sales_7'],
         'sales_8' => $request['sales_8'],
         'sales_9' => $request['sales_9'],
+        
         'income_1' => $request['income_1'],
         'income_2' => $request['income_2'],
         'income_3' => $request['income_3'],
@@ -595,6 +591,40 @@ function closing_save($request)
         'income_7' => $request['income_7'],
         'income_8' => $request['income_8'],
         'income_9' => $request['income_9'],
+        
+        'close_1_cent' => $request['close_1_cent'],
+        'close_5_cents' => $request['close_5_cents'],
+        'close_10_cents' => $request['close_10_cents'],
+        'close_25_cents' => $request['close_25_cents'],
+        'close_1_dollar' => $request['close_1_dollar'],
+        'close_5_dollars' => $request['close_5_dollars'],
+        'close_20_dollars' => $request['close_20_dollars'],
+        'close_50_dollars' => $request['close_50_dollars'],
+        'close_100_dollars' => $request['close_100_dollars'],
+
+        'open_1_cent' => $request['open_1_cent'],
+        'open_5_cents' => $request['open_5_cents'],
+        'open_10_cents' => $request['open_10_cents'],
+        'open_25_cents' => $request['open_25_cents'],
+        'open_1_dollar' => $request['open_1_dollar'],
+        'open_5_dollars' => $request['open_5_dollars'],
+        'open_20_dollars' => $request['open_20_dollars'],
+        'open_50_dollars' => $request['open_50_dollars'],
+        'open_100_dollars' => $request['open_100_dollars'],
+        
+        
+        'close_cash_total' => $request['close_cash_total'],
+        'open_cash_total' => $request['open_cash_total'],
+        'difference' => $request['difference'],
+        'sales_total' => $request['sales_total'],
+        'income_total' => $request['income_total'],
+        
+        
+        'opener_name' => $request['opener_name'],
+        'notes' => $request['notes'],
+        'closer_name' => $request['closer_name'],
+        'closing_date' => $request['closing_date'],
+        
         
         'submitted' => $request['submitted'],
         'deleted' => $request['deleted'],
@@ -622,11 +652,42 @@ function closing_save($request)
         '%d',
         '%d',
         '%d',
+
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
         
         '%d',
         '%d',
-        '%s'
-    
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        
+        
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        
+        
+        '%s',
+        '%s',
+        '%s',
+        
+        '%d',
+        '%d',
+        '%d'
+        
     );
     
     $id = $request['id'];
@@ -643,8 +704,11 @@ function closing_save($request)
     $result = $wpdb->replace($table_name, $data, $format);
     if ($wpdb->last_error) {
         $last_error = var_export($wpdb->last_error, true);
+        $last_query = var_export($wpdb->last_query, true);
         
-        return new WP_REST_Response($wpdb->last_query, 500);
+        $debug = array($last_error, $last_query);
+        
+        return new WP_REST_Response($debug, 500);
     }
     
     

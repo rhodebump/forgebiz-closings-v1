@@ -47,12 +47,5 @@ public class ClosingHeader extends TextHeader {
 		}
 	}
 
-	/*
-	 * Header<String> sales1Header = new Header<String>(new TextCell()) {
-	 * 
-	 * @Override public String getValue() { List<ContactInfo> items =
-	 * dataGrid.getVisibleItems(); if (items.size() == 0) { return ""; } else {
-	 * double totalSales1 = 0.0D; for (Closing item : items) { totalSales1 +=
-	 * item.getSales1(); } return "Sales 1 Total: " + totalSales1; } } };
-	 */
+
 }

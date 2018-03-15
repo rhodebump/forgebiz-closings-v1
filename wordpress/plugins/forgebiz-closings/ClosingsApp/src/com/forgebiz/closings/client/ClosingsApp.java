@@ -25,25 +25,15 @@ import com.google.gwt.user.client.ui.Widget;
 public class ClosingsApp implements EntryPoint {
 
 	private static ClosingsApp closingsApp = null;
-	// public static final String JSON_BASE =
-	// "http://localhost:8080/wp-json/forgebiz-closings/v1";
-	// String JSON_URL2 = JSON_BASE + "/closing-settings/1";
-
-	// works: http://localhost:8080/wp-json/forgebiz-closings/v1/closing-settings/1
-	// currently generating:
-	// http://localhost:8080/forgebiz-closings/wp-json/forgebiz-closings/v1/location/search
-
-	// working? http://localhost:8080/wp-json/forgebiz-closings/v1/closing/search
 
 	public static String getURL(String val) {
-		// http://localhost:8080/forgebiz-closings/wp-json/forgebiz-closings/v1/closing-settings/search
-		// http://localhost:8080/wp-content/plugins/forgebiz-closings/ClosingsApp/war/closingsapp/wp-json/forgebiz-closings/v1/location/search
+
 		GWT.log(" GWT.getModuleBaseURL() =" + GWT.getModuleBaseURL());
 		GWT.log(" GWT.getHostPageBaseURL() =" + GWT.getHostPageBaseURL());
 
 		GWT.log(GWT.getHostPageBaseURL() + "../wp-json/forgebiz-closings/v1" + val);
 		return GWT.getHostPageBaseURL() + "../wp-json/forgebiz-closings/v1" + val;
-		// return "http://localhost:8080/wp-json/forgebiz-closings/v1/closing/search";
+
 
 	}
 
@@ -52,17 +42,9 @@ public class ClosingsApp implements EntryPoint {
 		return closingsApp;
 
 	}
-	public static boolean isValidNumber(TextBox textBox) {
-		try {
-			Double.parseDouble(textBox.getValue());
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-		
-	}
 
-	// final Label errorLabel = new Label();
+
+
 
 	public static int getIntValue(TextBox textBox) {
 		try {
@@ -86,11 +68,18 @@ public class ClosingsApp implements EntryPoint {
 
 	private VerticalPanel messagesPanel = new VerticalPanel();
 
+	
+	public void clearMessages() {
+		messagesPanel.clear();
+	}
+	
 	public void displayMessage(String error) {
+		com.google.gwt.user.client.Window.scrollTo(0, 0);
 		messagesPanel.add(new Label(error));
 	}
 
 	public void displayError(String error) {
+		com.google.gwt.user.client.Window.scrollTo(0, 0);
 		messagesPanel.add(new Label(error));
 
 	}
@@ -150,21 +139,16 @@ public class ClosingsApp implements EntryPoint {
 	}
 
 	public static void fetchLocations(AsyncCallback callback) {
-		// String JSON_URL2 = JSON_BASE + "/location/search";
 		String base = ClosingsApp.getURL("/location/search");
 
 		String url = URL.encode(base);
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-		// config.headers['X-WP-Nonce'] = myLocalized.nonce;
 		setNonce(builder);
 
 		try {
 			builder.sendRequest(null, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
-					// displayError("Couldn't retrieve JSON : " + JSON_URL2 +
-					// exception.getMessage());
-					GWT.log("here");
 					callback.onFailure(exception);
 				}
 
@@ -174,8 +158,6 @@ public class ClosingsApp implements EntryPoint {
 						GWT.log("results=" + response.getText());
 						JsArray<Location> records = JsonUtils.<JsArray<Location>>safeEval(response.getText());
 
-						// ClosingSettings closingSettings = records.get(0);
-						// displayMessage(response.getText());
 						callback.onSuccess(records);
 
 					} else {
@@ -227,7 +209,6 @@ public class ClosingsApp implements EntryPoint {
 	};
 
 	Button locationsButton = new Button("Locations");
-	// private ClosingIndexPanel closingsIndexPanel = null;
 
 	public ClosingsApp() {
 		ClosingsApp.closingsApp = this;
@@ -238,17 +219,13 @@ public class ClosingsApp implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		initSettings();
-
 		RootPanel.get("messagesPanel").add(messagesPanel);
-		// RootPanel.get("closingsNav").add(createClosingButton);
-
 		RootPanel.get("closingsNav").add(settingButton);
 		searchClosingsButton.addClickHandler(searchClosingsHandler);
 		RootPanel.get("closingsNav").add(searchClosingsButton);
 		RootPanel.get("closingsNav").add(locationsButton);
 		locationsButton.addClickHandler(locationsHandler);
 		RootPanel.get("closingsMain").add(closingsMain);
-
 		settingButton.addClickHandler(settingHandler);
 
 	}

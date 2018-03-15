@@ -109,10 +109,12 @@ public class ClosingPanel extends Composite {
 	
 	AsyncCallback saveClosingCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
+			ClosingsApp.getInstance().clearMessages();
 			ClosingsApp.getInstance().displayError("Closing save failure:" + throwable.getMessage());
 		}
 
 		public void onSuccess(Object response) {
+			ClosingsApp.getInstance().clearMessages();
 			ClosingsApp.getInstance().displayError("Closing saved successfully");
 
 		}
@@ -159,6 +161,8 @@ public class ClosingPanel extends Composite {
 		
 
 	}
+	
+	private double difference = 0.0D;
 
 	public void calculateAll() {
 		GWT.log("calculateAll");
@@ -184,8 +188,8 @@ public class ClosingPanel extends Composite {
 		salesPanel.calculateAll();
 		double sales_total = salesPanel.getTotal();
 		closing.setSalesTotal(sales_total);
-		double difference = income_total - sales_total;
-		closing.setDifference(difference);
+		difference = income_total - sales_total;
+		//closing.setDifference(difference);
 		updateControls();
 	}
 	
@@ -288,6 +292,7 @@ public class ClosingPanel extends Composite {
 
 			closing.setOpen1Cent(ClosingsApp.getDoubleValue(openCashPanel.open1Cent));
 			closing.setOpen5Cents(ClosingsApp.getDoubleValue(openCashPanel.open5Cents));
+			closing.setOpen10Cents(ClosingsApp.getDoubleValue(openCashPanel.open10Cents));
 			closing.setOpen25Cents(ClosingsApp.getDoubleValue(openCashPanel.open25Cents));
 			closing.setOpen1Dollar(ClosingsApp.getDoubleValue(openCashPanel.open1Dollar));
 			closing.setOpen5Dollars(ClosingsApp.getDoubleValue(openCashPanel.open5Dollars));
@@ -298,6 +303,7 @@ public class ClosingPanel extends Composite {
 
 			closing.setClose1Cent(ClosingsApp.getDoubleValue(closeCashPanel.open1Cent));
 			closing.setClose5Cents(ClosingsApp.getDoubleValue(closeCashPanel.open5Cents));
+			closing.setClose10Cents(ClosingsApp.getDoubleValue(closeCashPanel.open10Cents));
 			closing.setClose25Cents(ClosingsApp.getDoubleValue(closeCashPanel.open25Cents));
 			closing.setClose1Dollar(ClosingsApp.getDoubleValue(closeCashPanel.open1Dollar));
 			closing.setClose5Dollars(ClosingsApp.getDoubleValue(closeCashPanel.open5Dollars));
@@ -307,26 +313,29 @@ public class ClosingPanel extends Composite {
 			closing.setClose100Dollars(ClosingsApp.getDoubleValue(closeCashPanel.open100Dollars));
 
 			closing.setOpenerName(openerNameTextBox.getValue());
+			GWT.log("Opener name is " + closing.getOpenerName());
 			closing.setCloserName(closerNameTextBox.getValue());
 			closing.setNotes(notesTextArea.getValue());
-
+			closing.setOpenCashTotal(openCashPanel.getCashTotal());
+			closing.setCloseCashTotal(closeCashPanel.getCashTotal());
+			closing.setDifference(difference);
+			
+			closing.setSalesTotal(salesPanel.getTotal());
+			closing.setIncomeTotal(incomePanel.getTotal());
+			
 			saveClosing(closing, saveClosingCallback);
 		}
 	};
 
 	public static void saveClosing(Closing closing, AsyncCallback callback) {
 		String base = ClosingsApp.getURL("/closing/save");
-		
 		String url = URL.encode(base);
 		GWT.log("url = " + url);
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		ClosingsApp.setNonce(builder);
 		builder.setHeader("Content-Type", "application/json");
-		GWT.log(" JsonUtils.stringify1");
 		String postData = JsonUtils.stringify(closing);
-		GWT.log(" JsonUtils.stringify2");
-		// closingsApp.displayMessage("postData: " + postData);
 		GWT.log("postData:" + postData);
 		try {
 			builder.sendRequest(postData, new RequestCallback() {
