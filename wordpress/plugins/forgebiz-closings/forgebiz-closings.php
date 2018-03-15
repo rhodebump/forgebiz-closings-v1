@@ -588,6 +588,7 @@ function closing_save($request)
         'income_4' => $request['income_4'],
         'income_5' => $request['income_5'],
         'income_5' => $request['income_5'],
+        'income_6' => $request['income_6'],
         'income_7' => $request['income_7'],
         'income_8' => $request['income_8'],
         'income_9' => $request['income_9'],
@@ -702,11 +703,12 @@ function closing_save($request)
     }
     
     $result = $wpdb->replace($table_name, $data, $format);
+   // if (true){
     if ($wpdb->last_error) {
-        $last_error = var_export($wpdb->last_error, true);
+        //$last_error = var_export($wpdb->last_error, true);
         $last_query = var_export($wpdb->last_query, true);
         
-        $debug = array($last_error, $last_query);
+        $debug = array($last_error, $last_query, $data, $format);
         
         return new WP_REST_Response($debug, 500);
     }

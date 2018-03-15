@@ -218,7 +218,7 @@ public class ClosingIndexPanel extends Composite {
 		TextColumn<Closing> closerColumn = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
-				return closing.getOpenerName();
+				return closing.getCloserName();
 			}
 		};
 		table.addColumn(closerColumn, "Closer");
