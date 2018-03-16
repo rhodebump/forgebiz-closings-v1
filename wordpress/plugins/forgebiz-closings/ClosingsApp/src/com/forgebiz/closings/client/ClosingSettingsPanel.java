@@ -12,13 +12,14 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimpleCheckBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class ClosingSettingsPanel extends VerticalPanel {
+public class ClosingSettingsPanel extends FlowPanel {
 
 
 
@@ -262,27 +263,68 @@ public class ClosingSettingsPanel extends VerticalPanel {
 		}
 	}
 
+	public static FlowPanel getFlowPanel(Label label, TextBox textBox) {
+		FlowPanel fp = new FlowPanel();
+		fp.setStyleName("form-group");
+		fp.add(label);
+		label.setStyleName("control-label");
+		fp.add(textBox);
+		textBox.setStyleName("form-control");
+		//add(fp);
 
-	private void initControl(SimpleCheckBox checkbox, TextBox textbox, String labelText, boolean display,String prompt) {
+		Label fp2 = new Label();
+		fp2.setText("That's not a number, please fix it.");
+		fp2.setStyleName("invalid-feedback");
+
+		fp.add(fp2);
+		Label fp3 = new Label();
+		fp3.setText("Looks good!");
+		fp3.setStyleName("valid-feedback");
+
+		fp.add(fp3);
+
+		//addKeyUpHandler(fp, textBox);
+		return fp;
+	}
+	
+	
+
+	private void initControl(SimpleCheckBox checkbox, TextBox textBox, String labelText, boolean display,String prompt) {
 		
-		DecoratorPanel decPanel = new DecoratorPanel();
-		add(decPanel);
-		HorizontalPanel horizontalPanel = new HorizontalPanel();
-		decPanel.add(horizontalPanel);
+		textBox.setValue(labelText);
+		
+		Label textboxLabel = new Label("Label for " + prompt);
+		FlowPanel fp = new FlowPanel();
+		fp.setStyleName("form-group");
+		fp.add(textboxLabel);
+		textboxLabel.setStyleName("control-label");
+		fp.add(textBox);
+		textBox.setStyleName("form-control");
+		
+		add(fp);
+		
+		
+
 		if (display == false) {
 			checkbox.setValue(false);
 		} else {
 			checkbox.setValue(true);
 		}
-		
-		//checkbox.set
 		Label checkboxLabel = new Label("Display?");
-		horizontalPanel.add(checkboxLabel);
-		horizontalPanel.add(checkbox);
-		Label textboxLabel = new Label("Label for " + prompt);
-		horizontalPanel.add(textboxLabel);
-		textbox.setValue(labelText);
-		horizontalPanel.add(textbox);
+		
+		FlowPanel fp2 = new FlowPanel();
+		fp2.setStyleName("form-group");
+		fp2.add(checkboxLabel);
+		checkboxLabel.setStyleName("control-label");
+		fp2.add(checkbox);
+		checkbox.setStyleName("form-control");
+		
+		add(fp2);
+		
+		
+
+
+
 	}
 	
 	public ClickHandler cancelHandler = new ClickHandler() {
@@ -334,15 +376,20 @@ public class ClosingSettingsPanel extends VerticalPanel {
 				closingSettings.getShowIncome9(),"Income #9");
 
 
-		HorizontalPanel hp =new HorizontalPanel();
-		add(hp);
-		hp.add(saveButton);
-		hp.add(cancelButton);
+		saveButton.setStyleName("btn btn-primary");
+		cancelButton.setStyleName("btn btn-primary");
+		loadPresetButton.setStyleName("btn btn-primary");
+		
+
+		FlowPanel fp = new FlowPanel();
+		fp.setStyleName("row");
+		add(fp);
+		fp.add(saveButton);
+		fp.add(cancelButton);
+		fp.add(loadPresetButton);
 		
 		cancelButton.addClickHandler(cancelHandler);		
 		saveButton.addClickHandler(this.saveHandler);
-
-		add(this.loadPresetButton);
-		this.loadPresetButton.addClickHandler(this.loadPresetHandler);
+		loadPresetButton.addClickHandler(this.loadPresetHandler);
 	}
 }

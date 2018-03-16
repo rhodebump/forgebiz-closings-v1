@@ -13,3 +13,5 @@ rsync -avz ./wordpress/plugins/forgebiz-closings.zip  prhodes@demo.forgebiz.com:
 #rsync it to the demo box
 
 rsync -avz ./wordpress/plugins/forgebiz-closings  prhodes@demo.forgebiz.com:/home/prhodes/local/libs/apache/forgebizdemo/www/wp-content/plugins/
+
+#http://forgebiz.com/wp-content/uploads/2018/03/forgebiz-logo-forge.png
