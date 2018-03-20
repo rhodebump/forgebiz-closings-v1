@@ -12,13 +12,14 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class LocationPanel extends VerticalPanel {
+public class LocationPanel extends FlowPanel {
 	
 
 	Button deleteButton  = new Button("Delete");
@@ -29,14 +30,13 @@ public class LocationPanel extends VerticalPanel {
 
 	Label notificationsLabel = new Label("Notification Email Addresses");
 	TextArea notificationsTextarea = new TextArea();
-	Label notificationsHelp = new Label("Enter each email address on its own line (ie user1@forgebiz.com\nuser2@forgebiz.com\nuser3@forgebiz.com");
+
 	
 	
 	Location location = (Location) JavaScriptObject.createObject().cast();
 	Button saveButton = new Button("Save");
 	Button cancelButton = new Button("Cancel");	
-	
-	
+
 	
 	
 	public ClickHandler cancelHandler = new ClickHandler() {
@@ -54,19 +54,33 @@ public class LocationPanel extends VerticalPanel {
 
 		}
 	};
+	
 	public LocationPanel() {
 		super();
-		add(locationNameLabel);
-		add(locationNameTextBox);
-		add(notificationsLabel);
-		add(notificationsTextarea);
-
 		
-		HorizontalPanel hp =new HorizontalPanel();
-		add(hp);
-		hp.add(saveButton);
-		hp.add(cancelButton);
-		hp.add(deleteButton);
+		add(NumberPanelHelper.getBootStrapPanel(locationNameLabel,locationNameTextBox));
+		FlowPanel fp = NumberPanelHelper.getBootStrapPanel(notificationsLabel,notificationsTextarea);
+		Label notificationsHelp = new Label("Enter each email address on its own line (ie/\nuser1@forgebiz.com\nuser2@forgebiz.com\nuser3@forgebiz.com");
+		notificationsHelp.setStyleName("text-muted");
+		fp.add(notificationsHelp);
+		add(fp);
+		
+		
+		/*
+		 *   <small id="passwordHelpInline" class="text-muted">
+	      Must be 8-20 characters long.
+	    </small>
+	    
+		 */
+		
+		FlowPanel buttonsPanel =new FlowPanel();
+		add(buttonsPanel);
+		buttonsPanel.add(saveButton);
+		buttonsPanel.add(cancelButton);
+		buttonsPanel.add(deleteButton);
+		setupButton(saveButton);
+		setupButton(cancelButton);
+		setupButton(deleteButton);
 		
 		cancelButton.addClickHandler(cancelHandler);
 		
@@ -93,7 +107,12 @@ public class LocationPanel extends VerticalPanel {
 		
 	}
 	
-	
+	private void setupButton(Button button) {
+		
+		button.setStyleName("btn btn-primary");
+		//btn btn-primary
+		
+	}
 	
 	private void saveLocation(Location location, String message) {
 		String base = ClosingsApp.getURL("/location/save");

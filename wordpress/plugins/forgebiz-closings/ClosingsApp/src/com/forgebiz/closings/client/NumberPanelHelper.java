@@ -4,19 +4,28 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 public class NumberPanelHelper {
 	
-
-	public static FlowPanel getFlowPanel(Label label, TextBox textBox) {
+	
+	public static FlowPanel getBootStrapPanel(Label label, Widget textBox) {
 		FlowPanel fp = new FlowPanel();
 		fp.setStyleName("form-group");
 		fp.add(label);
 		label.setStyleName("control-label");
 		fp.add(textBox);
 		textBox.setStyleName("form-control");
-		//add(fp);
+		return fp;
+		
+	}
+	
 
+	public static FlowPanel getFlowPanel(Label label, TextBox textBox) {
+
+		//add(fp);
+		FlowPanel fp = getBootStrapPanel(label,textBox);
+		
 		Label fp2 = new Label();
 		fp2.setText("That's not a number, please fix it.");
 		fp2.setStyleName("invalid-feedback");

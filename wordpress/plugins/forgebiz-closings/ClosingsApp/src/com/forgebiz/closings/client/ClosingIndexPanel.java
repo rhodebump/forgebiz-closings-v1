@@ -57,6 +57,8 @@ public class ClosingIndexPanel extends Composite {
 	@UiField
 	CellTable<Closing> table;
 	
+	DateTimeFormat dtf = DateTimeFormat.getFormat("yyyy-MM-dd");
+	
 	
 	@UiField
 	SimpleCheckBox showDeletedCheckbox;
@@ -151,7 +153,7 @@ public class ClosingIndexPanel extends Composite {
 
 			return "";
 		} else {
-			DateTimeFormat dtf = DateTimeFormat.getFormat("yyyy-MM-dd");
+	
 			return dtf.format(dateBox.getValue());
 		}
 
@@ -226,7 +228,16 @@ public class ClosingIndexPanel extends Composite {
 		TextColumn<Closing> closeDateColumn = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
-				return closing.getClosingDate();
+				
+				//https://stackoverflow.com/questions/3075577/convert-mysql-datetime-stamp-into-javascripts-date-format
+				//do we really need to convert this to a date?
+				if (closing.getClosingDate().startsWith("0000-00-00")) {
+					return "";
+				} else {
+					
+					return closing.getClosingDate().substring(0, "0000-00-00".length());
+				}
+				//return dtf.format(closing.getClosingDate());
 			}
 		};
 		table.addColumn(closeDateColumn, "Close Date");
