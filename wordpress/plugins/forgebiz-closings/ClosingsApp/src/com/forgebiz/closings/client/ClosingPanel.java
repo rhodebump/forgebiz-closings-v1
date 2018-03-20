@@ -261,9 +261,6 @@ public class ClosingPanel extends Composite {
 			GWT.log("saveHandler.onClick");
 
 
-
-			;
-
 			closing.setClosingDate(closingDateBox.getTextBox().getValue());
 			GWT.log("closingDateBox.getValue())=" +closingDateBox.getTextBox().getValue());
 			
@@ -366,7 +363,22 @@ public class ClosingPanel extends Composite {
 
 	public void setClosing(Closing closing) {
 		this.closing = closing;
-
+		openerNameTextBox.setValue(closing.getOpenerName());
+		closerNameTextBox.setValue(closing.getCloserName());
+		closingDateBox.getTextBox().setValue(getDisplayDate(closing));
 	}
+	
+	public static String getDisplayDate(Closing closing) {
+		if (closing.getClosingDate() == null) {
+			return "";
+		}
+		if (closing.getClosingDate().startsWith("0000-00-00")) {
+			return "";
+		} else {
+			
+			return closing.getClosingDate().substring(0, "0000-00-00".length());
+		}
+	}
+
 
 }

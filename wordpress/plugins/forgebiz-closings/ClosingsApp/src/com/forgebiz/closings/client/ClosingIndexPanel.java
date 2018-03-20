@@ -231,13 +231,7 @@ public class ClosingIndexPanel extends Composite {
 				
 				//https://stackoverflow.com/questions/3075577/convert-mysql-datetime-stamp-into-javascripts-date-format
 				//do we really need to convert this to a date?
-				if (closing.getClosingDate().startsWith("0000-00-00")) {
-					return "";
-				} else {
-					
-					return closing.getClosingDate().substring(0, "0000-00-00".length());
-				}
-				//return dtf.format(closing.getClosingDate());
+				return ClosingPanel.getDisplayDate(closing);
 			}
 		};
 		table.addColumn(closeDateColumn, "Close Date");
@@ -291,7 +285,7 @@ public class ClosingIndexPanel extends Composite {
 			}
 		};
 		table.addColumn(income2Column, "Income 2");
-
+	
 		Column<Closing, String> bc = addColumn(new ButtonCell(), "Edit", new GetValue<String>() {
 			@Override
 			public String getValue(Closing contact) {
@@ -302,6 +296,7 @@ public class ClosingIndexPanel extends Composite {
 			public void update(int index, Closing closing, String value) {
 				ClosingPanel closingPanel = new ClosingPanel();
 				closingPanel.setClosing(closing);
+				ClosingsApp.getInstance().swapMain(closingPanel);
 			}
 		});
 
@@ -309,6 +304,7 @@ public class ClosingIndexPanel extends Composite {
 		
 		
 		searchButton.addClickHandler(searchHandler);
+		searchButton.setStyleName("btn btn-primary");
 
 		ClosingsApp.fetchLocations(gotLocationsCallback);
 
@@ -316,6 +312,8 @@ public class ClosingIndexPanel extends Composite {
 		this.endDatePicker.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat("yyyy-MM-dd")));
 
 		createButton.addClickHandler(this.createNewClosingHandler);
+		createButton.setStyleName("btn btn-primary");
+		
 		startDatePicker.setValue(new Date());
 		searchClosings();
 

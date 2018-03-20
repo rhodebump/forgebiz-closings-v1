@@ -15,6 +15,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -220,12 +221,22 @@ public class ClosingsApp implements EntryPoint {
 	public void onModuleLoad() {
 		initSettings();
 		RootPanel.get("messagesPanel").add(messagesPanel);
-		RootPanel.get("closingsNav").add(settingButton);
+
+		FlowPanel navigationPanel = new FlowPanel();
+		navigationPanel.setStyleName("row");
+		navigationPanel.add(settingButton);
+
+		
+		
+		searchClosingsButton.setStyleName("btn btn-primary");
 		searchClosingsButton.addClickHandler(searchClosingsHandler);
-		RootPanel.get("closingsNav").add(searchClosingsButton);
-		RootPanel.get("closingsNav").add(locationsButton);
+		navigationPanel.add(searchClosingsButton);
+		RootPanel.get("closingsNav").add(navigationPanel);
+		navigationPanel.add(locationsButton);
+		locationsButton.setStyleName("btn btn-primary");
 		locationsButton.addClickHandler(locationsHandler);
 		RootPanel.get("closingsMain").add(closingsMain);
+		settingButton.setStyleName("btn btn-primary");
 		settingButton.addClickHandler(settingHandler);
 
 	}
