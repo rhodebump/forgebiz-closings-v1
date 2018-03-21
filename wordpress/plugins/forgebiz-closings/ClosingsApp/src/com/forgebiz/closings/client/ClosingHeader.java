@@ -10,14 +10,12 @@ public class ClosingHeader extends TextHeader {
 
 	private CellTable table = null;
 
-	private ColumnType ct = null;
-	
+	private ColumnType columnType = null;
 
-	
-	public ClosingHeader(String colName, CellTable table,ColumnType ct) {
-		super(colName);
+	public ClosingHeader(CellTable table, ColumnType columnType) {
+		super(columnType.getName());
 		this.table = table;
-		this.ct = ct;
+		this.columnType = columnType;
 	}
 
 	@Override
@@ -30,12 +28,11 @@ public class ClosingHeader extends TextHeader {
 		} else {
 			double totalSales1 = 0.0D;
 			for (Closing closing : items) {
-				totalSales1 = totalSales1 +  getValue(closing);
+				totalSales1 = totalSales1 + columnType.getValue(closing);
 				GWT.log("totalSales1=" + totalSales1);
 			}
 			return "" + totalSales1;
 		}
 	}
-
 
 }

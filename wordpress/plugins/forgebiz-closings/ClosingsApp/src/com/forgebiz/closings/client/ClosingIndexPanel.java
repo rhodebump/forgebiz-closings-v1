@@ -22,7 +22,6 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
@@ -32,15 +31,15 @@ import com.google.gwt.user.cellview.client.TextColumn;
 //import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 //import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimpleCheckBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-public class ClosingIndexPanel extends Composite {
-	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
+public class ClosingIndexPanel extends FlowPanel {
 
 	public ClickHandler createNewClosingHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
@@ -54,28 +53,21 @@ public class ClosingIndexPanel extends Composite {
 			// ClosingsApp.fetchClosingSettings(gotSettingsCallback);
 		}
 	};
-	@UiField
-	CellTable<Closing> table;
-	
-	DateTimeFormat dtf = DateTimeFormat.getFormat("yyyy-MM-dd");
-	
-	
-	@UiField
-	SimpleCheckBox showDeletedCheckbox;
 
-	@UiField
+	CellTable<Closing> table = new CellTable();
+
+	DateTimeFormat dtf = DateTimeFormat.getFormat("yyyy-MM-dd");
+
+	SimpleCheckBox showDeletedCheckbox= new SimpleCheckBox();
+
 	DateBox startDatePicker = new DateBox();
 
-	@UiField
 	DateBox endDatePicker = new DateBox();
 
-	@UiField
-	ListBox locationListBox;
+	ListBox locationListBox = new ListBox();;
 
-	@UiField
 	Button searchButton = new Button("Search");
 
-	@UiField
 	Button createButton = new Button("Create Closing");
 
 	AsyncCallback gotLocationsCallback = new AsyncCallback() {
@@ -98,12 +90,7 @@ public class ClosingIndexPanel extends Composite {
 		}
 	};
 
-	/*
-	 * static final ProvidesKey<Closing> KEY_PROVIDER = new ProvidesKey<Closing>() {
-	 * 
-	 * @Override public Object getKey(Closing item) { return item == null ? null :
-	 * item.getId(); } };
-	 */
+
 
 	private void displayClosings(Response response) {
 		JsArray<Closing> records = JsonUtils.<JsArray<Closing>>safeEval(response.getText());
@@ -113,17 +100,13 @@ public class ClosingIndexPanel extends Composite {
 			closings.add(records.get(i));
 		}
 
-
-		//what about totals?
-		//should we add up a subtotal for each type and add it as a closing?
-		
-
+		// what about totals?
+		// should we add up a subtotal for each type and add it as a closing?
 
 		// Set the total row count. You might send an RPC request to determine the
 		// total row count.
 		table.setRowCount(records.length(), true);
 		table.setRowData(0, closings);
-
 
 	}
 
@@ -147,13 +130,12 @@ public class ClosingIndexPanel extends Composite {
 		return column;
 	}
 
-
 	private String getDate(DateBox dateBox) {
 		if (dateBox.getValue() == null) {
 
 			return "";
 		} else {
-	
+
 			return dtf.format(dateBox.getValue());
 		}
 
@@ -186,27 +168,34 @@ public class ClosingIndexPanel extends Composite {
 						displayClosings(response);
 					} else {
 						GWT.log("bad result " + response.getStatusCode());
-						ClosingsApp.getInstance()
-								.displayError("Closing search failure: "  + response.getText());
+						ClosingsApp.getInstance().displayError("Closing search failure: " + response.getText());
 					}
 				}
 			});
 		} catch (Exception e) {
 			ClosingsApp.getInstance().displayError("Closing search failure : " + e.getMessage());
 		}
-		
-		
+
 	}
+
 	private ClickHandler searchHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			searchClosings();
 		}
 	};
 
-	// DateTimeFormat dtf = DateTimeFormat.getFormat("yyyy-MM-dd");
+
 	public ClosingIndexPanel() {
-		initWidget((Widget) binder.createAndBindUi(this));
-		
+
+
+		Label startDateLabel = new Label("Start Date");
+		add(NumberPanelHelper.getBootStrapPanel(startDateLabel, startDatePicker));
+		Label endDateLabel = new Label("End Date");
+		add(NumberPanelHelper.getBootStrapPanel(endDateLabel, endDatePicker));
+		Label locationLabel = new Label("Location");
+		add(NumberPanelHelper.getBootStrapPanel(locationLabel, this.locationListBox));
+		Label deletedLabel = new Label("Show Deleted");
+		add(NumberPanelHelper.getBootStrapPanel(deletedLabel, this.showDeletedCheckbox));
 
 		// Create name column.
 		TextColumn<Closing> openerColumn = new TextColumn<Closing>() {
@@ -228,89 +217,34 @@ public class ClosingIndexPanel extends Composite {
 		TextColumn<Closing> closeDateColumn = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
-				
-				//https://stackoverflow.com/questions/3075577/convert-mysql-datetime-stamp-into-javascripts-date-format
-				//do we really need to convert this to a date?
+
+				// https://stackoverflow.com/questions/3075577/convert-mysql-datetime-stamp-into-javascripts-date-format
+				// do we really need to convert this to a date?
 				return ClosingPanel.getDisplayDate(closing);
 			}
 		};
 		table.addColumn(closeDateColumn, "Close Date");
-		
-		
-		/*
-		TextColumn<Closing> sales1Column = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return new Double(closing.getSales1()).toString();
-			}
-		};
 
-		Header<String> sales1Footer = new ClosingHeader("Sales 1",table,ColumnType.SALES_1);
 
-		table.addColumn(sales1Column, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Sales 1")), sales1Footer);
-		
 
-    
-    //public static double getValue(ColumnType ct,Closing closing)
-		//loop through each enum
-		TextColumn<Closing> sales2Column = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return new Double(closing.getSales2()).toString();
-			}
-		};
-		*/
-		
-		for (ColumnType ct : ColumnType.values()) {
-				//System.out.print(n.getSpanishName() + " ");
-				
-				
+
+		for (ColumnType columnType : ColumnType.values()) {
+			// System.out.print(n.getSpanishName() + " ");
+
 			TextColumn<Closing> salesColumn = new TextColumn<Closing>() {
 				@Override
 				public String getValue(Closing closing) {
 					return new Double(closing.getSales2()).toString();
 				}
 			};
-				Header<String> salesFooter = new ClosingHeader(ct.getValue(),table,ct);
-		//table.addColumn(sales2Column, "Sales 2");
-		table.addColumn(salesColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Sales 2")), salesFooter);
-		
-   		}
+			Header<String> salesFooter = new ClosingHeader(table, columnType);
+			// table.addColumn(sales2Column, "Sales 2");
+			table.addColumn(salesColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Sales 2")), salesFooter);
 
-		/*
-		Header<String> sales2Footer = new ClosingHeader("Sales 2",table,ColumnType.SALES_2);
-		//table.addColumn(sales2Column, "Sales 2");
-		table.addColumn(sales2Column, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Sales 2")), sales2Footer);
-		
-		TextColumn<Closing> income1Column = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return new Double(closing.getIncome1()).toString();
-			}
-		};
-		//table.addColumn(income1Column, "Income 1");
-		
-		Header<String> income1Footer = new ClosingHeader("Income 1",table,ColumnType.INCOME_1);
-		//table.addColumn(sales2Column, "Sales 2");
-		table.addColumn(income1Column, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Income 1")), income1Footer);
-		
-		
-		
-		TextColumn<Closing> income2Column = new TextColumn<Closing>() {
-			@Override
-			public String getValue(Closing closing) {
-				return new Double(closing.getIncome2()).toString();
-			}
-		};
-		table.addColumn(income2Column, "Income 2");
-	
-		*/
-		
-		
-		
-		
-		
-		//end data columns
+		}
+
+
+
 		Column<Closing, String> bc = addColumn(new ButtonCell(), "Edit", new GetValue<String>() {
 			@Override
 			public String getValue(Closing contact) {
@@ -326,8 +260,7 @@ public class ClosingIndexPanel extends Composite {
 		});
 
 		table.addColumn(bc, "Actions");
-		
-		
+
 		searchButton.addClickHandler(searchHandler);
 		searchButton.setStyleName("btn btn-primary");
 
@@ -338,8 +271,13 @@ public class ClosingIndexPanel extends Composite {
 
 		createButton.addClickHandler(this.createNewClosingHandler);
 		createButton.setStyleName("btn btn-primary");
-		
+
 		startDatePicker.setValue(new Date());
+
+		add(searchButton);
+		add(createButton);
+
+		add(table);
 		searchClosings();
 
 	}

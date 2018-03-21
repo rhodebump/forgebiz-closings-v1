@@ -1,8 +1,10 @@
 package com.forgebiz.closings.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 public class IncomePanel extends BaseIncomeSalesPanel {
 	Label totalLabel = new Label("Total(Total B)");
@@ -17,8 +19,9 @@ public class IncomePanel extends BaseIncomeSalesPanel {
 
 
 	public void setClosingSettings(ClosingSettings closingSettings) {
-		add(this.cashTotalLabel);
-		add(this.cashTotalTextBox);
+		
+		add(NumberPanelHelper.getBootStrapPanel(cashTotalLabel,cashTotalTextBox));
+
 		this.cashTotalTextBox.setEnabled(false);
 
 		initControl(income1Label, income1TextBox, closingSettings.getShowIncome1(),

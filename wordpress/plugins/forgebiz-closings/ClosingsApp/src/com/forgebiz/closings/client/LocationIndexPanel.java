@@ -68,7 +68,7 @@ public class LocationIndexPanel extends Composite {
 
 	public  LocationIndexPanel() {
 		initWidget((Widget) binder.createAndBindUi(this));
-
+		createLocationButton.setStyleName("btn btn-primary");
 		createLocationButton.addClickHandler(this.createNewLocationHandler);
 		ClosingsApp.fetchLocations(gotLocationsCallback);
 

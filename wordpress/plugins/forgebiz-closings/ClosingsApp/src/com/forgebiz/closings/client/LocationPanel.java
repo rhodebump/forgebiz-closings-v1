@@ -11,13 +11,13 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class LocationPanel extends FlowPanel {
 	
@@ -60,8 +60,15 @@ public class LocationPanel extends FlowPanel {
 		
 		add(NumberPanelHelper.getBootStrapPanel(locationNameLabel,locationNameTextBox));
 		FlowPanel fp = NumberPanelHelper.getBootStrapPanel(notificationsLabel,notificationsTextarea);
-		Label notificationsHelp = new Label("Enter each email address on its own line (ie/\nuser1@forgebiz.com\nuser2@forgebiz.com\nuser3@forgebiz.com");
+		//Label notificationsHelp = new Label();
+		String helptext = "Enter each email address on its own line.  Example:\nuser1@forgebiz.com\nuser2@forgebiz.com\nuser3@forgebiz.com";
+		
+		//notificationsHelp.setStyleName("text-muted");
+		
+		
+		HTML notificationsHelp = new HTML(new SafeHtmlBuilder().appendEscapedLines(helptext).toSafeHtml());
 		notificationsHelp.setStyleName("text-muted");
+		
 		fp.add(notificationsHelp);
 		add(fp);
 		

@@ -101,7 +101,7 @@ public class CashPanel extends FlowPanel {
 		return this.cashTotal;
 	}
 
-	private void setCashTotal(double cashTotal) {
+	public void setCashTotal(double cashTotal) {
 		this.cashTotal = cashTotal;
 		this.totalTextBox.setText(ClosingPanel.getCurrency(cashTotal));
 	}

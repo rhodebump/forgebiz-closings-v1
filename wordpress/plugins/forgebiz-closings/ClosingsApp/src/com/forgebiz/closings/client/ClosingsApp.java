@@ -64,6 +64,13 @@ public class ClosingsApp implements EntryPoint {
 		}
 		return 0.0D;
 	}
+	
+	public static void setDouble(TextBox textBox,Double d) {
+		if (d == null) {
+			return;
+		}
+		textBox.setValue(new Double(d).toString());
+	}
 
 	private SimplePanel closingsMain = new SimplePanel();
 

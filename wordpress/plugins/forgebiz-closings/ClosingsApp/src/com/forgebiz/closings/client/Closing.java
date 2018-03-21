@@ -221,6 +221,12 @@ public final  native void setNotes(String notes)  /*-{
 this.notes = notes;
 }-*/;
 
+public final native String getNotes()/*-{
+return this.notes;
+}-*/;
+
+
+
 public final  native void setCloserName(String closer_name) /*-{
 this.closer_name = closer_name;
 }-*/;
@@ -232,8 +238,36 @@ this.open_1_cent = open_1_cent;
 public final  native void setOpen5Cents(double open_5_cents)   /*-{
 this.open_5_cents = open_5_cents;
 }-*/;
+
+
+public final native double getOpen1Cent()/*-{
+return this.open_1_cent;
+}-*/;
+
+
+public final native double getOpen5Cents()/*-{
+return this.open_5_cents;
+}-*/;
+
+public final native double getClose25Cents()/*-{
+return this.close_25_cents;
+}-*/;
+
+public final native double getOpen25Cents()/*-{
+return this.open_25_cents;
+}-*/;
+
 public final  native void setOpen25Cents(double open_25_cents)   /*-{
 this.open_25_cents = open_25_cents;
+}-*/;
+
+
+
+public final native double getOpen1Dollar()/*-{
+return this.open_1_dollar;
+}-*/;
+public final native double getClose1Dollar()/*-{
+return this.close_1_dollar;
 }-*/;
 
 public final  native void setOpen1Dollar(double open_1_dollar)   /*-{
@@ -244,9 +278,31 @@ public final  native void setOpen100Dollars(double open_100_dollars)   /*-{
 this.open_100_dollars = open_100_dollars;
 }-*/;
 
+
+public final native double getOpen100Dollars()/*-{
+return this.open_100_dollars;
+}-*/;
+
+public final native double getClose100Dollars()/*-{
+return this.close_100_dollars;
+}-*/;
+
+public final native double getClose10Dollars()/*-{
+return this.close_10_dollars;
+}-*/;
+
+
 public final  native void setOpen50Dollars(double open_50_dollars)   /*-{
 this.open_50_dollars = open_50_dollars;
 }-*/;
+
+public final native double getOpen50Dollars()/*-{
+return this.open_50_dollars;
+}-*/;
+public final native double getClose50Dollars()/*-{
+return this.close_50_dollars;
+}-*/;
+
 
 public final  native void setOpen10Dollars(double open_10_dollars)   /*-{
 this.open_10_dollars = open_10_dollars;
@@ -256,9 +312,34 @@ public final  native void setOpen20Dollars(double open_20_dollars)   /*-{
 this.open_20_dollars = open_20_dollars;
 }-*/;
 
+
+public final native double getOpen10Dollars()/*-{
+return this.open_10_dollars;
+}-*/;
+
+public final native double getOpen20Dollars()/*-{
+return this.open_20_dollars;
+}-*/;
+
+public final native double getClose20Dollars()/*-{
+return this.close_20_dollars;
+}-*/;
+
+
+
 public final  native void setOpen5Dollars(double open_5_dollars)   /*-{
 this.open_5_dollars = open_5_dollars;
 }-*/;
+
+public final native double getOpen5Dollars()/*-{
+return this.open_5_dollars;
+}-*/;
+
+public final native double getClose5Dollars()/*-{
+return this.close_5_dollars;
+}-*/;
+
+
 public final  native void setClose1Cent(double close_1_cent)   /*-{
 this.close_1_cent = close_1_cent;
 }-*/;
@@ -277,14 +358,34 @@ public final native double getOpen10Cents()/*-{
 	return this.open_10_cents;
 	}-*/;
 
-public final native double getClose10Cents()/*-{
-	return this.close_10_cents;
+public final native double getClose5Cents()/*-{
+	return this.close_5_cents;
 	}-*/;
 
+
+public final native double getClose10Cents()/*-{
+return this.close_10_cents;
+}-*/;
+
+public final native double getClose1Cent()/*-{
+return this.close_1_cent;
+}-*/;
 
 public final  native void setOpenCashTotal(double open_cash_total)   /*-{
 this.open_cash_total = open_cash_total;
 }-*/;
+
+
+public final native double getOpenCashTotal()/*-{
+return this.open_cash_total;
+}-*/;
+public final native double getCloseCashTotal()/*-{
+return this.close_cash_total;
+}-*/;
+
+
+
+
 
 
 public final  native void setCloseCashTotal(double close_cash_total)   /*-{
@@ -328,6 +429,12 @@ this.close_5_dollars = close_5_dollars;
 public final  native void setLocationName(String location_name)   /*-{
 this.location_name = location_name;
 }-*/;
+
+public final native double getLocationName()/*-{
+return this.location_name;
+}-*/;
+
+
 
 public final  native void setClosingDate(String closing_date)    /*-{
 this.closing_date = closing_date;
