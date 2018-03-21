@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class IncomePanel extends BaseIncomeSalesPanel {
 	Label totalLabel = new Label("Total(Total B)");
-	//TextBox totalTextBox = new TextBox();
+
 
 	Label cashTotalLabel = new Label("Cash (total closing cash from drawer with $100 subtracted)");
 	TextBox cashTotalTextBox = new TextBox();
@@ -40,8 +40,7 @@ public class IncomePanel extends BaseIncomeSalesPanel {
 		initControl(income9Label, income9TextBox, closingSettings.getShowIncome9(),
 				closingSettings.getIncomeLabel9());
 
-		add(this.totalLabel);
-		add(this.totalTextBox);
+		add(NumberPanelHelper.getBootStrapPanel( totalLabel,  totalTextBox));
 		this.totalTextBox.setEnabled(false);
 		
 		

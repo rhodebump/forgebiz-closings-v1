@@ -12,17 +12,7 @@ public class ClosingHeader extends TextHeader {
 
 	private ColumnType ct = null;
 	
-	private double getValue(Closing closing) {
-		/*
-		if (ct == ColumnType.SALES_1) {
-			return closing.getSales1();
-		}else 		if (ct == ColumnType.SALES_2) {
-			return closing.getSales2();
-		}
-		*/
-		
-		return 1.25D;
-	}
+
 	
 	public ClosingHeader(String colName, CellTable table,ColumnType ct) {
 		super(colName);

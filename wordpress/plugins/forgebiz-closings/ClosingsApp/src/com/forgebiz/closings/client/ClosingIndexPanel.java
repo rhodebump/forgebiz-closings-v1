@@ -237,7 +237,7 @@ public class ClosingIndexPanel extends Composite {
 		table.addColumn(closeDateColumn, "Close Date");
 		
 		
-		
+		/*
 		TextColumn<Closing> sales1Column = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
@@ -251,15 +251,33 @@ public class ClosingIndexPanel extends Composite {
 		
 
     
-    
-
+    //public static double getValue(ColumnType ct,Closing closing)
+		//loop through each enum
 		TextColumn<Closing> sales2Column = new TextColumn<Closing>() {
 			@Override
 			public String getValue(Closing closing) {
 				return new Double(closing.getSales2()).toString();
 			}
 		};
+		*/
 		
+		for (ColumnType ct : ColumnType.values()) {
+				//System.out.print(n.getSpanishName() + " ");
+				
+				
+			TextColumn<Closing> salesColumn = new TextColumn<Closing>() {
+				@Override
+				public String getValue(Closing closing) {
+					return new Double(closing.getSales2()).toString();
+				}
+			};
+				Header<String> salesFooter = new ClosingHeader(ct.getValue(),table,ct);
+		//table.addColumn(sales2Column, "Sales 2");
+		table.addColumn(salesColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Sales 2")), salesFooter);
+		
+   		}
+
+		/*
 		Header<String> sales2Footer = new ClosingHeader("Sales 2",table,ColumnType.SALES_2);
 		//table.addColumn(sales2Column, "Sales 2");
 		table.addColumn(sales2Column, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Sales 2")), sales2Footer);
@@ -286,6 +304,13 @@ public class ClosingIndexPanel extends Composite {
 		};
 		table.addColumn(income2Column, "Income 2");
 	
+		*/
+		
+		
+		
+		
+		
+		//end data columns
 		Column<Closing, String> bc = addColumn(new ButtonCell(), "Edit", new GetValue<String>() {
 			@Override
 			public String getValue(Closing contact) {

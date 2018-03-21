@@ -28,8 +28,6 @@ public class BaseIncomeSalesPanel extends FlowPanel {
 	TextBox totalTextBox = new TextBox();
 	
 	
-	public void setCashTotalCash(double d) {
-	}
 
 	protected void initControl(Label label, TextBox textBox, boolean showControl, String labelText) {
 		

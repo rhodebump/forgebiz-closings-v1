@@ -361,11 +361,83 @@ public class ClosingPanel extends Composite {
 		}
 	}
 
+	private void initPanelValues(Closing closing, Panel panel) {
+				incomePanel.income1TextBox.setValue(closing.getIncome1());
+				/*
+
+			*/
+	}
+		
 	public void setClosing(Closing closing) {
 		this.closing = closing;
-		openerNameTextBox.setValue(closing.getOpenerName());
-		closerNameTextBox.setValue(closing.getCloserName());
+
+		
 		closingDateBox.getTextBox().setValue(getDisplayDate(closing));
+		
+		locationListBox.setValue(closing.getLocationName());
+
+
+
+	incomePanel.income1TextBox.setValue(closing.getIncome1());
+	incomePanel.income2TextBox.setValue(closing.getIncome2());
+	incomePanel.income3TextBox.setValue(closing.getIncome3());
+	incomePanel.income4TextBox.setValue(closing.getIncome4());
+	incomePanel.income5TextBox.setValue(closing.getIncome5());
+	incomePanel.income6TextBox.setValue(closing.getIncome6());		
+	incomePanel.income7TextBox.setValue(closing.getIncome7());
+	incomePanel.income8TextBox.setValue(closing.getIncome8());
+	incomePanel.income9TextBox.setValue(closing.getIncome9());
+
+			
+			
+	salesPanel.income1TextBox.setValue(closing.getSales1());
+	salesPanel.income2TextBox.setValue(closing.getSales2());
+	salesPanel.income3TextBox.setValue(closing.getSales3());
+	salesPanel.income4TextBox.setValue(closing.getSales4());
+	salesPanel.income5TextBox.setValue(closing.getSales5());
+	salesPanel.income6TextBox.setValue(closing.getSales6());		
+	salesPanel.income7TextBox.setValue(closing.getSales7());
+	salesPanel.income8TextBox.setValue(closing.getSales8());
+	salesPanel.income9TextBox.setValue(closing.getSales9());
+	
+	openCashPanel.open1Cent.setValue(closing.getOpen1Cent());
+	openCashPanel.open5Cents.setValue(closing.setOpen5Cents());
+	openCashPanel.open10Cents.setValue(closing.setOpen10Cents());
+	openCashPanel.open25Cents.setValue(closing.setOpen25Cents());
+	openCashPanel.open1Dollar.setValue(closing.setOpen1Dollar());
+	openCashPanel.open5Dollars.setValue(closing.setOpen5Dollars());
+	openCashPanel.open10Dollars.setValue(closing.setOpen10Dollars());	
+	openCashPanel.open20Dollars.setValue(closing.setOpen20Dollars());
+	openCashPanel.open50Dollars.setValue(closing.setOpen50Dollars());
+	openCashPanel.open100Dollars.setValue(closing.setOpen100Dollars());
+	
+	
+	closeCashPanel.open1Cent.setValue(closing.getClose1Cent());
+	closeCashPanel.open5Cents.setValue(closing.setClose5Cents());
+	closeCashPanel.open10Cents.setValue(closing.setClose10Cents());
+	closeCashPanel.open25Cents.setValue(closing.setClose25Cents());
+	closeCashPanel.open1Dollar.setValue(closing.setClose1Dollar());
+	closeCashPanel.open5Dollars.setValue(closing.setClose5Dollars());
+	closeCashPanel.open10Dollars.setValue(closing.setClose10Dollars());	
+	closeCashPanel.open20Dollars.setValue(closing.setClose20Dollars());
+	closeCashPanel.open50Dollars.setValue(closing.setClose50Dollars());
+	closeCashPanel.open100Dollars.setValue(closing.setClose100Dollars());
+	
+	
+
+
+			openerNameTextBox.setValue(closing.getOpenerName());
+			closerNameTextBox.setValue(closing.getCloserName());
+			notesTextArea.setValue(closing.getNotes());
+			openCashPanel.setCashTotal(closing.getOpenCashTotal());
+			closeCashPanel.setCashTotal(closing.getCloseCashTotal());
+			differenceTextBox.setValue(closing.getDifference());
+			salesPanel.setTotal(closing.getSalesTotal());
+			incomePanel.setTotal(closing.getIncomeTotal());
+
+			
+			
+			
 	}
 	
 	public static String getDisplayDate(Closing closing) {

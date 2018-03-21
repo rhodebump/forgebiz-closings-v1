@@ -1014,3 +1014,17 @@ function get_closing_settings($request)
 }
 	
 	
+
+add_action('wp_dashboard_setup', 'fbc_dashboard_widgets');
+  
+function fbc_dashboard_widgets() {
+global $wp_meta_boxes;
+ 
+wp_add_dashboard_widget('custom_help_widget', 'Theme Support', 'fbc_dashboard_help');
+}
+ 
+function fbc_dashboard_help() {
+echo '<p>Welcome to forgebiz closings! Need help? Contact the developer <a href="mailto:phillip@forgebiz.com">here</a>. For more info visit: <a href="http://www.forgebiz.com" target="_blank">forgebiz</a></p>';
+}
+
+

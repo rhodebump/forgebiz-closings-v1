@@ -33,10 +33,13 @@ var WordpressForgebizSettings = {
       </div>
     </noscript>
 
+       <div class="container">
 
     <div id="closingsNav"></div>
             <div id="messagesPanel"></div>
+       
     <div id="closingsMain"></div>
+    </div>
     
 
 

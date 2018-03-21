@@ -1,43 +1,5 @@
 /** Add css rules here for your application. */
 
-.gwt-Label {
-  display: inline-block;
-  max-width: 100%;
-  margin-bottom: 5px;
-  font-weight: bold;
-  font-size: 14px;
-
-    color: #333;
-    
-}
-
-h2 {
-	font-size: 30px;
-}
-.sendButton {
-  display: block;
-  font-size: 16pt;
-}
-
-/** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-  width: 400px;
-}
-
-.dialogVPanel {
-  margin: 5px;
-}
-
-.serverResponseLabelError {
-  color: red;
-}
-
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-  margin: 15px 6px 6px;
-}
-
-input:disabled  {
-	
-	background-color: #eee;
+.btn {
+	margin-right: 5px;
 }

@@ -31,8 +31,10 @@ public class SalesPanel extends BaseIncomeSalesPanel {
 		initControl(income9Label, income9TextBox, closingSettings.getShowSales9(),
 				closingSettings.getSalesLabel9());
 
-		add(totalLabel);
-		add(totalTextBox);
+		
+		add(NumberPanelHelper.getBootStrapPanel( totalLabel,  totalTextBox));
+					
+
 		totalTextBox.setEnabled(false);
 		
 		

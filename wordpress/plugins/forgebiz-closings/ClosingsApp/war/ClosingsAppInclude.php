@@ -3,7 +3,7 @@ error_reporting( E_ALL );
 ini_set( 'display_errors', 1 ); 
 ?>
 
-
+    <link type="text/css" rel="stylesheet" href="<?php echo $main_css; ?>">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script type="text/javascript" language="javascript" src="<?php echo $main_js; ?>"></script>
 
@@ -30,11 +30,11 @@ var WordpressForgebizSettings = {
 
 <img src="<?php echo $logo; ?>"/>
 
-
+       <div class="container">
 
     <div id="closingsNav"></div>
             <div id="messagesPanel"></div>
-              <div class="container">
+       
     <div id="closingsMain"></div>
     </div>
     
