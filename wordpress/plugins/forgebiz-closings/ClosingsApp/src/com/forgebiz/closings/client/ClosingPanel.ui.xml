@@ -10,9 +10,6 @@
 
 
 			<form name="closingForm" role="form">
-			
-
-
 
 
 				<div class="row">
@@ -87,21 +84,20 @@
 					</div>
 				</div>
 				<div class="row">
-					<div id="diff" class="col-4">
-						<div class="form-group totala">
-							<label for="totalA">Gross Sales:(total A):</label>
 
-									<g:TextBox ui:field="totalSalesTextBox" styleName="formControl"></g:TextBox>
+					<div id="diff" class="col-4">
+						<div class="form-group">
+							<div class="control-label">Gross Sales:(total A):</div>
+							<g:TextBox ui:field="totalSalesTextBox" styleName="form-control"></g:TextBox>
 									
 						</div>
-						<div class="form-group totalb">
-							<label for="totalB">Total Income:(total B):</label>
-		<g:TextBox ui:field="totalIncomeTextBox"></g:TextBox>
+						<div class="form-group">
+									<div class="control-label">Total Income:(total B):</div>
+		<g:TextBox ui:field="totalIncomeTextBox"  styleName="form-control"></g:TextBox>
 						</div>
 						<div class="form-group">
-							<label for="difference">Difference (total a - total b) Should be 0
-								(zero)!</label>
-								<g:TextBox ui:field="differenceTextBox" styleName="formControl"></g:TextBox>
+								<div class="control-label">Difference (total a - total b) Should be 0 (zero)!:</label>
+								<g:TextBox ui:field="differenceTextBox" styleName="form-control"></g:TextBox>
 								
 						</div>
 
@@ -144,43 +140,6 @@
 				
 
 			</form>
-
-
-
-
-
-
-
-
-
-
-
-		<label for="openerName">Total Sales:(Total A)</label>
-	
-
-
-		<label for="openerName">Total Income:(Total B)</label>
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
 
 
 

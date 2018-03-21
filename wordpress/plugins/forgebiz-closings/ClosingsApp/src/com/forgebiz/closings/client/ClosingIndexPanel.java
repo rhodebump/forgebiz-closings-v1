@@ -226,6 +226,13 @@ public class ClosingIndexPanel extends FlowPanel {
 		table.addColumn(closeDateColumn, "Close Date");
 
 
+		//total sales
+		//total income
+		//difference
+		//notes
+		//total open cash
+		//total close cash
+		
 
 
 		for (ColumnType columnType : ColumnType.values()) {
@@ -282,7 +289,5 @@ public class ClosingIndexPanel extends FlowPanel {
 
 	}
 
-	@UiTemplate("ClosingIndexPanel.ui.xml")
-	static abstract interface MyBinder extends UiBinder<Widget, ClosingIndexPanel> {
-	}
+
 }

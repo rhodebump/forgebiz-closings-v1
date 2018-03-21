@@ -307,7 +307,7 @@ class gwtApp
         
         add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
     }
-    public  function doPageInclude() {
+    public  function doPageInclude($app_mode) {
         
         $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
         $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
@@ -319,6 +319,7 @@ class gwtApp
         $base_href = $this->base_href;
         
         $page_title = 'forgebiz closings | forgebiz.com';
+        
         // Browser caching for our main template
         //$ttl = DAY_IN_SECONDS;
         //header("Cache-Control: public, max-age=$ttl");
@@ -418,12 +419,12 @@ class gwtApp
             return $continue;
         $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
         $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
-             $logo = $this->get_url_to_file('ClosingsApp/war/forgebiz-logo-forge.png');
+        $logo = $this->get_url_to_file('ClosingsApp/war/forgebiz-logo-forge.png');
 
         
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
-        
+        $app_mode = 'main';
         $page_title = 'forgebiz closings | forgebiz.com';
         // Browser caching for our main template
         $ttl = DAY_IN_SECONDS;
@@ -519,7 +520,7 @@ add_action('rest_api_init', function () {
         // exit;
         //why must i create a new gwtApp
         $gwtApp = new gwtApp();
-        $gwtApp -> doPageInclude();
+        $gwtApp -> doPageInclude('main');
 
     }
     
@@ -1028,3 +1029,21 @@ echo '<p>Welcome to forgebiz closings! Need help? Contact the developer <a href=
 }
 
 
+add_action( 'admin_menu', 'fbc_plugin_menu' );
+
+
+function fbc_plugin_menu() {
+	add_options_page( 'forgebiz closings Options', 'forgebiz closings', 'manage_options', 'fbc', 'fbc_plugin_options' );
+}
+
+//TODO
+function fbc_plugin_options() {
+	if ( !current_user_can( 'manage_options' ) )  {
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	}
+	//echo '<div class="wrap">';
+	//echo '<p>Here is where the form would go if I actually had options.</p>';
+	//echo '</div>';
+	    $gwtApp = new gwtApp();
+        $gwtApp -> doPageInclude('setup');
+}

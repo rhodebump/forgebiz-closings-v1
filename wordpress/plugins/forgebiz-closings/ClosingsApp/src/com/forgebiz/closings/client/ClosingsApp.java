@@ -93,11 +93,13 @@ public class ClosingsApp implements EntryPoint {
 	}
 
 	private static String NONCE;
+	private static String APP_MODE;
 
 	public void initSettings() {
 		Dictionary wps = Dictionary.getDictionary("WordpressForgebizSettings");
 
 		NONCE = wps.get("nonce");
+		APP_MODE = wps.get("app_mode");
 
 	}
 
@@ -193,6 +195,70 @@ public class ClosingsApp implements EntryPoint {
 		}
 	};
 
+
+
+
+
+	public ClosingsApp() {
+		ClosingsApp.closingsApp = this;
+	}
+
+	/**
+	 * This is the entry point method.
+	 */
+	public void onModuleLoad() {
+		initSettings();
+				RootPanel.get("messagesPanel").add(messagesPanel);
+						FlowPanel navigationPanel = new FlowPanel();
+		navigationPanel.setStyleName("row");
+		
+				RootPanel.get("closingsNav").add(navigationPanel);
+
+		RootPanel.get("closingsMain").add(closingsMain);
+		
+		
+		if (APP_MODE.equals("setup") {
+
+				navigationPanel.add(locationsButton);
+								navigationPanel.add(settingButton);
+				locationsButton.setStyleName("btn btn-primary");
+				locationsButton.addClickHandler(locationsHandler);
+				settingButton.addClickHandler(settingHandler);
+				settingButton.setStyleName("btn btn-primary");
+				
+				
+		} else {
+			navigationPanel.add(setupPanel);
+			searchClosingsButton.click();
+		}
+		
+
+
+
+		
+
+		
+
+
+
+
+
+
+	}
+
+
+	Button locationsButton = new Button("Locations");
+	private ClickHandler locationsHandler = new ClickHandler() {
+		public void onClick(ClickEvent event) {
+			// new closing panel
+			// how to swap out the panel?
+			// fetchClosingSettings(newClosingCallback);
+			LocationIndexPanel locationIndexPanel = new LocationIndexPanel();
+			swapMain(locationIndexPanel);
+
+		}
+	};
+
 	Button settingButton = new Button("Settings");
 
 	AsyncCallback openSettingCallback = new AsyncCallback() {
@@ -215,50 +281,6 @@ public class ClosingsApp implements EntryPoint {
 
 		}
 	};
-
-	Button locationsButton = new Button("Locations");
-
-	public ClosingsApp() {
-		ClosingsApp.closingsApp = this;
-	}
-
-	/**
-	 * This is the entry point method.
-	 */
-	public void onModuleLoad() {
-		initSettings();
-		RootPanel.get("messagesPanel").add(messagesPanel);
-
-		FlowPanel navigationPanel = new FlowPanel();
-		navigationPanel.setStyleName("row");
-		navigationPanel.add(settingButton);
-
-		
-		
-		searchClosingsButton.setStyleName("btn btn-primary");
-		searchClosingsButton.addClickHandler(searchClosingsHandler);
-		navigationPanel.add(searchClosingsButton);
-		RootPanel.get("closingsNav").add(navigationPanel);
-		navigationPanel.add(locationsButton);
-		locationsButton.setStyleName("btn btn-primary");
-		locationsButton.addClickHandler(locationsHandler);
-		RootPanel.get("closingsMain").add(closingsMain);
-		settingButton.setStyleName("btn btn-primary");
-		settingButton.addClickHandler(settingHandler);
-
-	}
-
-	private ClickHandler locationsHandler = new ClickHandler() {
-		public void onClick(ClickEvent event) {
-			// new closing panel
-			// how to swap out the panel?
-			// fetchClosingSettings(newClosingCallback);
-			LocationIndexPanel locationIndexPanel = new LocationIndexPanel();
-			swapMain(locationIndexPanel);
-
-		}
-	};
-
 	public void clearMain() {
 		closingsMain.clear();
 		messagesPanel.clear();

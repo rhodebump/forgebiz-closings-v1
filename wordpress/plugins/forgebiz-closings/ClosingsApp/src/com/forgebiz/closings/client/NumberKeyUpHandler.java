@@ -35,7 +35,7 @@ public class NumberKeyUpHandler implements KeyUpHandler {
 
 			
 
-			//closingPanel.calculateAll();
+			closingPanel.calculateAll();
 		}
 
 	}
