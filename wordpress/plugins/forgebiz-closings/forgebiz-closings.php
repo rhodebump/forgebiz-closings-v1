@@ -59,7 +59,7 @@ function fbc_install()
 		closer_name varchar(100) default NULL, 
 		closing_date  datetime NOT NULL,
 		date_created  datetime NOT NULL,
-		deleted  bit(1) NOT NULL,
+		deleted  tinyint NOT NULL,
 		difference decimal(15,2) NOT NULL,
 		gross_sales decimal(15,2) NOT NULL,
 		income_1 decimal(15,2) NOT NULL,
@@ -88,7 +88,7 @@ function fbc_install()
 		open_cash_total decimal(15,2) NOT NULL,
 		opener_name varchar(255) NOT NULL,
 		sub_total_sales decimal(15,2) NOT NULL,
-		submitted bit(1) NOT NULL,
+		submitted tinyint NOT NULL,
 		sales_total decimal(15,2) NOT NULL,
 		income_total decimal(15,2) NOT NULL,
 		PRIMARY KEY  (id)
@@ -162,7 +162,7 @@ function fbc_install()
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		location_name varchar(100) NOT NULL,
 		notification_email_addresses varchar(1000) NOT NULL,	
-		deleted  bit(1) NOT NULL DEFAULT 0,	
+		deleted  tinyint NOT NULL DEFAULT 0,	
 		PRIMARY KEY  (id)
 	) $charset_collate;";
     
@@ -571,6 +571,7 @@ function closing_save($request)
     
     // wpdb::replace( string $table, array $data, array|string $format = null )
     // wpdb::update( string $table, array $data, array $where, array|string $format = null, array|string $where_format = null )
+
     
     $data = array(
         'sales_1' => $request['sales_1'],
@@ -689,7 +690,7 @@ function closing_save($request)
         
         '%d',
         '%d',
-        '%d'
+        '%s'
         
     );
     
@@ -704,7 +705,7 @@ function closing_save($request)
     }
     
     $result = $wpdb->replace($table_name, $data, $format);
-   // if (true){
+    //if (true){
     if ($wpdb->last_error) {
         //$last_error = var_export($wpdb->last_error, true);
         $last_query = var_export($wpdb->last_query, true);
@@ -963,6 +964,7 @@ function closings_search($request)
     $deleted = $request['deleted'];
     if ($deleted) {
         // so need to show deleted and non-deleted, so let's not add a filter
+        $sql[] = " deleted = 1 ";
     } else {
         $sql[] = " deleted = 0 ";
     }
@@ -978,10 +980,14 @@ function closings_search($request)
     
     $query_results = $wpdb->get_results($query, OBJECT);
     if ($wpdb->last_error) {
+        // if (true) {
         $last_error = var_export($wpdb->last_error, true);
-        return new WP_REST_Response($last_error, 500);
+        $debug = array($last_error, $query, $sql);
+        
+        return new WP_REST_Response($debug, 500);
     }
 
+    
     
     return new WP_REST_Response($query_results, 200);
 }
@@ -1020,8 +1026,7 @@ add_action('wp_dashboard_setup', 'fbc_dashboard_widgets');
   
 function fbc_dashboard_widgets() {
 global $wp_meta_boxes;
- 
-wp_add_dashboard_widget('custom_help_widget', 'Theme Support', 'fbc_dashboard_help');
+wp_add_dashboard_widget('custom_help_widget', 'forgebiz closings Support', 'fbc_dashboard_help');
 }
  
 function fbc_dashboard_help() {

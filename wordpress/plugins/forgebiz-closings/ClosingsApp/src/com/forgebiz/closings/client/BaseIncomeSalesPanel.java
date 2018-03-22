@@ -53,22 +53,23 @@ public class BaseIncomeSalesPanel extends FlowPanel {
 		return total;
 	}
 	
-	public void setTotal(double total) {
-		totalTextBox.setValue(ClosingPanel.getCurrency(total));
+	public void setTotal(Double total) {
 		this.total = total;
+		totalTextBox.setValue(ClosingPanel.getCurrency(total));
+
 	}
 	public void calculateAll() {
 		GWT.log("calculateAll2");
 		double t = 0.0D;
-		t += ClosingsApp.getIntValue(this.income1TextBox);
-		t += ClosingsApp.getIntValue(this.income2TextBox);
-		t += ClosingsApp.getIntValue(this.income3TextBox);
-		t += ClosingsApp.getIntValue(this.income4TextBox);
-		t += ClosingsApp.getIntValue(this.income5TextBox);
-		t += ClosingsApp.getIntValue(this.income6TextBox);
-		t += ClosingsApp.getIntValue(this.income7TextBox);
-		t += ClosingsApp.getIntValue(this.income8TextBox);
-		t += ClosingsApp.getIntValue(this.income9TextBox);		
+		t += ClosingsApp.getDoubleValue(this.income1TextBox);
+		t += ClosingsApp.getDoubleValue(this.income2TextBox);
+		t += ClosingsApp.getDoubleValue(this.income3TextBox);
+		t += ClosingsApp.getDoubleValue(this.income4TextBox);
+		t += ClosingsApp.getDoubleValue(this.income5TextBox);
+		t += ClosingsApp.getDoubleValue(this.income6TextBox);
+		t += ClosingsApp.getDoubleValue(this.income7TextBox);
+		t += ClosingsApp.getDoubleValue(this.income8TextBox);
+		t += ClosingsApp.getDoubleValue(this.income9TextBox);		
 		setTotal(t);
 	}
 

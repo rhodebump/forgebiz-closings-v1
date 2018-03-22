@@ -77,16 +77,16 @@ public class CashPanel extends FlowPanel {
 	public void calculateAll() {
 		GWT.log("calculateAll2");
 		double total = 0.0D;
-		total += ClosingsApp.getIntValue(this.open1Cent);
-		total += ClosingsApp.getIntValue(this.open5Cents);
-		total += ClosingsApp.getIntValue(this.open10Cents);
-		total += ClosingsApp.getIntValue(this.open25Cents);
-		total += ClosingsApp.getIntValue(this.open1Dollar);
-		total += ClosingsApp.getIntValue(this.open5Dollars);
-		total += ClosingsApp.getIntValue(this.open10Dollars);
-		total += ClosingsApp.getIntValue(this.open20Dollars);
-		total += ClosingsApp.getIntValue(this.open50Dollars);
-		total += ClosingsApp.getIntValue(this.open100Dollars);
+		total += ClosingsApp.getDoubleValue(this.open1Cent);
+		total += ClosingsApp.getDoubleValue(this.open5Cents);
+		total += ClosingsApp.getDoubleValue(this.open10Cents);
+		total += ClosingsApp.getDoubleValue(this.open25Cents);
+		total += ClosingsApp.getDoubleValue(this.open1Dollar);
+		total += ClosingsApp.getDoubleValue(this.open5Dollars);
+		total += ClosingsApp.getDoubleValue(this.open10Dollars);
+		total += ClosingsApp.getDoubleValue(this.open20Dollars);
+		total += ClosingsApp.getDoubleValue(this.open50Dollars);
+		total += ClosingsApp.getDoubleValue(this.open100Dollars);
 
 		setCashTotal(total);
 	}
@@ -95,14 +95,14 @@ public class CashPanel extends FlowPanel {
 		numberKeyUpHandler.setClosingPanel(closingPanel);
 	}
 
-	private double cashTotal = 0.0D;
+	private Double cashTotal = 0.0D;
 
 	public double getCashTotal() {
 		return this.cashTotal;
 	}
 
-	public void setCashTotal(double cashTotal) {
+	public void setCashTotal(Double cashTotal) {
 		this.cashTotal = cashTotal;
-		this.totalTextBox.setText(ClosingPanel.getCurrency(cashTotal));
+		this.totalTextBox.setValue(ClosingPanel.getCurrency(cashTotal));
 	}
 }

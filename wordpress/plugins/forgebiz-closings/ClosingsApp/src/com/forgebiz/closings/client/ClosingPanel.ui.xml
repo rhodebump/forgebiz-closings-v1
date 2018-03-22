@@ -96,7 +96,7 @@
 		<g:TextBox ui:field="totalIncomeTextBox"  styleName="form-control"></g:TextBox>
 						</div>
 						<div class="form-group">
-								<div class="control-label">Difference (total a - total b) Should be 0 (zero)!:</label>
+								<div class="control-label">Difference (total a - total b) Should be 0 (zero)!:</div>
 								<g:TextBox ui:field="differenceTextBox" styleName="form-control"></g:TextBox>
 								
 						</div>

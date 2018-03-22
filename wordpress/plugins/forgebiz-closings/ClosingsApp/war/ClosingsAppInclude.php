@@ -16,7 +16,7 @@ $nonce = wp_create_nonce( 'wp_rest' );
 
 var WordpressForgebizSettings = {
   nonce: "<?php echo $nonce; ?>",
-  app_mode:"<?php echo $nonce; ?>",
+  app_mode:"<?php echo $app_mode; ?>",
 };
 
 </script>
@@ -29,10 +29,10 @@ var WordpressForgebizSettings = {
       </div>
     </noscript>
 
-<img src="<?php echo $logo; ?>"/>
+
 
        <div class="container">
-
+<img src="<?php echo $logo; ?>"/>
     <div id="closingsNav"></div>
             <div id="messagesPanel"></div>
        

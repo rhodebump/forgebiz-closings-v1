@@ -1,21 +1,17 @@
 package com.forgebiz.closings.client;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.FlowPanel;
+
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 
 public class IncomePanel extends BaseIncomeSalesPanel {
 	Label totalLabel = new Label("Total(Total B)");
 
 
-	Label cashTotalLabel = new Label("Cash (total closing cash from drawer with $100 subtracted)");
+	Label cashTotalLabel = new Label("Cash (Closing cash - Opening cash)");
 	TextBox cashTotalTextBox = new TextBox();
 
-	public void setCashTotalCash(double d) {
-		this.cashTotalTextBox.setValue(new Double(d).toString());
-	}
+
 
 
 	public void setClosingSettings(ClosingSettings closingSettings) {
@@ -53,15 +49,6 @@ public class IncomePanel extends BaseIncomeSalesPanel {
 
 	}
 
-
-
-	public void calculateAll() {
-		GWT.log("calculateAll2");
-		double total = 0.0D;
-		total += ClosingsApp.getIntValue(this.income1TextBox);
-
-		this.totalTextBox.setText(new Double(total).toString());
-	}
 
 
 }

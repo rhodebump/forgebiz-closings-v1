@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ClosingsApp implements EntryPoint {
@@ -35,7 +34,6 @@ public class ClosingsApp implements EntryPoint {
 		GWT.log(GWT.getHostPageBaseURL() + "../wp-json/forgebiz-closings/v1" + val);
 		return GWT.getHostPageBaseURL() + "../wp-json/forgebiz-closings/v1" + val;
 
-
 	}
 
 	public static ClosingsApp getInstance() {
@@ -43,10 +41,7 @@ public class ClosingsApp implements EntryPoint {
 		return closingsApp;
 
 	}
-
-
-
-
+/*
 	public static int getIntValue(TextBox textBox) {
 		try {
 			return Integer.parseInt(textBox.getValue());
@@ -55,7 +50,7 @@ public class ClosingsApp implements EntryPoint {
 		}
 		return 0;
 	}
-
+*/
 	public static double getDoubleValue(TextBox textBox) {
 		try {
 			return Double.parseDouble(textBox.getValue());
@@ -64,8 +59,8 @@ public class ClosingsApp implements EntryPoint {
 		}
 		return 0.0D;
 	}
-	
-	public static void setDouble(TextBox textBox,Double d) {
+
+	public static void setDouble(TextBox textBox, Double d) {
 		if (d == null) {
 			return;
 		}
@@ -74,21 +69,30 @@ public class ClosingsApp implements EntryPoint {
 
 	private SimplePanel closingsMain = new SimplePanel();
 
-	private VerticalPanel messagesPanel = new VerticalPanel();
+	private FlowPanel messagesPanel = new FlowPanel();
 
-	
 	public void clearMessages() {
 		messagesPanel.clear();
 	}
-	
-	public void displayMessage(String error) {
+
+	public void displayMessage(String message) {
 		com.google.gwt.user.client.Window.scrollTo(0, 0);
-		messagesPanel.add(new Label(error));
+
+		Label label = new Label();
+		label.setStyleName("alert alert-success");
+		label.setText(message);
+		messagesPanel.add(label);
+		
 	}
 
 	public void displayError(String error) {
 		com.google.gwt.user.client.Window.scrollTo(0, 0);
-		messagesPanel.add(new Label(error));
+		//messagesPanel.add(new Label(error));
+		Label label = new Label();
+		label.setStyleName("alert alert-danger");
+		label.setText(error);
+		messagesPanel.add(label);
+		
 
 	}
 
@@ -195,10 +199,6 @@ public class ClosingsApp implements EntryPoint {
 		}
 	};
 
-
-
-
-
 	public ClosingsApp() {
 		ClosingsApp.closingsApp = this;
 	}
@@ -208,44 +208,31 @@ public class ClosingsApp implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		initSettings();
-				RootPanel.get("messagesPanel").add(messagesPanel);
-						FlowPanel navigationPanel = new FlowPanel();
+		RootPanel.get("messagesPanel").add(messagesPanel);
+		FlowPanel navigationPanel = new FlowPanel();
 		navigationPanel.setStyleName("row");
-		
-				RootPanel.get("closingsNav").add(navigationPanel);
+
+		RootPanel.get("closingsNav").add(navigationPanel);
 
 		RootPanel.get("closingsMain").add(closingsMain);
-		
-		
-		if (APP_MODE.equals("setup") {
 
-				navigationPanel.add(locationsButton);
-								navigationPanel.add(settingButton);
-				locationsButton.setStyleName("btn btn-primary");
-				locationsButton.addClickHandler(locationsHandler);
-				settingButton.addClickHandler(settingHandler);
-				settingButton.setStyleName("btn btn-primary");
-				
-				
+		if (APP_MODE.equals("setup")) {
+
+			navigationPanel.add(locationsButton);
+			navigationPanel.add(settingButton);
+			locationsButton.setStyleName("btn btn-primary");
+			locationsButton.addClickHandler(locationsHandler);
+			settingButton.addClickHandler(settingHandler);
+			settingButton.setStyleName("btn btn-primary");
+
 		} else {
-			navigationPanel.add(setupPanel);
+			searchClosingsButton.setStyleName("btn btn-primary");
+			this.searchClosingsButton.addClickHandler(searchClosingsHandler);
+			navigationPanel.add(this.searchClosingsButton);
 			searchClosingsButton.click();
 		}
-		
-
-
-
-		
-
-		
-
-
-
-
-
 
 	}
-
 
 	Button locationsButton = new Button("Locations");
 	private ClickHandler locationsHandler = new ClickHandler() {
@@ -281,6 +268,7 @@ public class ClosingsApp implements EntryPoint {
 
 		}
 	};
+
 	public void clearMain() {
 		closingsMain.clear();
 		messagesPanel.clear();

@@ -41,7 +41,7 @@ extends JavaScriptObject
   	}-*/;
     
     public final native double getIncome4()/*-{
-  	return this.income__4;
+  	return this.income_4;
   	}-*/;
     
     public final native double getIncome5()/*-{
@@ -77,7 +77,7 @@ extends JavaScriptObject
   	}-*/;
     
     public final native double getSales4()/*-{
-  	return this.sales__4;
+  	return this.sales_4;
   	}-*/;
     
     public final native double getSales5()/*-{
@@ -209,7 +209,7 @@ public final native boolean getSubmitted()/*-{
 return this.submitted;
 }-*/;
 
-public final  native void setDifference(double difference)/*-{
+public final  native void setDifference(Double difference)/*-{
 this.difference = difference;
 }-*/;
 
@@ -371,15 +371,15 @@ public final native double getClose1Cent()/*-{
 return this.close_1_cent;
 }-*/;
 
-public final  native void setOpenCashTotal(double open_cash_total)   /*-{
+public final  native void setOpenCashTotal(Double open_cash_total)   /*-{
 this.open_cash_total = open_cash_total;
 }-*/;
 
 
-public final native double getOpenCashTotal()/*-{
+public final native Double getOpenCashTotal()/*-{
 return this.open_cash_total;
 }-*/;
-public final native double getCloseCashTotal()/*-{
+public final native Double getCloseCashTotal()/*-{
 return this.close_cash_total;
 }-*/;
 
@@ -388,7 +388,7 @@ return this.close_cash_total;
 
 
 
-public final  native void setCloseCashTotal(double close_cash_total)   /*-{
+public final  native void setCloseCashTotal(Double close_cash_total)   /*-{
 this.close_cash_total = close_cash_total;
 }-*/;
 
@@ -440,22 +440,22 @@ public final  native void setClosingDate(String closing_date)    /*-{
 this.closing_date = closing_date;
 }-*/;
 
-public final  native void setIncomeTotal(double income_total)     /*-{
+public final  native void setIncomeTotal(Double income_total)     /*-{
 this.income_total = income_total;
 }-*/;
-public final native double getIncomeTotal()/*-{
-return this.difference;
+public final native Double getIncomeTotal()/*-{
+return this.income_total;
 }-*/;
-public final native double getDifference()/*-{
+public final native Double getDifference()/*-{
 return this.difference;
 }-*/;
 
 
-public final  native void setSalesTotal(double sales_total)    /*-{
+public final  native void setSalesTotal(Double sales_total)    /*-{
 this.sales_total = sales_total;
 }-*/;
 
-public final native double getSalesTotal()/*-{
+public final native Double getSalesTotal()/*-{
 return this.sales_total;
 }-*/;
 

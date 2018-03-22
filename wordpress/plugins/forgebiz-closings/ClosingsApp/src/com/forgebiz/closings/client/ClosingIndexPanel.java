@@ -21,22 +21,17 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SafeHtmlHeader;
 import com.google.gwt.user.cellview.client.TextColumn;
-//import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-//import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimpleCheckBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 public class ClosingIndexPanel extends FlowPanel {
@@ -50,7 +45,6 @@ public class ClosingIndexPanel extends FlowPanel {
 			ClosingPanel closingPanel = new ClosingPanel();
 			closingPanel.setClosing(closing);
 			ClosingsApp.getInstance().swapMain(closingPanel);
-			// ClosingsApp.fetchClosingSettings(gotSettingsCallback);
 		}
 	};
 
@@ -140,6 +134,14 @@ public class ClosingIndexPanel extends FlowPanel {
 		}
 
 	}
+	
+	private int getBoolean(SimpleCheckBox sc) {
+		if (showDeletedCheckbox.isChecked()) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
 
 	private void searchClosings() {
 		GWT.log("searchHandler.onClick");
@@ -150,7 +152,7 @@ public class ClosingIndexPanel extends FlowPanel {
 			url = url + "?location_id=" + locationListBox.getSelectedValue();
 			url = url + "&start_date=" + getDate(startDatePicker);
 			url = url + "&end_date=" + getDate(endDatePicker);
-			url = url + "&deleted=" + showDeletedCheckbox.getValue().toString();
+			url = url + "&deleted=" + getBoolean(showDeletedCheckbox);
 
 			GWT.log("url = " + url);
 			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
