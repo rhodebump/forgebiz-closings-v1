@@ -13,8 +13,30 @@ into wordpress plugin package
     <delete dir="target" failonerror="false" />
   </target>
   
-  <target name="build" description="Cleans this project">
+  <target name="build" description="Cleans this project" depends="clean">
     <mkdir dir="target"/>
+        <mkdir dir="target/forgebiz-closings"/>
+    
+      <copy todir="target/forgebiz-closings">
+    <fileset dir="wordpress/plugins/forgebiz-closings">
+      <exclude name="**/*.jar"/>
+       <exclude name="**/*.class"/>     
+       <exclude name="**/gwt-unitCache/"/>            
+       <exclude name="**/WEB-INF/"/>              
+       
+       <exclude name="**/ClosingsApp.launch"/>     
+       <exclude name="**/build.xml"/>     
+              <exclude name="**/ClosingsApp.html"/>     
+              
+       
+       
+       
+    </fileset>
+  </copy>
+  
+    <zip destfile="target/forgebiz-closings.zip"
+       basedir="target"/>
+  
   </target>
   
   

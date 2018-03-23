@@ -100,7 +100,6 @@ function fbc_install()
         die($wpdb->last_error);
     }
     
-    
     $table_name = getClosingSettingTableName($wpdb);
     
     $label_sql = "CREATE TABLE $table_name (
@@ -155,7 +154,6 @@ function fbc_install()
         die($wpdb->last_error);
     }
     
-    
     $table_name = getLocationTableName($wpdb);
     
     $location_sql = "CREATE TABLE $table_name (
@@ -171,6 +169,31 @@ function fbc_install()
         die($wpdb->last_error);
     }
     add_option('fbc_db_version', $fbc_db_version);
+}
+
+function fbc_uninstall()
+{
+    global $wpdb;
+    
+    delete_option('fbc_db_version');
+    $table_name = getLocationTableName($wpdb);
+    
+    $wpdb->query(sprintf("DROP TABLE IF EXISTS %s", $table_name));
+    if ($wpdb->last_error) {
+        die($wpdb->last_error);
+    }
+    $table_name = getClosingSettingTableName($wpdb);
+    
+    $wpdb->query(sprintf("DROP TABLE IF EXISTS %s", $table_name));
+    if ($wpdb->last_error) {
+        die($wpdb->last_error);
+    }
+    
+    $table_name = getClosingTableName($wpdb);
+    $wpdb->query(sprintf("DROP TABLE IF EXISTS %s", $table_name));
+    if ($wpdb->last_error) {
+        die($wpdb->last_error);
+    }
 }
 
 function fbc_install_data()
@@ -238,6 +261,7 @@ function fbc_install_data()
 
 register_activation_hook(__FILE__, 'fbc_install');
 register_activation_hook(__FILE__, 'fbc_install_data');
+register_uninstall_hook(__FILE__, 'fbc_uninstall');
 
 class gwtApp
 {
@@ -265,8 +289,6 @@ class gwtApp
         // $this->api_route = '^api/weather/(.*)/?'; // Matches /api/weather/{position}
         $this->api_route = '^api/forgebiz-closings/(.*)/?'; // Matches /api/weather/{position}
         $this->base_href = '/' . basename(dirname(__FILE__)) . '/'; // Matches /wordpress-angular-plugin/
-                                                                    
-
         
         add_filter('do_parse_request', array(
             $this,
@@ -290,13 +312,15 @@ class gwtApp
             'closings_api'
         ), 1, 3);
         
-       add_action('admin_menu', array($this,'forgebiz_closings_page_create'),1,3);
-
+        add_action('admin_menu', array(
+            $this,
+            'forgebiz_closings_page_create'
+        ), 1, 3);
     }
-    //https://wordpress.stackexchange.com/questions/16415/passing-arguments-to-a-admin-menu-page-callback
-    
-    
-    function forgebiz_closings_page_create() {
+
+    // https://wordpress.stackexchange.com/questions/16415/passing-arguments-to-a-admin-menu-page-callback
+    function forgebiz_closings_page_create()
+    {
         $page_title = 'forgebiz closings';
         $menu_title = 'forgebiz closings';
         $capability = 'edit_others_posts';
@@ -305,15 +329,14 @@ class gwtApp
         $icon_url = '';
         $position = 24;
         
-        add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
+        add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position);
     }
-    public  function doPageInclude($app_mode) {
-        
-        $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
-        $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
-        $logo = $this->get_url_to_file('ClosingsApp/war/forgebiz-logo-forge.png');
 
-  
+    public function doPageInclude($app_mode)
+    {
+        $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
+        $main_css = $this->auto_version_file('css/ClosingsApp.css');
+        $logo = $this->get_url_to_file('images/forgebiz-logo-forge.png');
         
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
@@ -321,13 +344,12 @@ class gwtApp
         $page_title = 'forgebiz closings | forgebiz.com';
         
         // Browser caching for our main template
-        //$ttl = DAY_IN_SECONDS;
-        //header("Cache-Control: public, max-age=$ttl");
+        // $ttl = DAY_IN_SECONDS;
+        // header("Cache-Control: public, max-age=$ttl");
         // Load index view
-        include_once ($this->plugin_dir . 'ClosingsApp/war/ClosingsAppInclude.php');
+        include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
         exit();
     }
-    
 
     public function closings_api($wp)
     {
@@ -394,13 +416,14 @@ class gwtApp
         array_push($this->versions, $mtime);
         return $url;
     }
+
     public function get_url_to_file($path_to_file)
     {
         $file = $this->plugin_dir . $path_to_file;
         if (! file_exists($file))
             return false;
-            $url = $this->plugin_url . $path_to_file;
-            return $url;
+        $url = $this->plugin_url . $path_to_file;
+        return $url;
     }
 
     /**
@@ -418,9 +441,8 @@ class gwtApp
         if (! $url_match)
             return $continue;
         $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
-        $main_css = $this->auto_version_file('ClosingsApp/war/ClosingsApp.css');
-        $logo = $this->get_url_to_file('ClosingsApp/war/forgebiz-logo-forge.png');
-
+        $main_css = $this->auto_version_file('css/ClosingsApp.css');
+        $logo = $this->get_url_to_file('images/forgebiz-logo-forge.png');
         
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
@@ -430,19 +452,12 @@ class gwtApp
         $ttl = DAY_IN_SECONDS;
         header("Cache-Control: public, max-age=$ttl");
         // Load index view
-        include_once ($this->plugin_dir . 'ClosingsApp/war/ClosingsApp.php');
+        include_once ($this->plugin_dir . 'ClosingsApp.php');
         exit();
     }
 } // class gwtApp
 global $gwtApp;
 $gwtApp = new gwtApp();
-
-
-
-
-
-
-
 
 add_action('rest_api_init', function () {
     // forgebiz_closing_settings
@@ -493,37 +508,38 @@ add_action('rest_api_init', function () {
         }
     ));
 });
-    /*
-    add_action('admin_menu', 'forgebiz_closings_page_create');
 
+/*
+ * add_action('admin_menu', 'forgebiz_closings_page_create');
+ *
+ *
+ * function forgebiz_closings_page_create() {
+ * $page_title = 'forgebiz closings';
+ * $menu_title = 'forgebiz closings';
+ * $capability = 'edit_others_posts';
+ * $menu_slug = 'forgebiz_closings';
+ * $function = 'forgebiz_closings_page_display';
+ * $icon_url = '';
+ * $position = 24;
+ *
+ * add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
+ * }
+ *
+ * function forgebiz_closings_page_display() {
+ * // wp_redirect( "/forgebiz-cloddsings/" );
+ * // exit;
+ * echo("Hello");
+ * }
+ */
+function forgebiz_closings_page_display()
+{
+    // wp_redirect( "/forgebiz-cloddsings/" );
+    // exit;
+    // why must i create a new gwtApp
+    $gwtApp = new gwtApp();
+    $gwtApp->doPageInclude('main');
+}
 
-     function forgebiz_closings_page_create() {
-        $page_title = 'forgebiz closings';
-        $menu_title = 'forgebiz closings';
-        $capability = 'edit_others_posts';
-        $menu_slug = 'forgebiz_closings';
-        $function = 'forgebiz_closings_page_display';
-        $icon_url = '';
-        $position = 24;
-        
-        add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
-    }
-    
-     function forgebiz_closings_page_display() {
-        // wp_redirect( "/forgebiz-cloddsings/" );
-        // exit;
-        echo("Hello");
-    }
-    */
-    function forgebiz_closings_page_display() {
-        // wp_redirect( "/forgebiz-cloddsings/" );
-        // exit;
-        //why must i create a new gwtApp
-        $gwtApp = new gwtApp();
-        $gwtApp -> doPageInclude('main');
-
-    }
-    
 function location_save($request)
 {
     global $wpdb;
@@ -571,7 +587,6 @@ function closing_save($request)
     
     // wpdb::replace( string $table, array $data, array|string $format = null )
     // wpdb::update( string $table, array $data, array $where, array|string $format = null, array|string $where_format = null )
-
     
     $data = array(
         'sales_1' => $request['sales_1'],
@@ -604,7 +619,7 @@ function closing_save($request)
         'close_20_dollars' => $request['close_20_dollars'],
         'close_50_dollars' => $request['close_50_dollars'],
         'close_100_dollars' => $request['close_100_dollars'],
-
+        
         'open_1_cent' => $request['open_1_cent'],
         'open_5_cents' => $request['open_5_cents'],
         'open_10_cents' => $request['open_10_cents'],
@@ -615,19 +630,16 @@ function closing_save($request)
         'open_50_dollars' => $request['open_50_dollars'],
         'open_100_dollars' => $request['open_100_dollars'],
         
-        
         'close_cash_total' => $request['close_cash_total'],
         'open_cash_total' => $request['open_cash_total'],
         'difference' => $request['difference'],
         'sales_total' => $request['sales_total'],
         'income_total' => $request['income_total'],
         
-        
         'opener_name' => $request['opener_name'],
         'notes' => $request['notes'],
         'closer_name' => $request['closer_name'],
         'closing_date' => $request['closing_date'],
-        
         
         'submitted' => $request['submitted'],
         'deleted' => $request['deleted'],
@@ -655,16 +667,6 @@ function closing_save($request)
         '%d',
         '%d',
         '%d',
-
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
         
         '%d',
         '%d',
@@ -676,6 +678,15 @@ function closing_save($request)
         '%d',
         '%d',
         
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
+        '%d',
         
         '%d',
         '%d',
@@ -691,7 +702,7 @@ function closing_save($request)
         '%d',
         '%d',
         '%s'
-        
+    
     );
     
     $id = $request['id'];
@@ -699,22 +710,26 @@ function closing_save($request)
         $data['ID'] = $request['id'];
         $format[] = '%d';
     } else {
-
+        
         $data['date_created'] = current_time('mysql');
         $format[] = '%s';
     }
     
     $result = $wpdb->replace($table_name, $data, $format);
-    //if (true){
+    // if (true){
     if ($wpdb->last_error) {
-        //$last_error = var_export($wpdb->last_error, true);
+        // $last_error = var_export($wpdb->last_error, true);
         $last_query = var_export($wpdb->last_query, true);
         
-        $debug = array($last_error, $last_query, $data, $format);
+        $debug = array(
+            $last_error,
+            $last_query,
+            $data,
+            $format
+        );
         
         return new WP_REST_Response($debug, 500);
     }
-    
     
     $submitted = $request['submitted'];
     if ($submitted) {
@@ -736,8 +751,6 @@ function closing_save($request)
         }
     }
     
-
-    
     return new WP_REST_Response($data, 200);
 }
 
@@ -745,8 +758,7 @@ function get_closing_body($closing)
 {
     $body = "<h1>Closing details</h1>";
     $body .= "<table>";
-   
-
+    
     $keys = array_keys($closing);
     
     foreach ($keys as $key) {
@@ -871,8 +883,6 @@ function save_closing_settings($request)
     
     $result = $wpdb->replace($table_name, $data, $format);
     
-
-    
     if ($wpdb->last_error) {
         $last_error = var_export($wpdb->last_error, true);
         return new WP_REST_Response($last_error, 500);
@@ -902,8 +912,7 @@ function location_search($request)
     if ($wpdb->last_error) {
         $last_error = var_export($wpdb->last_error, true);
         return new WP_REST_Response($last_error, 500);
-     }
-    
+    }
     
     return new WP_REST_Response($query_results, 200);
 }
@@ -951,10 +960,9 @@ function closings_search($request)
         $sql[] = " closing_date <= '$endDate' ";
     }
     
-    if (!$startDate && !$enddate) {
-        //no date parms submitted, let's default to yesterday
-      //  $sql[] = " closing_date >= '$startDate' ";
-        
+    if (! $startDate && ! $enddate) {
+        // no date parms submitted, let's default to yesterday
+        // $sql[] = " closing_date >= '$startDate' ";
     }
     
     $location_name = $request['location_name'];
@@ -982,12 +990,14 @@ function closings_search($request)
     if ($wpdb->last_error) {
         // if (true) {
         $last_error = var_export($wpdb->last_error, true);
-        $debug = array($last_error, $query, $sql);
+        $debug = array(
+            $last_error,
+            $query,
+            $sql
+        );
         
         return new WP_REST_Response($debug, 500);
     }
-
-    
     
     return new WP_REST_Response($query_results, 200);
 }
@@ -1019,36 +1029,36 @@ function get_closing_settings($request)
     
     return new WP_REST_Response($results, 200);
 }
-	
-	
 
 add_action('wp_dashboard_setup', 'fbc_dashboard_widgets');
-  
-function fbc_dashboard_widgets() {
-global $wp_meta_boxes;
-wp_add_dashboard_widget('custom_help_widget', 'forgebiz closings Support', 'fbc_dashboard_help');
-}
- 
-function fbc_dashboard_help() {
-echo '<p>Welcome to forgebiz closings! Need help? Contact the developer <a href="mailto:phillip@forgebiz.com">here</a>. For more info visit: <a href="http://www.forgebiz.com" target="_blank">forgebiz</a></p>';
+
+function fbc_dashboard_widgets()
+{
+    global $wp_meta_boxes;
+    wp_add_dashboard_widget('custom_help_widget', 'forgebiz closings Support', 'fbc_dashboard_help');
 }
 
-
-add_action( 'admin_menu', 'fbc_plugin_menu' );
-
-
-function fbc_plugin_menu() {
-	add_options_page( 'forgebiz closings Options', 'forgebiz closings', 'manage_options', 'fbc', 'fbc_plugin_options' );
+function fbc_dashboard_help()
+{
+    echo '<p>Welcome to forgebiz closings! Need help? Contact the developer <a href="mailto:phillip@forgebiz.com">here</a>. For more info visit: <a href="http://www.forgebiz.com" target="_blank">forgebiz</a></p>';
 }
 
-//TODO
-function fbc_plugin_options() {
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
-	//echo '<div class="wrap">';
-	//echo '<p>Here is where the form would go if I actually had options.</p>';
-	//echo '</div>';
-	    $gwtApp = new gwtApp();
-        $gwtApp -> doPageInclude('setup');
+add_action('admin_menu', 'fbc_plugin_menu');
+
+function fbc_plugin_menu()
+{
+    add_options_page('forgebiz closings Options', 'forgebiz closings', 'manage_options', 'fbc', 'fbc_plugin_options');
+}
+
+// TODO
+function fbc_plugin_options()
+{
+    if (! current_user_can('manage_options')) {
+        wp_die(__('You do not have sufficient permissions to access this page.'));
+    }
+    // echo '<div class="wrap">';
+    // echo '<p>Here is where the form would go if I actually had options.</p>';
+    // echo '</div>';
+    $gwtApp = new gwtApp();
+    $gwtApp->doPageInclude('setup');
 }
