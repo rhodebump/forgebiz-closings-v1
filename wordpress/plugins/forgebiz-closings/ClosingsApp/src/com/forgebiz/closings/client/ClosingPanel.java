@@ -344,7 +344,7 @@ public class ClosingPanel extends Composite {
 		}
 	};
 
-	public static void saveClosing(Closing closing, AsyncCallback callback) {
+	public static void saveClosing(Closing closing, final AsyncCallback callback) {
 		String base = ClosingsApp.getURL("/closing/save");
 		String url = URL.encode(base);
 		GWT.log("url = " + url);

@@ -112,7 +112,7 @@ public class ClosingsApp implements EntryPoint {
 		rb.setHeader("X-WP-Nonce", NONCE);
 	}
 
-	public static void fetchClosingSettings(AsyncCallback callback) {
+	public static void fetchClosingSettings(final AsyncCallback callback) {
 		// TODO, change to search
 		String base = ClosingsApp.getURL("/closing-settings/1");
 
@@ -152,7 +152,7 @@ public class ClosingsApp implements EntryPoint {
 
 	}
 
-	public static void fetchLocations(AsyncCallback callback) {
+	public static void fetchLocations(final AsyncCallback callback) {
 		String base = ClosingsApp.getURL("/location/search");
 
 		String url = URL.encode(base);

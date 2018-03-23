@@ -121,7 +121,7 @@ public class LocationPanel extends FlowPanel {
 		
 	}
 	
-	private void saveLocation(Location location, String message) {
+	private void saveLocation(Location location, final String message) {
 		String base = ClosingsApp.getURL("/location/save");
 		
 		String url = URL
