@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="ClosingsApp" default="build" basedir=".">
+
+
+
+<!--
+Purpose of this ant build file is to copy what we have that is in format to use with docker and GWT devmode
+into wordpress plugin package
+-->
+
+
+  <target name="clean" description="Cleans this project">
+    <delete dir="target" failonerror="false" />
+  </target>
+  
+  <target name="build" description="Cleans this project">
+    <mkdir dir="target"/>
+  </target>
+  
+  
+  
+</project>
+
