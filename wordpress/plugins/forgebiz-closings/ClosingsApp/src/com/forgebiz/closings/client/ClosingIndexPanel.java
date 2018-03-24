@@ -45,6 +45,7 @@ public class ClosingIndexPanel extends FlowPanel {
 			ClosingPanel closingPanel = new ClosingPanel();
 			closingPanel.setClosing(closing);
 			ClosingsApp.getInstance().swapMain(closingPanel);
+			
 		}
 	};
 
@@ -69,16 +70,11 @@ public class ClosingIndexPanel extends FlowPanel {
 		}
 
 		public void onSuccess(Object response) {
-			GWT.log("openSettingCallback.onSuccess");
-
 			JsArray<Location> records = (JsArray<Location>) response;
 			locationListBox.addItem("All Locations", "");
-
 			for (int i = 0; i < records.length(); i++) {
 				Location location = records.get(i);
-
 				locationListBox.addItem(location.getLocationName(), new Integer(location.getId()).toString());
-
 			}
 
 		}
@@ -227,31 +223,18 @@ public class ClosingIndexPanel extends FlowPanel {
 		};
 		table.addColumn(closeDateColumn, "Close Date");
 
-
-		//total sales
-		//total income
-		//difference
-		//notes
-		//total open cash
-		//total close cash
-		
-
-
 		for (ColumnType columnType : ColumnType.values()) {
-			// System.out.print(n.getSpanishName() + " ");
-
 			TextColumn<Closing> salesColumn = new TextColumn<Closing>() {
 				@Override
 				public String getValue(Closing closing) {
-					return new Double(closing.getSales2()).toString();
+					//return new Double(closing.getSales2()).toString();
+					return columnType.getValue(closing).toString();
 				}
 			};
 			Header<String> salesFooter = new ClosingHeader(table, columnType);
-			// table.addColumn(sales2Column, "Sales 2");
-			table.addColumn(salesColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Sales 2")), salesFooter);
+			table.addColumn(salesColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(columnType.getName())), salesFooter);
 
 		}
-
 
 
 		Column<Closing, String> bc = addColumn(new ButtonCell(), "Edit", new GetValue<String>() {

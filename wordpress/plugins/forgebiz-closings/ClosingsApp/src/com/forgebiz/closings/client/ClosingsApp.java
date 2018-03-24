@@ -113,48 +113,7 @@ public class ClosingsApp implements EntryPoint {
 	}
 
 	public static void fetchClosingSettings(final AsyncCallback callback) {
-		// TODO, change to search
 		String base = ClosingsApp.getURL("/closing-settings/1");
-
-		// String JSON_URL2 = JSON_BASE + "/closing-settings/1";
-		String url = URL.encode(base);
-
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-		// config.headers['X-WP-Nonce'] = myLocalized.nonce;
-		setNonce(builder);
-
-		try {
-			builder.sendRequest(null, new RequestCallback() {
-				public void onError(Request request, Throwable exception) {
-					// displayError("Couldn't retrieve JSON : " + JSON_URL2 +
-					// exception.getMessage());
-				}
-
-				public void onResponseReceived(Request request, Response response) {
-					if (200 == response.getStatusCode()) {
-						GWT.log("good result " + response.getStatusText());
-						JsArray<ClosingSettings> records = JsonUtils
-								.<JsArray<ClosingSettings>>safeEval(response.getText());
-						ClosingSettings closingSettings = records.get(0);
-						// displayMessage(response.getText());
-						callback.onSuccess(closingSettings);
-
-					} else {
-						callback.onFailure(new Exception(response.getText()));
-
-					}
-				}
-			});
-		} catch (RequestException e) {
-			// displayError("Couldn't retrieve JSON : " + e.getMessage());
-			callback.onFailure(e);
-		}
-
-	}
-
-	public static void fetchLocations(final AsyncCallback callback) {
-		String base = ClosingsApp.getURL("/location/search");
-
 		String url = URL.encode(base);
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -169,20 +128,45 @@ public class ClosingsApp implements EntryPoint {
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
 						GWT.log("good result " + response.getStatusText());
-						GWT.log("results=" + response.getText());
-						JsArray<Location> records = JsonUtils.<JsArray<Location>>safeEval(response.getText());
-
-						callback.onSuccess(records);
+						JsArray<ClosingSettings> records = JsonUtils
+								.<JsArray<ClosingSettings>>safeEval(response.getText());
+						ClosingSettings closingSettings = records.get(0);
+						callback.onSuccess(closingSettings);
 
 					} else {
-						GWT.log("bad result " + response.getStatusCode());
 						callback.onFailure(new Exception(response.getText()));
 
 					}
 				}
 			});
 		} catch (RequestException e) {
-			// displayError("Couldn't retrieve JSON : " + e.getMessage());
+			callback.onFailure(e);
+		}
+
+	}
+
+	public static void fetchLocations(final AsyncCallback callback) {
+		String base = ClosingsApp.getURL("/location/search");
+		String url = URL.encode(base);
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		setNonce(builder);
+		try {
+			builder.sendRequest(null, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					callback.onFailure(exception);
+				}
+
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode()) {
+						JsArray<Location> records = JsonUtils.<JsArray<Location>>safeEval(response.getText());
+						callback.onSuccess(records);
+					} else {
+						callback.onFailure(new Exception(response.getText()));
+
+					}
+				}
+			});
+		} catch (RequestException e) {
 			callback.onFailure(e);
 		}
 
@@ -192,8 +176,6 @@ public class ClosingsApp implements EntryPoint {
 
 	public ClickHandler searchClosingsHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
-			GWT.log("search handler");
-
 			ClosingIndexPanel closingsIndexPanel = new ClosingIndexPanel();
 			swapMain(closingsIndexPanel);
 		}
@@ -203,19 +185,13 @@ public class ClosingsApp implements EntryPoint {
 		ClosingsApp.closingsApp = this;
 	}
 
-	/**
-	 * This is the entry point method.
-	 */
 	public void onModuleLoad() {
 		initSettings();
 		RootPanel.get("messagesPanel").add(messagesPanel);
 		FlowPanel navigationPanel = new FlowPanel();
 		navigationPanel.setStyleName("row");
-
 		RootPanel.get("closingsNav").add(navigationPanel);
-
 		RootPanel.get("closingsMain").add(closingsMain);
-
 		if (APP_MODE.equals("setup")) {
 
 			navigationPanel.add(locationsButton);
@@ -237,9 +213,6 @@ public class ClosingsApp implements EntryPoint {
 	Button locationsButton = new Button("Locations");
 	private ClickHandler locationsHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
-			// new closing panel
-			// how to swap out the panel?
-			// fetchClosingSettings(newClosingCallback);
 			LocationIndexPanel locationIndexPanel = new LocationIndexPanel();
 			swapMain(locationIndexPanel);
 

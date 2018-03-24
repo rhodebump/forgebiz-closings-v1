@@ -10,19 +10,7 @@ extends JavaScriptObject
     protected Closing() {
     }
     
-    /*
-     * 		sales_1 decimal(15,2) NOT NULL,
-		sales_2 decimal(15,2) NOT NULL,
-		sales_3 decimal(15,2) NOT NULL,
-		sales_4 decimal(15,2) NOT NULL,
-		sales_5 decimal(15,2) NOT NULL,
-		sales_6 decimal(15,2) NOT NULL,
-		sales_7 decimal(15,2) NOT NULL,
-		sales_8 decimal(15,2) NOT NULL,
-		sales_9 decimal(15,2) NOT NULL,	
-		
-		
-     */
+
     
     public final native double getIncome1()/*-{
   	return this.income_1;
@@ -426,12 +414,12 @@ public final  native void setClose5Dollars(double close_5_dollars)   /*-{
 this.close_5_dollars = close_5_dollars;
 }-*/;
 
-public final  native void setLocationName(String location_name)   /*-{
-this.location_name = location_name;
+public final  native void setLocationId(String location_id)   /*-{
+this.location_id = location_id;
 }-*/;
 
-public final native double getLocationName()/*-{
-return this.location_name;
+public final native String getLocationId()/*-{
+return this.location_id;
 }-*/;
 
 

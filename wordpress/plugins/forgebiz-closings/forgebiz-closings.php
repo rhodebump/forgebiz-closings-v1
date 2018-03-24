@@ -71,7 +71,6 @@ function fbc_install()
 		income_7 decimal(15,2) NOT NULL,
 		income_8 decimal(15,2) NOT NULL,
 		income_9 decimal(15,2) NOT NULL,		
-		income_cash_store decimal(15,2) NOT NULL,
 		last_update datetime default NULL,
 		location_id bigint(20) NOT NULL,
 		notes varchar(2000) default NULL,
@@ -459,8 +458,14 @@ class gwtApp
 global $gwtApp;
 $gwtApp = new gwtApp();
 
+
+/*
+ * The plugin setup allows one to manage settings and locations
+ * This requires elevated permissions ie manage_options
+ * whereas the other features just require edit_others_posts
+ */
+
 add_action('rest_api_init', function () {
-    // forgebiz_closing_settings
     register_rest_route('forgebiz-closings/v1', '/closing-settings/(?P<id>\d+)', array(
         'methods' => 'GET',
         'callback' => 'get_closing_settings',
@@ -473,7 +478,7 @@ add_action('rest_api_init', function () {
         'methods' => 'POST',
         'callback' => 'save_closing_settings',
         'permission_callback' => function () {
-            return current_user_can('edit_others_posts');
+            return current_user_can('manage_options');
         }
     ));
     
@@ -497,7 +502,7 @@ add_action('rest_api_init', function () {
         'methods' => 'POST',
         'callback' => 'location_save',
         'permission_callback' => function () {
-            return current_user_can('edit_others_posts');
+            return current_user_can('manage_options');
         }
     ));
     register_rest_route('forgebiz-closings/v1', '/location/search', array(
@@ -509,33 +514,10 @@ add_action('rest_api_init', function () {
     ));
 });
 
-/*
- * add_action('admin_menu', 'forgebiz_closings_page_create');
- *
- *
- * function forgebiz_closings_page_create() {
- * $page_title = 'forgebiz closings';
- * $menu_title = 'forgebiz closings';
- * $capability = 'edit_others_posts';
- * $menu_slug = 'forgebiz_closings';
- * $function = 'forgebiz_closings_page_display';
- * $icon_url = '';
- * $position = 24;
- *
- * add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
- * }
- *
- * function forgebiz_closings_page_display() {
- * // wp_redirect( "/forgebiz-cloddsings/" );
- * // exit;
- * echo("Hello");
- * }
- */
+
 function forgebiz_closings_page_display()
 {
-    // wp_redirect( "/forgebiz-cloddsings/" );
-    // exit;
-    // why must i create a new gwtApp
+
     $gwtApp = new gwtApp();
     $gwtApp->doPageInclude('main');
 }
@@ -637,6 +619,7 @@ function closing_save($request)
         'income_total' => $request['income_total'],
         
         'opener_name' => $request['opener_name'],
+        'location_id'  => $request['location_id'],
         'notes' => $request['notes'],
         'closer_name' => $request['closer_name'],
         'closing_date' => $request['closing_date'],
@@ -695,6 +678,7 @@ function closing_save($request)
         '%d',
         
         '%s',
+        '%d',
         '%s',
         '%s',
         '%s',
@@ -965,9 +949,9 @@ function closings_search($request)
         // $sql[] = " closing_date >= '$startDate' ";
     }
     
-    $location_name = $request['location_name'];
-    if ($location_name) {
-        $sql[] = " location_name = '$location_name' ";
+    $location_id = $request['location_id'];
+    if ($location_id) {
+        $sql[] = " location_id = $location_id ";
     }
     $deleted = $request['deleted'];
     if ($deleted) {
@@ -988,7 +972,7 @@ function closings_search($request)
     
     $query_results = $wpdb->get_results($query, OBJECT);
     if ($wpdb->last_error) {
-        // if (true) {
+     // if (true) {
         $last_error = var_export($wpdb->last_error, true);
         $debug = array(
             $last_error,

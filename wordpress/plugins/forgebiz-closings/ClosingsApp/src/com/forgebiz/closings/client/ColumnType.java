@@ -2,7 +2,18 @@ package com.forgebiz.closings.client;
 
 public enum ColumnType {
 
-	SALES_1("Sales 1"),SALES_2("Sales 2"), INCOME_1("Income 1"),INCOME_2("Income 2");
+	
+	/*
+	 * 		//total open cash
+		//total close cash
+		//total sales
+		//total income
+		//difference
+		//notes
+		 * 
+	 */
+	OPEN_CASH_TOTAL("Open Cash Total"),CLOSE_CASH_TOTAL("Close Cash Total"), SALES_TOTAL("Sales Total"),INCOME_TOTAL("Income Total"),
+	DIFFERENCE("Difference");
 	
 	private String name = null;
 	
@@ -13,15 +24,23 @@ public enum ColumnType {
 	ColumnType(String name) {
 		this.name = name;
 	}
-	//SALES_1, SALES_2, SALES_3, INCOME_1;
-	public double getValue(Closing closing) {
 
-		if (this == ColumnType.SALES_1) {
-			return closing.getSales1();
-		} else if (this == ColumnType.SALES_2) {
-			return closing.getSales2();
+	public Double getValue(Closing closing) {
+
+
+				
+		if (this == ColumnType.OPEN_CASH_TOTAL) {
+			return closing.getOpenCashTotal();
+		} else if (this == ColumnType.CLOSE_CASH_TOTAL) {
+			return closing.getCloseCashTotal();
+		} else if (this == ColumnType.SALES_TOTAL) {
+			return closing.getSalesTotal();
+		} else if (this == ColumnType.INCOME_TOTAL) {
+			return closing.getIncomeTotal();
+		} else if (this == ColumnType.DIFFERENCE) {
+			return closing.getDifference();
 		}
 
-		return 1.25D;
+		return 0.0D;
 	}
 }

@@ -36,8 +36,7 @@ public class ClosingPanel extends Composite {
 	private static final MyBinder binder = (MyBinder) GWT.create(MyBinder.class);
 	@UiField
 	Button cancelButton;
-	
-	
+
 	@UiField
 	Button saveButton;
 
@@ -102,11 +101,11 @@ public class ClosingPanel extends Composite {
 				locationListBox.addItem(location.getLocationName(), new Integer(location.getId()).toString());
 
 			}
+			setSelectedValue(locationListBox,new Integer(closing.getLocationId()).toString());
 
 		}
 	};
-	
-	
+
 	AsyncCallback deleteClosingCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
 			ClosingIndexPanel closingsIndexPanel = new ClosingIndexPanel();
@@ -122,10 +121,9 @@ public class ClosingPanel extends Composite {
 			ClosingsApp.getInstance().clearMessages();
 			ClosingsApp.getInstance().displayMessage("Closing deleted.");
 
-
 		}
 	};
-	
+
 	AsyncCallback saveClosingCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
 			ClosingsApp.getInstance().clearMessages();
@@ -206,15 +204,15 @@ public class ClosingPanel extends Composite {
 		totalSalesTextBox.setValue(getCurrency(closing.getSalesTotal()));
 		totalIncomeTextBox.setValue(getCurrency(closing.getIncomeTotal()));
 		differenceTextBox.setValue(getCurrency(closing.getDifference()));
-		double incomeCashTotal =  closing.getCloseCashTotal()-closing.getOpenCashTotal();
-		
+		double incomeCashTotal = closing.getCloseCashTotal() - closing.getOpenCashTotal();
+
 		incomePanel.cashTotalTextBox.setValue(getCurrency(incomeCashTotal));
 
 	}
 
 	static NumberFormat numberFormat = NumberFormat.getDecimalFormat();
 
-	public static  String getCurrency(Double value) {
+	public static String getCurrency(Double value) {
 		if (value == null) {
 			return "";
 		}
@@ -268,11 +266,9 @@ public class ClosingPanel extends Composite {
 
 		}
 	};
-	
-	
+
 	public ClickHandler cancelHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
-			
 
 			ClosingIndexPanel closingsIndexPanel = new ClosingIndexPanel();
 			ClosingsApp.getInstance().swapMain(closingsIndexPanel);
@@ -286,7 +282,7 @@ public class ClosingPanel extends Composite {
 			closing.setClosingDate(closingDateBox.getTextBox().getValue());
 			GWT.log("closingDateBox.getValue())=" + closingDateBox.getTextBox().getValue());
 
-			closing.setLocationName(locationListBox.getSelectedValue());
+			closing.setLocationId(locationListBox.getSelectedValue());
 
 			closing.setIncome1(ClosingsApp.getDoubleValue(incomePanel.income1TextBox));
 			closing.setIncome2(ClosingsApp.getDoubleValue(incomePanel.income2TextBox));
@@ -379,13 +375,29 @@ public class ClosingPanel extends Composite {
 		}
 	}
 
+	private void setSelectedValue(ListBox listBox, String str) {
+		String text = str;
+		int indexToFind = -1;
+		for (int i = 0; i < listBox.getItemCount(); i++) {
+			// Match by Value
+			if (listBox.getValue(i).equals(text)) {
+				indexToFind = i;
+				break;
+			}
+			// Match by Text
+			if (listBox.getItemText(i).equals(text)) {
+				indexToFind = i;
+				break;
+			}
+		}
+		listBox.setSelectedIndex(indexToFind);
+	}
+
 	public void setClosing(Closing closing) {
 		this.closing = closing;
 
 		closingDateBox.getTextBox().setValue(getDisplayDate(closing));
-
-		// TODO
-		// locationListBox.setValue(closing.getLocationName());
+		this.setSelectedValue(locationListBox, closing.getLocationId());
 
 		ClosingsApp.setDouble(incomePanel.income1TextBox, closing.getIncome1());
 		ClosingsApp.setDouble(incomePanel.income2TextBox, closing.getIncome2());
@@ -432,17 +444,14 @@ public class ClosingPanel extends Composite {
 		openerNameTextBox.setValue(closing.getOpenerName());
 		closerNameTextBox.setValue(closing.getCloserName());
 		notesTextArea.setValue(closing.getNotes());
-		
 
 		if (closing.getOpenCashTotal() != null) {
 			openCashPanel.setCashTotal(closing.getOpenCashTotal());
 		}
 
-		
 		if (closing.getCloseCashTotal() != null) {
 			closeCashPanel.setCashTotal(closing.getCloseCashTotal());
 		}
-
 
 		ClosingsApp.setDouble(differenceTextBox, closing.getDifference());
 
@@ -452,7 +461,6 @@ public class ClosingPanel extends Composite {
 		if (closing.getIncomeTotal() != null) {
 			incomePanel.setTotal(closing.getIncomeTotal());
 		}
-
 
 	}
 

@@ -117,7 +117,6 @@ public class LocationPanel extends FlowPanel {
 	private void setupButton(Button button) {
 		
 		button.setStyleName("btn btn-primary");
-		//btn btn-primary
 		
 	}
 	
