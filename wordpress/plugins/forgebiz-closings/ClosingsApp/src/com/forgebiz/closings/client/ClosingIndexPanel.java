@@ -223,11 +223,10 @@ public class ClosingIndexPanel extends FlowPanel {
 		};
 		table.addColumn(closeDateColumn, "Close Date");
 
-		for (ColumnType columnType : ColumnType.values()) {
+		for (final ColumnType columnType : ColumnType.values()) {
 			TextColumn<Closing> salesColumn = new TextColumn<Closing>() {
 				@Override
 				public String getValue(Closing closing) {
-					//return new Double(closing.getSales2()).toString();
 					return columnType.getValue(closing).toString();
 				}
 			};
