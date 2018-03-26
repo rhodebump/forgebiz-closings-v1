@@ -51,7 +51,8 @@ function fbc_install()
 		close_10_cents decimal(15,2) NOT NULL,	
 		close_25_cents decimal(15,2) NOT NULL,		
 		close_1_dollar decimal(15,2) NOT NULL,	
-		close_5_dollars decimal(15,2) NOT NULL,			
+		close_5_dollars decimal(15,2) NOT NULL,	
+		close_10_dollars decimal(15,2) NOT NULL,		
 		close_20_dollars decimal(15,2) NOT NULL,					
 		close_50_dollars decimal(15,2) NOT NULL,					
 		close_100_dollars decimal(15,2) NOT NULL,
@@ -336,6 +337,7 @@ class gwtApp
         $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
         $main_css = $this->auto_version_file('css/ClosingsApp.css');
         $logo = $this->get_url_to_file('images/forgebiz-logo-forge.png');
+        $bootstrap_css = $this->get_url_to_file('css/bootstrap-4.0.0-dist/css/bootstrap.css');
         
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
@@ -598,6 +600,7 @@ function closing_save($request)
         'close_25_cents' => $request['close_25_cents'],
         'close_1_dollar' => $request['close_1_dollar'],
         'close_5_dollars' => $request['close_5_dollars'],
+        'close_10_dollars' => $request['close_10_dollars'],
         'close_20_dollars' => $request['close_20_dollars'],
         'close_50_dollars' => $request['close_50_dollars'],
         'close_100_dollars' => $request['close_100_dollars'],

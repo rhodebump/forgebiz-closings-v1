@@ -3,8 +3,8 @@ error_reporting( E_ALL );
 ini_set( 'display_errors', 1 ); 
 ?>
 
-    <link type="text/css" rel="stylesheet" href="<?php echo $main_css; ?>">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link type="text/css" rel="stylesheet" href="<?php echo $main_css; ?>">
+<link rel="stylesheet" href="<?php echo $bootstrap_css; ?>">
 <script type="text/javascript" language="javascript" src="<?php echo $main_js; ?>"></script>
 
 

@@ -5,10 +5,10 @@ ini_set( 'display_errors', 1 );
 <html lang="en">
 <head>
 <meta content="width=device-width,initial-scale=1" name="viewport">
+	<link rel="stylesheet" href="<?php echo $bootstrap_css; ?>">
     <link type="text/css" rel="stylesheet" href="<?php echo $main_css; ?>">
    	<script type="text/javascript" language="javascript" src="<?php echo $main_js; ?>"></script>
      
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
 
@@ -19,11 +19,11 @@ $nonce = wp_create_nonce( 'wp_rest' );
 ?>
 <script>
 
+
 var WordpressForgebizSettings = {
   nonce: "<?php echo $nonce; ?>",
-  app_mode:"<?php echo $nonce; ?>",
+  app_mode:"<?php echo $app_mode; ?>",
 };
-
 </script>
 
     <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->

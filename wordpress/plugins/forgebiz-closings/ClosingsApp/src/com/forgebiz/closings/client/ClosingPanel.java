@@ -98,10 +98,10 @@ public class ClosingPanel extends Composite {
 			for (int i = 0; i < records.length(); i++) {
 				Location location = records.get(i);
 
-				locationListBox.addItem(location.getLocationName(), new Integer(location.getId()).toString());
+				locationListBox.addItem(location.getLocationName(),  new Integer(location.getId()).toString());
 
 			}
-			setSelectedValue(locationListBox,new Integer(closing.getLocationId()).toString());
+
 
 		}
 	};
@@ -199,12 +199,20 @@ public class ClosingPanel extends Composite {
 
 	}
 
+	private double getSafeDouble(Double d) {
+		if (d == null) {
+			return 0.0D;
+		}else {
+			return d;
+		}
+		
+	}
 	private void updateControls() {
 
 		totalSalesTextBox.setValue(getCurrency(closing.getSalesTotal()));
 		totalIncomeTextBox.setValue(getCurrency(closing.getIncomeTotal()));
 		differenceTextBox.setValue(getCurrency(closing.getDifference()));
-		double incomeCashTotal = closing.getCloseCashTotal() - closing.getOpenCashTotal();
+		double incomeCashTotal = getSafeDouble(closing.getCloseCashTotal()) - getSafeDouble(closing.getOpenCashTotal());
 
 		incomePanel.cashTotalTextBox.setValue(getCurrency(incomeCashTotal));
 
@@ -261,6 +269,21 @@ public class ClosingPanel extends Composite {
 
 	public ClickHandler deleteHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
+
+			ConfirmDialogBox cdb = new ConfirmDialogBox("Delete closing?", deleteCallback);
+			cdb.show();
+			cdb.center();
+
+		}
+	};
+
+	AsyncCallback deleteCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+			// ClosingsApp.getInstance().displayError("Closing Settings fetch failure: " +
+			// throwable.getMessage());
+		}
+
+		public void onSuccess(Object response) {
 			closing.setDeleted(true);
 			saveClosing(closing, deleteClosingCallback);
 
@@ -396,6 +419,7 @@ public class ClosingPanel extends Composite {
 	public void setClosing(Closing closing) {
 		this.closing = closing;
 
+		try {
 		closingDateBox.getTextBox().setValue(getDisplayDate(closing));
 		this.setSelectedValue(locationListBox, closing.getLocationId());
 
@@ -460,6 +484,12 @@ public class ClosingPanel extends Composite {
 		}
 		if (closing.getIncomeTotal() != null) {
 			incomePanel.setTotal(closing.getIncomeTotal());
+		}
+
+		updateControls();
+		}catch (Exception e) {
+			GWT.log("setClosing error", e);
+					
 		}
 
 	}

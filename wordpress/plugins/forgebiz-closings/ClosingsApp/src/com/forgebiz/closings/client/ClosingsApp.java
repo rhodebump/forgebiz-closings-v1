@@ -24,6 +24,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ClosingsApp implements EntryPoint {
 
+	
+	
+
+
+	
+	
+	
 	private static ClosingsApp closingsApp = null;
 
 	public static String getURL(String val) {
@@ -62,6 +69,9 @@ public class ClosingsApp implements EntryPoint {
 
 	public static void setDouble(TextBox textBox, Double d) {
 		if (d == null) {
+			return;
+		}
+		if (d.doubleValue() == 0.0D) {
 			return;
 		}
 		textBox.setValue(new Double(d).toString());

@@ -16,3 +16,5 @@ mysql:
 	
 #/Users/prhodes/Development/forgebiz_closings/wordpress/plugins/forgebiz-closings  to /var/www/html/wp-content/plugins
 #docker run -v /host/directory:/container/directory -other -options image_name command_to_run
+#mysqldump -q -u root -ppassword  wordpress > /root/backups/dnw/${THEDATE}.sql
+                                                                                                        

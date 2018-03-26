@@ -12,6 +12,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -46,11 +47,27 @@ public class LocationPanel extends FlowPanel {
 		}
 	};
 	
+	AsyncCallback deleteCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+			//ClosingsApp.getInstance().displayError("Closing Settings fetch failure: " + throwable.getMessage());
+		}
+
+		public void onSuccess(Object response) {
+			location.setDeleted(true);
+			saveLocation(location, "Location successfully deleted");
+
+		}
+	};
+	
+	
 	
 	public ClickHandler deleteHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
-			location.setDeleted(true);
-			saveLocation(location, "Location successfully deleted");
+			
+			ConfirmDialogBox cdb = new ConfirmDialogBox("Delete location?", deleteCallback);
+			cdb.show();
+			cdb.center();
+
 
 		}
 	};
