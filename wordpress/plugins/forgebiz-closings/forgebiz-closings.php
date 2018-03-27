@@ -980,7 +980,7 @@ function closings_search($request)
     
     $query_results = $wpdb->get_results($query, OBJECT);
     if ($wpdb->last_error) {
-     // if (true) {
+    //if (true) {
         $last_error = var_export($wpdb->last_error, true);
         $debug = array(
             $last_error,

@@ -139,13 +139,21 @@ public class ClosingIndexPanel extends FlowPanel {
 		}
 	}
 
+	private String getString(ListBox listBox) {
+		if (listBox.getSelectedValue() == null) {
+			return "";
+		}else {
+			return listBox.getSelectedValue();
+		}
+		
+	}
 	private void searchClosings() {
 		GWT.log("searchHandler.onClick");
 		try {
 			String base = ClosingsApp.getURL("/closing/search");
 			String url = URL.encode(base);
 
-			url = url + "?location_id=" + locationListBox.getSelectedValue();
+			url = url + "?location_id=" + getString(locationListBox);
 			url = url + "&start_date=" + getDate(startDatePicker);
 			url = url + "&end_date=" + getDate(endDatePicker);
 			url = url + "&deleted=" + getBoolean(showDeletedCheckbox);
