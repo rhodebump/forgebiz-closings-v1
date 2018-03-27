@@ -9,7 +9,7 @@
  * License: GPLv2 or later
  */
 global $fbc_db_version;
-$fbc_db_version = '1.1';
+$fbc_db_version = '1.2';
 
 function getClosingSettingTableName($wpdb)
 {
@@ -611,6 +611,7 @@ function closing_save($request)
         'open_25_cents' => $request['open_25_cents'],
         'open_1_dollar' => $request['open_1_dollar'],
         'open_5_dollars' => $request['open_5_dollars'],
+        'open_10_dollars' => $request['open_10_dollars'],
         'open_20_dollars' => $request['open_20_dollars'],
         'open_50_dollars' => $request['open_50_dollars'],
         'open_100_dollars' => $request['open_100_dollars'],
@@ -626,10 +627,10 @@ function closing_save($request)
         'notes' => $request['notes'],
         'closer_name' => $request['closer_name'],
         'closing_date' => $request['closing_date'],
+        'last_update' => current_time('mysql'),
         
         'submitted' => $request['submitted'],
-        'deleted' => $request['deleted'],
-        'last_update' => current_time('mysql')
+        'deleted' => $request['deleted']
     );
     
     $format = array(
@@ -663,6 +664,8 @@ function closing_save($request)
         '%d',
         '%d',
         '%d',
+        '%d',
+        
         
         '%d',
         '%d',
@@ -673,6 +676,8 @@ function closing_save($request)
         '%d',
         '%d',
         '%d',
+        '%d',
+        
         
         '%d',
         '%d',
@@ -681,14 +686,14 @@ function closing_save($request)
         '%d',
         
         '%s',
-        '%d',
+        '%s',
+        '%s',
         '%s',
         '%s',
         '%s',
         
         '%d',
-        '%d',
-        '%s'
+        '%d'
     
     );
     
@@ -703,9 +708,9 @@ function closing_save($request)
     }
     
     $result = $wpdb->replace($table_name, $data, $format);
-    // if (true){
+    //if (true){
     if ($wpdb->last_error) {
-        // $last_error = var_export($wpdb->last_error, true);
+        $last_error = var_export($wpdb->last_error, true);
         $last_query = var_export($wpdb->last_query, true);
         
         $debug = array(
@@ -947,7 +952,7 @@ function closings_search($request)
         $sql[] = " closing_date <= '$endDate' ";
     }
     
-    if (! $startDate && ! $enddate) {
+    if (! $startDate && ! $endDate) {
         // no date parms submitted, let's default to yesterday
         // $sql[] = " closing_date >= '$startDate' ";
     }
