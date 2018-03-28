@@ -1,11 +1,7 @@
-<?php
-error_reporting( E_ALL ); 
-ini_set( 'display_errors', 1 ); 
-?>
 
-<link type="text/css" rel="stylesheet" href="<?php echo $main_css; ?>">
-<link rel="stylesheet" href="<?php echo $bootstrap_css; ?>">
-<script type="text/javascript" language="javascript" src="<?php echo $main_js; ?>"></script>
+
+
+
 
 
 

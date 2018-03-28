@@ -1,14 +1,9 @@
-<?php
-error_reporting( E_ALL ); 
-ini_set( 'display_errors', 1 ); 
-?><!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta content="width=device-width,initial-scale=1" name="viewport">
-	<link rel="stylesheet" href="<?php echo $bootstrap_css; ?>">
-    <link type="text/css" rel="stylesheet" href="<?php echo $main_css; ?>">
-   	<script type="text/javascript" language="javascript" src="<?php echo $main_js; ?>"></script>
-     
+
 
 
 

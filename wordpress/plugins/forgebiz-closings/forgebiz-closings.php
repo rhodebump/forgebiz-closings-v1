@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: ForgeBiz Closings
+ * Plugin Name: forgebiz Closings
  * Plugin URI: http://forgebiz.com
  * Description: Allows businesses to perform end-of-day cash register closing
  * Version: 1.0
@@ -8,30 +8,30 @@
  * Author URI: http://www.philliprhodes.com
  * License: GPLv2 or later
  */
-global $fbc_db_version;
-$fbc_db_version = '1.2';
+global $forgebizclosings_db_version;
+$forgebizclosings_db_version = '1.2';
 
-function getClosingSettingTableName($wpdb)
+function forgebizclosings_get_closing_setting_tablename($wpdb)
 {
     return $wpdb->prefix . 'forgebiz_closing_settings';
 }
 
-function getClosingTableName($wpdb)
+function forgebizclosings_get_closing_tablename($wpdb)
 {
     return $wpdb->prefix . 'forgebiz_closing';
 }
 
-function getLocationTableName($wpdb)
+function forgebizclosings_get_location_tablename($wpdb)
 {
     return $wpdb->prefix . 'forgebiz_location';
 }
 
-function fbc_install()
+function forgebizclosings_install()
 {
     global $wpdb;
-    global $fbc_db_version;
+    global $forgebizclosings_db_version;
     
-    $table_name = getClosingTableName($wpdb);
+    $table_name = forgebizclosings_get_closing_tablename($wpdb);
     
     $charset_collate = $wpdb->get_charset_collate();
     
@@ -100,7 +100,7 @@ function fbc_install()
         die($wpdb->last_error);
     }
     
-    $table_name = getClosingSettingTableName($wpdb);
+    $table_name = forgebizclosings_get_closing_setting_tablename($wpdb);
     
     $label_sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -154,7 +154,7 @@ function fbc_install()
         die($wpdb->last_error);
     }
     
-    $table_name = getLocationTableName($wpdb);
+    $table_name = forgebizclosings_get_location_tablename($wpdb);
     
     $location_sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -168,39 +168,39 @@ function fbc_install()
     if ($wpdb->last_error) {
         die($wpdb->last_error);
     }
-    add_option('fbc_db_version', $fbc_db_version);
+    add_option('forgebizclosings_db_version', $forgebizclosings_db_version);
 }
 
-function fbc_uninstall()
+function forgebizclosings_uninstall()
 {
     global $wpdb;
     
-    delete_option('fbc_db_version');
+    delete_option('forgebizclosings_db_version');
     $table_name = getLocationTableName($wpdb);
     
     $wpdb->query(sprintf("DROP TABLE IF EXISTS %s", $table_name));
     if ($wpdb->last_error) {
         die($wpdb->last_error);
     }
-    $table_name = getClosingSettingTableName($wpdb);
+    $table_name = forgebizclosings_get_closing_setting_tablename($wpdb);
     
     $wpdb->query(sprintf("DROP TABLE IF EXISTS %s", $table_name));
     if ($wpdb->last_error) {
         die($wpdb->last_error);
     }
     
-    $table_name = getClosingTableName($wpdb);
+    $table_name = forgebizclosings_get_closing_tablename($wpdb);
     $wpdb->query(sprintf("DROP TABLE IF EXISTS %s", $table_name));
     if ($wpdb->last_error) {
         die($wpdb->last_error);
     }
 }
 
-function fbc_install_data()
+function forgebizclosings_install_data()
 {
     global $wpdb;
     
-    $table_name = getClosingSettingTableName($wpdb);
+    $table_name = forgebizclosings_get_closing_setting_tablename($wpdb);
     
     $wpdb->insert($table_name, array(
         
@@ -251,7 +251,7 @@ function fbc_install_data()
     if ($wpdb->last_error) {
         die($wpdb->last_error);
     }
-    $table_name = getLocationTableName($wpdb);
+    $table_name = forgebizclosings_get_location_tablename($wpdb);
     $wpdb->insert($table_name, array(
         
         'location_name' => 'Register #1'
@@ -259,11 +259,11 @@ function fbc_install_data()
     ));
 }
 
-register_activation_hook(__FILE__, 'fbc_install');
-register_activation_hook(__FILE__, 'fbc_install_data');
-register_uninstall_hook(__FILE__, 'fbc_uninstall');
+register_activation_hook(__FILE__, 'forgebizclosings_install');
+register_activation_hook(__FILE__, 'forgebizclosings_install_data');
+register_uninstall_hook(__FILE__, 'forgebizclosings_uninstall');
 
-class gwtApp
+class forgebizclosingsApp
 {
 
     public $plugin_dir;
@@ -286,7 +286,6 @@ class gwtApp
         $this->plugin_url = plugins_url('/', __FILE__);
         $this->versions = array();
         // Routing
-        // $this->api_route = '^api/weather/(.*)/?'; // Matches /api/weather/{position}
         $this->api_route = '^api/forgebiz-closings/(.*)/?'; // Matches /api/weather/{position}
         $this->base_href = '/' . basename(dirname(__FILE__)) . '/'; // Matches /wordpress-angular-plugin/
         
@@ -309,23 +308,22 @@ class gwtApp
         // /add_action( 'parse_request', array( $this, 'weather_api' ), 1, 3 );
         add_action('parse_request', array(
             $this,
-            'closings_api'
+            'forgebizclosings_api'
         ), 1, 3);
         
         add_action('admin_menu', array(
             $this,
-            'forgebiz_closings_page_create'
+            'forgebizclosings_page_create'
         ), 1, 3);
     }
 
-    // https://wordpress.stackexchange.com/questions/16415/passing-arguments-to-a-admin-menu-page-callback
-    function forgebiz_closings_page_create()
+    function forgebizclosings_page_create()
     {
         $page_title = 'forgebiz closings';
         $menu_title = 'forgebiz closings';
         $capability = 'edit_others_posts';
         $menu_slug = 'forgebiz_closings';
-        $function = 'forgebiz_closings_page_display';
+        $function = 'forgebizclosings_page_display';
         $icon_url = '';
         $position = 24;
         
@@ -334,43 +332,24 @@ class gwtApp
 
     public function doPageInclude($app_mode)
     {
-        $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
-        $main_css = $this->auto_version_file('css/ClosingsApp.css');
         $logo = $this->get_url_to_file('images/forgebiz-logo-forge.png');
-        $bootstrap_css = $this->get_url_to_file('css/bootstrap-4.0.0-dist/css/bootstrap.css');
-        
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
-        
         $page_title = 'forgebiz closings | forgebiz.com';
-        
-        // Browser caching for our main template
-        // $ttl = DAY_IN_SECONDS;
-        // header("Cache-Control: public, max-age=$ttl");
-        // Load index view
         include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
         exit();
     }
 
-    public function closings_api($wp)
+    public function forgebizclosings_api($wp)
     {
-        // Weather API
         if ($wp->matched_rule !== $this->api_route) {
             return;
         }
-        //
+
         
         $body = $wp->matched_rule;
         
         $body = json_decode($body, true);
-        
-        // Errors
-        // if ( $status !== 200 )
-        // wp_send_json_error( $body );
-        // Cache control headers, these will cache the
-        // users local weather forecast in the browser
-        // for 1 day to reduce
-        // API requests.
         $ttl = DAY_IN_SECONDS;
         // ^api/forgebiz-closings/(.*)/?
         header("testing: " . $wp->matched_rule);
@@ -403,21 +382,6 @@ class gwtApp
         return $vars;
     }
 
-    /**
-     * Auto-version Assets
-     */
-    public function auto_version_file($path_to_file)
-    {
-        $file = $this->plugin_dir . $path_to_file;
-        if (! file_exists($file))
-            return false;
-        $mtime = filemtime($file);
-        $url = $this->plugin_url . $path_to_file . '?v=' . $mtime;
-        // Store for Last-Modified headers
-        array_push($this->versions, $mtime);
-        return $url;
-    }
-
     public function get_url_to_file($path_to_file)
     {
         $file = $this->plugin_dir . $path_to_file;
@@ -441,10 +405,7 @@ class gwtApp
         
         if (! $url_match)
             return $continue;
-        $main_js = $this->auto_version_file('ClosingsApp/war/closingsapp/closingsapp.nocache.js');
-        $main_css = $this->auto_version_file('css/ClosingsApp.css');
         $logo = $this->get_url_to_file('images/forgebiz-logo-forge.png');
-        
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         $app_mode = 'main';
@@ -456,10 +417,9 @@ class gwtApp
         include_once ($this->plugin_dir . 'ClosingsApp.php');
         exit();
     }
-} // class gwtApp
-global $gwtApp;
-$gwtApp = new gwtApp();
-
+} // class forgebizclosingsApp
+global $forgebizclosingsApp;
+$forgebizclosingsApp = new forgebizclosingsApp();
 
 /*
  * The plugin setup allows one to manage settings and locations
@@ -470,7 +430,7 @@ $gwtApp = new gwtApp();
 add_action('rest_api_init', function () {
     register_rest_route('forgebiz-closings/v1', '/closing-settings/(?P<id>\d+)', array(
         'methods' => 'GET',
-        'callback' => 'get_closing_settings',
+        'callback' => 'forgebizclosings_get_closing_settings',
         'permission_callback' => function () {
             return current_user_can('edit_others_posts');
         }
@@ -478,7 +438,7 @@ add_action('rest_api_init', function () {
     
     register_rest_route('forgebiz-closings/v1', '/closing-settings/(?P<id>\d+)', array(
         'methods' => 'POST',
-        'callback' => 'save_closing_settings',
+        'callback' => 'forgebizclosings_save_closing_settings',
         'permission_callback' => function () {
             return current_user_can('manage_options');
         }
@@ -486,7 +446,7 @@ add_action('rest_api_init', function () {
     
     register_rest_route('forgebiz-closings/v1', '/closing/search', array(
         'methods' => 'GET',
-        'callback' => 'closings_search',
+        'callback' => 'forgebizclosings_closings_search',
         'permission_callback' => function () {
             return current_user_can('edit_others_posts');
         }
@@ -494,7 +454,7 @@ add_action('rest_api_init', function () {
     
     register_rest_route('forgebiz-closings/v1', '/closing/save', array(
         'methods' => 'POST',
-        'callback' => 'closing_save',
+        'callback' => 'forgebizclosings_closing_save',
         'permission_callback' => function () {
             return current_user_can('edit_others_posts');
         }
@@ -502,32 +462,30 @@ add_action('rest_api_init', function () {
     
     register_rest_route('forgebiz-closings/v1', '/location/save', array(
         'methods' => 'POST',
-        'callback' => 'location_save',
+        'callback' => 'forgebizclosings_location_save',
         'permission_callback' => function () {
             return current_user_can('manage_options');
         }
     ));
     register_rest_route('forgebiz-closings/v1', '/location/search', array(
         'methods' => 'GET',
-        'callback' => 'location_search',
+        'callback' => 'forgebizclosings_location_search',
         'permission_callback' => function () {
             return current_user_can('edit_others_posts');
         }
     ));
 });
 
-
-function forgebiz_closings_page_display()
+    function forgebizclosings_page_display()
 {
-
-    $gwtApp = new gwtApp();
-    $gwtApp->doPageInclude('main');
+    $forgebizclosingsApp = new forgebizclosingsApp();
+    $forgebizclosingsApp->doPageInclude('main');
 }
 
-function location_save($request)
+function forgebizclosings_location_save($request)
 {
     global $wpdb;
-    $table_name = getLocationTableName($wpdb);
+    $table_name = forgebizclosings_get_location_tablename($wpdb);
     
     $data = array(
         'location_name' => $request['location_name'],
@@ -561,16 +519,13 @@ function location_save($request)
     return new WP_REST_Response($data, 200);
 }
 
-function closing_save($request)
+function forgebizclosings_closing_save($request)
 {
     $data = json_decode(file_get_contents("php://input"));
     
     global $wpdb;
     
-    $table_name = getClosingTableName($wpdb);
-    
-    // wpdb::replace( string $table, array $data, array|string $format = null )
-    // wpdb::update( string $table, array $data, array $where, array|string $format = null, array|string $where_format = null )
+    $table_name = forgebizclosings_get_closing_tablename($wpdb);
     
     $data = array(
         'sales_1' => $request['sales_1'],
@@ -623,7 +578,7 @@ function closing_save($request)
         'income_total' => $request['income_total'],
         
         'opener_name' => $request['opener_name'],
-        'location_id'  => $request['location_id'],
+        'location_id' => $request['location_id'],
         'notes' => $request['notes'],
         'closer_name' => $request['closer_name'],
         'closing_date' => $request['closing_date'],
@@ -666,7 +621,6 @@ function closing_save($request)
         '%d',
         '%d',
         
-        
         '%d',
         '%d',
         '%d',
@@ -677,7 +631,6 @@ function closing_save($request)
         '%d',
         '%d',
         '%d',
-        
         
         '%d',
         '%d',
@@ -708,7 +661,7 @@ function closing_save($request)
     }
     
     $result = $wpdb->replace($table_name, $data, $format);
-    //if (true){
+    // if (true){
     if ($wpdb->last_error) {
         $last_error = var_export($wpdb->last_error, true);
         $last_query = var_export($wpdb->last_query, true);
@@ -746,7 +699,7 @@ function closing_save($request)
     return new WP_REST_Response($data, 200);
 }
 
-function get_closing_body($closing)
+function forgebizclosings_get_closing_body($closing)
 {
     $body = "<h1>Closing details</h1>";
     $body .= "<table>";
@@ -769,7 +722,7 @@ function get_closing_body($closing)
     return $body;
 }
 
-function save_closing_settings($request)
+function forgebizclosings_save_closing_settings($request)
 {
     
     /*
@@ -782,7 +735,7 @@ function save_closing_settings($request)
     global $wpdb;
     // wp_forgebiz_labels
     // $data = array("where" => "do we go");
-    $table_name = getClosingSettingTableName($wpdb);
+    $table_name = forgebizclosings_get_closing_setting_tablename($wpdb);
     
     $data = array(
         'show_sales_1' => $request['show_sales_1'],
@@ -883,11 +836,11 @@ function save_closing_settings($request)
     return new WP_REST_Response($data, 200);
 }
 
-function location_search($request)
+function forgebizclosings_location_search($request)
 {
     global $wpdb;
     
-    $table_name = getLocationTableName($wpdb);
+    $table_name = forgebizclosings_get_location_tablename($wpdb);
     
     $query = "
     SELECT $table_name.* 
@@ -909,11 +862,11 @@ function location_search($request)
     return new WP_REST_Response($query_results, 200);
 }
 
-function get_location_by_id($id)
+function forgebizclosings_get_location_by_id($id)
 {
     global $wpdb;
     
-    $table_name = getLocationTableName($wpdb);
+    $table_name = forgebizclosings_get_location_tablename($wpdb);
     
     $query = "
     SELECT $table_name.*
@@ -930,11 +883,11 @@ function get_location_by_id($id)
     return $query_results;
 }
 
-function closings_search($request)
+function forgebizclosings_closings_search($request)
 {
     global $wpdb;
     
-    $table_name = getClosingTableName($wpdb);
+    $table_name = forgebizclosings_get_closing_tablename($wpdb);
     
     $query = "
     SELECT $table_name.* 
@@ -950,11 +903,6 @@ function closings_search($request)
     $endDate = $request['end_date'];
     if ($endDate) {
         $sql[] = " closing_date <= '$endDate' ";
-    }
-    
-    if (! $startDate && ! $endDate) {
-        // no date parms submitted, let's default to yesterday
-        // $sql[] = " closing_date >= '$startDate' ";
     }
     
     $location_id = $request['location_id'];
@@ -980,7 +928,7 @@ function closings_search($request)
     
     $query_results = $wpdb->get_results($query, OBJECT);
     if ($wpdb->last_error) {
-    //if (true) {
+        // if (true) {
         $last_error = var_export($wpdb->last_error, true);
         $debug = array(
             $last_error,
@@ -994,11 +942,11 @@ function closings_search($request)
     return new WP_REST_Response($query_results, 200);
 }
 
-function get_closing_settings($request)
+function forgebizclosings_get_closing_settings($request)
 {
     global $wpdb;
     // | wp_forgebiz_closing_settings
-    $table_name = getClosingSettingTableName($wpdb);
+    $table_name = forgebizclosings_get_closing_setting_tablename($wpdb);
     
     $querystr = "
     SELECT $table_name.* 
@@ -1022,35 +970,62 @@ function get_closing_settings($request)
     return new WP_REST_Response($results, 200);
 }
 
-add_action('wp_dashboard_setup', 'fbc_dashboard_widgets');
+add_action('wp_dashboard_setup', 'forgebizclosings_dashboard_widgets');
 
-function fbc_dashboard_widgets()
+function forgebizclosings_dashboard_widgets()
 {
     global $wp_meta_boxes;
-    wp_add_dashboard_widget('custom_help_widget', 'forgebiz closings Support', 'fbc_dashboard_help');
+    wp_add_dashboard_widget('custom_help_widget', 'forgebiz closings Support', 'forgebizclosings_dashboard_help');
 }
 
-function fbc_dashboard_help()
+function forgebizclosings_dashboard_help()
 {
     echo '<p>Welcome to forgebiz closings! Need help? Contact the developer <a href="mailto:phillip@forgebiz.com">here</a>. For more info visit: <a href="http://www.forgebiz.com" target="_blank">forgebiz</a></p>';
 }
 
-add_action('admin_menu', 'fbc_plugin_menu');
+add_action('admin_menu', 'forgebizclosings_plugin_menu');
 
-function fbc_plugin_menu()
+function forgebizclosings_plugin_menu()
 {
-    add_options_page('forgebiz closings Options', 'forgebiz closings', 'manage_options', 'fbc', 'fbc_plugin_options');
+    add_options_page('forgebiz closings Options', 'forgebiz closings', 'manage_options', 'forgebizclosings', 'forgebizclosings_plugin_options');
 }
 
-// TODO
-function fbc_plugin_options()
+function forgebizclosings_plugin_options()
 {
     if (! current_user_can('manage_options')) {
         wp_die(__('You do not have sufficient permissions to access this page.'));
     }
-    // echo '<div class="wrap">';
-    // echo '<p>Here is where the form would go if I actually had options.</p>';
-    // echo '</div>';
-    $gwtApp = new gwtApp();
-    $gwtApp->doPageInclude('setup');
+    
+    //
+    $forgebizclosingsApp = new forgebizclosingsApp();
+    $forgebizclosingsApp->doPageInclude('setup');
+}
+
+add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
+
+function forgebizclosings_is_admin_page($hook)
+{
+    if ('settings_page_forgebizclosings' != $hook) {
+        return true;
+    } else if ('toplevel_page_forgebiz_closings' != $hook) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function forgebizclosings_css_and_js($hook)
+{
+    
+    // $screen = get_current_screen();
+    // print_r($screen);
+    
+    // settings_page_fbc
+    if (! forgebizclosings_is_admin_page($hook)) {
+        return;
+    }
+    
+    wp_enqueue_style('forgebizclosings_admin_css', plugins_url('css/ClosingsApp.css', __FILE__));
+    wp_enqueue_style('forgebizclosings_bootstrap_css', plugins_url('css/bootstrap-4.0.0-dist/css/bootstrap.css', __FILE__));
+    wp_enqueue_script('forgebizclosings_js', plugin_dir_url(__FILE__) . 'ClosingsApp/war/closingsapp/closingsapp.nocache.js', array(), '1.0');
 }
