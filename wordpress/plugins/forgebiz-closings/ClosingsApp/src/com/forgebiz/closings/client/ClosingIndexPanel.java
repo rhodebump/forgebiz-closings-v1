@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimpleCheckBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 
@@ -132,7 +133,7 @@ public class ClosingIndexPanel extends FlowPanel {
 	}
 	
 	private int getBoolean(SimpleCheckBox sc) {
-		if (showDeletedCheckbox.isChecked()) {
+		if (showDeletedCheckbox.getValue()) {
 			return 1;
 		}else {
 			return 0;
@@ -203,6 +204,22 @@ public class ClosingIndexPanel extends FlowPanel {
 		Label deletedLabel = new Label("Show Deleted");
 		add(NumberPanelHelper.getBootStrapPanel(deletedLabel, this.showDeletedCheckbox));
 
+		Column<Closing, String> bc = addColumn(new ButtonCell(), "Edit", new GetValue<String>() {
+			@Override
+			public String getValue(Closing contact) {
+				return "View";
+			}
+		}, new FieldUpdater<Closing, String>() {
+			@Override
+			public void update(int index, Closing closing, String value) {
+				ClosingPanel closingPanel = new ClosingPanel();
+				closingPanel.setClosing(closing);
+				ClosingsApp.getInstance().swapMain(closingPanel);
+			}
+		});
+
+		table.addColumn(bc, "Actions");
+		
 		// Create name column.
 		TextColumn<Closing> openerColumn = new TextColumn<Closing>() {
 			@Override
@@ -231,6 +248,8 @@ public class ClosingIndexPanel extends FlowPanel {
 		};
 		table.addColumn(closeDateColumn, "Close Date");
 
+		
+		//what about sale1, sales2, income1, income2, etc..
 		for (final ColumnType columnType : ColumnType.values()) {
 			TextColumn<Closing> salesColumn = new TextColumn<Closing>() {
 				@Override
@@ -244,21 +263,7 @@ public class ClosingIndexPanel extends FlowPanel {
 		}
 
 
-		Column<Closing, String> bc = addColumn(new ButtonCell(), "Edit", new GetValue<String>() {
-			@Override
-			public String getValue(Closing contact) {
-				return "View";
-			}
-		}, new FieldUpdater<Closing, String>() {
-			@Override
-			public void update(int index, Closing closing, String value) {
-				ClosingPanel closingPanel = new ClosingPanel();
-				closingPanel.setClosing(closing);
-				ClosingsApp.getInstance().swapMain(closingPanel);
-			}
-		});
 
-		table.addColumn(bc, "Actions");
 
 		searchButton.addClickHandler(searchHandler);
 		searchButton.setStyleName("btn btn-primary");
@@ -276,7 +281,10 @@ public class ClosingIndexPanel extends FlowPanel {
 		add(searchButton);
 		add(createButton);
 
-		add(table);
+		ScrollPanel scrollPanel = new ScrollPanel();
+		
+		scrollPanel.add(table);
+		add(scrollPanel);
 		searchClosings();
 
 	}

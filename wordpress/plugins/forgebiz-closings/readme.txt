@@ -1,9 +1,10 @@
 === forgebiz closings ===
 Contributors: forgebiz
 Donate link: 
-Tags: 4	Tags: accounting, bookkeeping, book keeping, income, expense log
+Tags: accounting, bookkeeping, book keeping, income, expense log
 Requires at least: 3.5
-Tested up to: 3.5.1
+Tested up to: 4.9.4
+Requires PHP: 5.2.4
 Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -41,5 +42,21 @@ We have some video tutorials and other related materials on our website at http:
 = Does this plugin call any remote servers or services =
 
 No, this plugin is completely self-contained and does not need anything besides your wordpress instance.
+
+ == Changelog ==
+
+This is a first edition of the plugin.    Not applicable yet.
+
+ == Upgrade Notice == 
+
+This is a first edition of the plugin.  Not applicable yet.
+
+ == Screenshots ==
+
+
+1. View registers (locations)
+2. Customize labels for match your business needs
+3. Search for closings
+4. Create a closing
 
 

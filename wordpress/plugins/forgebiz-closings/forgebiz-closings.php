@@ -337,6 +337,7 @@ class forgebizclosingsApp
         $base_href = $this->base_href;
         $page_title = 'forgebiz closings | forgebiz.com';
         include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
+       //include_once ($this->plugin_dir . 'DevPage.php');
         exit();
     }
 
