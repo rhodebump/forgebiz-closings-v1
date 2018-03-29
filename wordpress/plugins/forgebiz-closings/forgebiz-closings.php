@@ -659,6 +659,7 @@ function forgebizclosings_closing_save($request)
         $data['date_created'] = current_time('mysql');
         $format[] = '%s';
     }
+
     
     $result = $wpdb->replace($table_name, $data, $format);
     // if (true){
@@ -680,9 +681,10 @@ function forgebizclosings_closing_save($request)
     if ($submitted) {
         
         try {
+            $location_id = $request['location_id'];
             $locations = forgebizclosings_get_location_by_id($location_id);
             $location = $locations[0];
-            $notification_email_addresses = $location['notification_email_addresses'];
+            $notification_email_addresses = $location -> notification_email_addresses;
             $email_address_array = explode("\n", $notification_email_addresses);
             $body = forgebizclosings_get_closing_body($data);
             
@@ -692,6 +694,7 @@ function forgebizclosings_closing_save($request)
                     'Content-Type: text/html; charset=UTF-8'
                 );
                 wp_mail($email_address, $subject, $body, $headers);
+
             }
         } catch (Exception $e) {
             
