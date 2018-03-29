@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -48,16 +49,7 @@ public class ClosingsApp implements EntryPoint {
 		return closingsApp;
 
 	}
-/*
-	public static int getIntValue(TextBox textBox) {
-		try {
-			return Integer.parseInt(textBox.getValue());
-		} catch (Exception e) {
-			GWT.log("returning 0 for " + textBox.getName());
-		}
-		return 0;
-	}
-*/
+
 	public static double getDoubleValue(TextBox textBox) {
 		try {
 			return Double.parseDouble(textBox.getValue());
@@ -67,15 +59,29 @@ public class ClosingsApp implements EntryPoint {
 		return 0.0D;
 	}
 
-	public static void setDouble(TextBox textBox, Double d) {
+	public static void setDouble(TextBox textBox, Double d, Closing closing) {
 		if (d == null) {
 			return;
 		}
 		if (d.doubleValue() == 0.0D) {
 			return;
 		}
-		textBox.setValue(new Double(d).toString());
+		setString(textBox,new Double(d).toString(),closing);
 	}
+	public static void setString(TextBox textBox, String val, Closing closing) {
+		textBox.setValue(val);
+		if (closing.getSubmitted()) {
+			textBox.setEnabled(false);
+		}
+	}
+		
+	public static void setString(TextArea textBox, String val, Closing closing) {
+		textBox.setValue(val);
+		if (closing.getSubmitted()) {
+			textBox.setEnabled(false);
+		}
+	}	
+	
 
 	private SimplePanel closingsMain = new SimplePanel();
 
