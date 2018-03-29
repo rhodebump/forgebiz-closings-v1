@@ -337,7 +337,7 @@ class forgebizclosingsApp
         $base_href = $this->base_href;
         $page_title = 'forgebiz closings | forgebiz.com';
         include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
-       //include_once ($this->plugin_dir . 'DevPage.php');
+        // include_once ($this->plugin_dir . 'DevPage.php');
         exit();
     }
 
@@ -346,7 +346,6 @@ class forgebizclosingsApp
         if ($wp->matched_rule !== $this->api_route) {
             return;
         }
-
         
         $body = $wp->matched_rule;
         
@@ -477,7 +476,7 @@ add_action('rest_api_init', function () {
     ));
 });
 
-    function forgebizclosings_page_display()
+function forgebizclosings_page_display()
 {
     $forgebizclosingsApp = new forgebizclosingsApp();
     $forgebizclosingsApp->doPageInclude('main');
@@ -680,20 +679,23 @@ function forgebizclosings_closing_save($request)
     $submitted = $request['submitted'];
     if ($submitted) {
         
-        // need to send notifications
-        // lookup location
-        $locations = get_location_by_id($location_id);
-        $location = $locations[0];
-        $notification_email_addresses = $location['notification_email_addresses'];
-        $email_address_array = explode("\n", $notification_email_addresses);
-        $body = get_closing_body($data);
-        
-        foreach ($email_address_array as $email_address) {
-            $subject = 'forgebiz closing submit notification';
-            $headers = array(
-                'Content-Type: text/html; charset=UTF-8'
-            );
-            wp_mail($email_address, $subject, $body, $headers);
+        try {
+            $locations = forgebizclosings_get_location_by_id($location_id);
+            $location = $locations[0];
+            $notification_email_addresses = $location['notification_email_addresses'];
+            $email_address_array = explode("\n", $notification_email_addresses);
+            $body = forgebizclosings_get_closing_body($data);
+            
+            foreach ($email_address_array as $email_address) {
+                $subject = 'forgebiz closing submit notification';
+                $headers = array(
+                    'Content-Type: text/html; charset=UTF-8'
+                );
+                wp_mail($email_address, $subject, $body, $headers);
+            }
+        } catch (Exception $e) {
+            
+            return new WP_REST_Response($e, 500);
         }
     }
     
