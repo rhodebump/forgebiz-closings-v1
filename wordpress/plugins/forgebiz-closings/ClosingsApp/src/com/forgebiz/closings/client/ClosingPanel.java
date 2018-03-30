@@ -259,7 +259,7 @@ public class ClosingPanel extends Composite {
 				ClosingsApp.getInstance().displayError("Please set a date");
 				return;
 			}
-			if (closing.getSubmitted()  ==1) {
+			if (closing.getSubmitted() == 1) {
 				ClosingsApp.getInstance().displayError(CLOSING_ALREADY_SUBMITTED);
 				return;
 			}
@@ -302,12 +302,12 @@ public class ClosingPanel extends Composite {
 
 	public ClickHandler saveHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
-			
-			if (closing.getSubmitted()  == 1) {
+
+			if (closing.getSubmitted() == 1) {
 				ClosingsApp.getInstance().displayError(CLOSING_ALREADY_SUBMITTED);
 				return;
 			}
-			
+
 			closing.setClosingDate(closingDateBox.getTextBox().getValue());
 			closing.setLocationId(locationListBox.getSelectedValue());
 			closing.setIncome1(ClosingsApp.getDoubleValue(incomePanel.income1TextBox));
@@ -369,13 +369,10 @@ public class ClosingPanel extends Composite {
 	public static void saveClosing(Closing closing, final AsyncCallback callback) {
 		String base = ClosingsApp.getURL("/closing/save");
 		String url = URL.encode(base);
-		//GWT.log("url = " + url);
-
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		ClosingsApp.setNonce(builder);
 		builder.setHeader("Content-Type", "application/json");
 		String postData = JsonUtils.stringify(closing);
-		//GWT.log("postData:" + postData);
 		try {
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
@@ -387,7 +384,7 @@ public class ClosingPanel extends Composite {
 					if (200 == response.getStatusCode()) {
 						callback.onSuccess(response);
 					} else {
-						callback.onFailure(new Exception("Closing Save error: " + response.getText()));
+						callback.onFailure(new Exception(response.getText()));
 
 					}
 				}
@@ -418,15 +415,15 @@ public class ClosingPanel extends Composite {
 	public void setClosing(Closing closing) {
 		this.closing = closing;
 		GWT.log("submitted=" + closing.getSubmitted());
-		
+
 		try {
-			if (closing.getSubmitted() ==1) {
+			if (closing.getSubmitted() == 1) {
 				ClosingsApp.getInstance().displayMessage(CLOSING_ALREADY_SUBMITTED);
 			}
-			
+
 			ClosingsApp.setString(closingDateBox.getTextBox(), getDisplayDate(closing), closing);
 
-		 closingDateBox.getTextBox().setValue(getDisplayDate(closing));
+			closingDateBox.getTextBox().setValue(getDisplayDate(closing));
 			this.setSelectedValue(locationListBox, closing.getLocationId());
 
 			ClosingsApp.setDouble(incomePanel.income1TextBox, closing.getIncome1(), closing);

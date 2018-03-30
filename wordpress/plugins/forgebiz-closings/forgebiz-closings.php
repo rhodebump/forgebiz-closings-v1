@@ -336,8 +336,8 @@ class forgebizclosingsApp
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         $page_title = 'forgebiz closings | forgebiz.com';
-        //include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
-        //local
+        // include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
+        // local
         include_once ($this->plugin_dir . 'DevPage.php');
         exit();
     }
@@ -529,12 +529,12 @@ function forgebizclosings_closing_save($request)
     $closing = forgebizclosings_get_closing_by_id($id);
     
     if ($closing) {
-        if ($closing -> submitted) {
-            return new WP_REST_Response("Closing already submitted.  Cannot modify a submitted closing.", 500);
-            
-        }
         
-    }    
+        // return new WP_REST_Response( $testing , 500);
+        if ($closing->submitted == 1) {
+           return new WP_REST_Response("Closing already submitted.  Cannot modify a submitted closing.", 500);
+        }
+    }
     
     $table_name = forgebizclosings_get_closing_tablename($wpdb);
     
@@ -661,7 +661,6 @@ function forgebizclosings_closing_save($request)
     
     );
     
-
     if ($id) {
         $data['ID'] = $request['id'];
         $format[] = '%d';
@@ -670,7 +669,6 @@ function forgebizclosings_closing_save($request)
         $data['date_created'] = current_time('mysql');
         $format[] = '%s';
     }
-
     
     $result = $wpdb->replace($table_name, $data, $format);
     // if (true){
@@ -695,7 +693,7 @@ function forgebizclosings_closing_save($request)
             $location_id = $request['location_id'];
             $locations = forgebizclosings_get_location_by_id($location_id);
             $location = $locations[0];
-            $notification_email_addresses = $location -> notification_email_addresses;
+            $notification_email_addresses = $location->notification_email_addresses;
             $email_address_array = explode("\n", $notification_email_addresses);
             $body = forgebizclosings_get_closing_body($data);
             
@@ -705,7 +703,6 @@ function forgebizclosings_closing_save($request)
                     'Content-Type: text/html; charset=UTF-8'
                 );
                 wp_mail($email_address, $subject, $body, $headers);
-
             }
         } catch (Exception $e) {
             
@@ -918,9 +915,10 @@ function forgebizclosings_get_closing_by_id($id)
     }
     
     $query_results = $wpdb->get_results($query, OBJECT);
-    return $query_results;
+    $closing = $query_results[0];
+    
+    return $closing;
 }
-
 
 function forgebizclosings_closings_search($request)
 {
@@ -1040,10 +1038,8 @@ function forgebizclosings_plugin_options()
     $forgebizclosingsApp->doPageInclude('setup');
 }
 
-
-//local
-//add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
-
+// local
+// add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
 function forgebizclosings_is_admin_page($hook)
 {
     if ('settings_page_forgebizclosings' != $hook) {
