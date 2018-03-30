@@ -41,7 +41,7 @@ public class ClosingIndexPanel extends FlowPanel {
 		public void onClick(ClickEvent event) {
 			GWT.log("createNewClosingHandler click");
 			Closing closing = (Closing) JavaScriptObject.createObject().cast();
-			closing.setSubmitted(false);
+			closing.setSubmitted(0);
 			closing.setDeleted(false);
 			ClosingPanel closingPanel = new ClosingPanel();
 			closingPanel.setClosing(closing);

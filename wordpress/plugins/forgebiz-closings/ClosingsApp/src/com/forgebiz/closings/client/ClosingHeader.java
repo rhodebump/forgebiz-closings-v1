@@ -22,7 +22,7 @@ public class ClosingHeader extends TextHeader {
 	public String getValue() {
 
 		List<Closing> items = table.getVisibleItems();
-		GWT.log("items.size()" + items.size());
+		//GWT.log("items.size()" + items.size());
 		if (items.size() == 0) {
 			return "";
 		} else {
@@ -36,7 +36,7 @@ public class ClosingHeader extends TextHeader {
 
 				totalSales1 = totalSales1 + d2;
 
-				GWT.log("totalSales1=" + totalSales1);
+				//GWT.log("totalSales1=" + totalSales1);
 
 			}
 			return ClosingPanel.getCurrency(totalSales1);

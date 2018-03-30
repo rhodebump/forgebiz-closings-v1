@@ -189,11 +189,11 @@ return this.deleted;
 }-*/;
 
 
-  public final native void setSubmitted(boolean submitted) /*-{
+  public final native void setSubmitted(int submitted) /*-{
   this.submitted = submitted;
   }-*/;
 
-public final native boolean getSubmitted()/*-{
+public final native int getSubmitted()/*-{
 return this.submitted;
 }-*/;
 

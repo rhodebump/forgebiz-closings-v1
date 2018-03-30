@@ -259,11 +259,11 @@ public class ClosingPanel extends Composite {
 				ClosingsApp.getInstance().displayError("Please set a date");
 				return;
 			}
-			if (closing.getSubmitted()) {
+			if (closing.getSubmitted()  ==1) {
 				ClosingsApp.getInstance().displayError(CLOSING_ALREADY_SUBMITTED);
 				return;
 			}
-			closing.setSubmitted(true);
+			closing.setSubmitted(0);
 			saveClosing(closing, saveClosingCallback);
 
 		}
@@ -303,7 +303,7 @@ public class ClosingPanel extends Composite {
 	public ClickHandler saveHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 			
-			if (closing.getSubmitted()) {
+			if (closing.getSubmitted()  == 1) {
 				ClosingsApp.getInstance().displayError(CLOSING_ALREADY_SUBMITTED);
 				return;
 			}
@@ -369,13 +369,13 @@ public class ClosingPanel extends Composite {
 	public static void saveClosing(Closing closing, final AsyncCallback callback) {
 		String base = ClosingsApp.getURL("/closing/save");
 		String url = URL.encode(base);
-		GWT.log("url = " + url);
+		//GWT.log("url = " + url);
 
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		ClosingsApp.setNonce(builder);
 		builder.setHeader("Content-Type", "application/json");
 		String postData = JsonUtils.stringify(closing);
-		GWT.log("postData:" + postData);
+		//GWT.log("postData:" + postData);
 		try {
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
@@ -417,16 +417,16 @@ public class ClosingPanel extends Composite {
 
 	public void setClosing(Closing closing) {
 		this.closing = closing;
-
+		GWT.log("submitted=" + closing.getSubmitted());
+		
 		try {
-			if (closing.getSubmitted()) {
+			if (closing.getSubmitted() ==1) {
 				ClosingsApp.getInstance().displayMessage(CLOSING_ALREADY_SUBMITTED);
-				return;
 			}
 			
 			ClosingsApp.setString(closingDateBox.getTextBox(), getDisplayDate(closing), closing);
 
-			// closingDateBox.getTextBox().setValue(getDisplayDate(closing));
+		 closingDateBox.getTextBox().setValue(getDisplayDate(closing));
 			this.setSelectedValue(locationListBox, closing.getLocationId());
 
 			ClosingsApp.setDouble(incomePanel.income1TextBox, closing.getIncome1(), closing);

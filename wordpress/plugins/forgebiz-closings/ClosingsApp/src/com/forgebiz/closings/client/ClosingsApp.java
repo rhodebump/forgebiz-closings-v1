@@ -25,13 +25,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ClosingsApp implements EntryPoint {
 
-	
-	
-
-
-	
-	
-	
 	private static ClosingsApp closingsApp = null;
 
 	public static String getURL(String val) {
@@ -54,34 +47,35 @@ public class ClosingsApp implements EntryPoint {
 		try {
 			return Double.parseDouble(textBox.getValue());
 		} catch (Exception e) {
-			GWT.log("returning 0 for " + textBox.getName());
+			//GWT.log("returning 0 for " + textBox.getName());
 		}
 		return 0.0D;
 	}
 
 	public static void setDouble(TextBox textBox, Double d, Closing closing) {
 		if (d == null) {
-			return;
+			setString(textBox, "", closing);
+		} else if (d.doubleValue() == 0.0D) {
+			setString(textBox, "", closing);
+		} else {
+			setString(textBox, new Double(d).toString(), closing);
 		}
-		if (d.doubleValue() == 0.0D) {
-			return;
-		}
-		setString(textBox,new Double(d).toString(),closing);
+
 	}
+
 	public static void setString(TextBox textBox, String val, Closing closing) {
 		textBox.setValue(val);
-		if (closing.getSubmitted()) {
+		if (closing.getSubmitted()  ==1 ) {
 			textBox.setEnabled(false);
 		}
 	}
-		
+
 	public static void setString(TextArea textBox, String val, Closing closing) {
 		textBox.setValue(val);
-		if (closing.getSubmitted()) {
+		if (closing.getSubmitted()   ==1) {
 			textBox.setEnabled(false);
 		}
-	}	
-	
+	}
 
 	private SimplePanel closingsMain = new SimplePanel();
 
@@ -98,17 +92,16 @@ public class ClosingsApp implements EntryPoint {
 		label.setStyleName("alert alert-success");
 		label.setText(message);
 		messagesPanel.add(label);
-		
+
 	}
 
 	public void displayError(String error) {
 		com.google.gwt.user.client.Window.scrollTo(0, 0);
-		//messagesPanel.add(new Label(error));
+		// messagesPanel.add(new Label(error));
 		Label label = new Label();
 		label.setStyleName("alert alert-danger");
 		label.setText(error);
 		messagesPanel.add(label);
-		
 
 	}
 

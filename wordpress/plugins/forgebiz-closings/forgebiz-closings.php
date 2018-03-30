@@ -336,8 +336,9 @@ class forgebizclosingsApp
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         $page_title = 'forgebiz closings | forgebiz.com';
-        include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
-        // include_once ($this->plugin_dir . 'DevPage.php');
+        //include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
+        //local
+        include_once ($this->plugin_dir . 'DevPage.php');
         exit();
     }
 
@@ -524,6 +525,16 @@ function forgebizclosings_closing_save($request)
     $data = json_decode(file_get_contents("php://input"));
     
     global $wpdb;
+    $id = $request['id'];
+    $closing = forgebizclosings_get_closing_by_id($id);
+    
+    if ($closing) {
+        if ($closing -> submitted) {
+            return new WP_REST_Response("Closing already submitted.  Cannot modify a submitted closing.", 500);
+            
+        }
+        
+    }    
     
     $table_name = forgebizclosings_get_closing_tablename($wpdb);
     
@@ -650,7 +661,7 @@ function forgebizclosings_closing_save($request)
     
     );
     
-    $id = $request['id'];
+
     if ($id) {
         $data['ID'] = $request['id'];
         $format[] = '%d';
@@ -889,6 +900,28 @@ function forgebizclosings_get_location_by_id($id)
     return $query_results;
 }
 
+function forgebizclosings_get_closing_by_id($id)
+{
+    global $wpdb;
+    
+    $table_name = forgebizclosings_get_closing_tablename($wpdb);
+    
+    $query = "
+    SELECT $table_name.*
+    FROM $table_name
+ ";
+    
+    $sql[] = " id = $id ";
+    
+    if (! empty($sql)) {
+        $query .= ' WHERE ' . implode(' AND ', $sql);
+    }
+    
+    $query_results = $wpdb->get_results($query, OBJECT);
+    return $query_results;
+}
+
+
 function forgebizclosings_closings_search($request)
 {
     global $wpdb;
@@ -1007,7 +1040,9 @@ function forgebizclosings_plugin_options()
     $forgebizclosingsApp->doPageInclude('setup');
 }
 
-add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
+
+//local
+//add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
 
 function forgebizclosings_is_admin_page($hook)
 {

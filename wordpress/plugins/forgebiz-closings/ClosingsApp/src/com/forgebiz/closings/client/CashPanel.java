@@ -71,7 +71,7 @@ public class CashPanel extends FlowPanel {
 
 		totalTextBox.setEnabled(false);
 
-		GWT.log("cashpanel #2");
+
 	}
 
 	public void calculateAll() {
