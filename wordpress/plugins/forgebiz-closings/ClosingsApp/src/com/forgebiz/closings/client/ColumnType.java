@@ -1,5 +1,7 @@
 package com.forgebiz.closings.client;
 
+import com.google.gwt.core.shared.GWT;
+
 public enum ColumnType {
 
 	/*
@@ -24,6 +26,104 @@ public enum ColumnType {
 	ColumnType(String name) {
 		this.name = name;
 	}
+	
+	
+	public boolean getDisplay(ClosingSettings closingSettings) {
+
+
+		if (this == ColumnType.SALES_1) {
+			return closingSettings.getShowSales1();
+		} else if (this == ColumnType.SALES_2) {
+			return closingSettings.getShowSales2();
+		} else if (this == ColumnType.SALES_3) {
+			return closingSettings.getShowSales3();
+		} else if (this == ColumnType.SALES_4) {
+			return closingSettings.getShowSales4();
+		} else if (this == ColumnType.SALES_5) {
+			return closingSettings.getShowSales5();
+		} else if (this == ColumnType.SALES_6) {
+			return closingSettings.getShowSales6();
+		} else if (this == ColumnType.SALES_7) {
+			return closingSettings.getShowSales7();
+		} else if (this == ColumnType.SALES_8) {
+			return closingSettings.getShowSales8();
+		} else if (this == ColumnType.SALES_9) {
+			return closingSettings.getShowSales9();
+		} else if (this == ColumnType.INCOME_1) {
+			return closingSettings.getShowIncome1();
+		} else if (this == ColumnType.INCOME_2) {
+			return closingSettings.getShowIncome2();
+		} else if (this == ColumnType.INCOME_3) {
+			return closingSettings.getShowIncome3();
+		} else if (this == ColumnType.INCOME_4) {
+			return closingSettings.getShowIncome4();
+		} else if (this == ColumnType.INCOME_5) {
+			return closingSettings.getShowIncome5();
+		} else if (this == ColumnType.INCOME_6) {
+			return closingSettings.getShowIncome6();
+		} else if (this == ColumnType.INCOME_7) {
+			return closingSettings.getShowIncome7();
+		} else if (this == ColumnType.INCOME_8) {
+			GWT.log("income 8=" + closingSettings.getShowIncome8());
+			return closingSettings.getShowIncome8();
+		} else if (this == ColumnType.INCOME_9) {
+			return closingSettings.getShowIncome9();
+		} else {
+			return true;
+		}
+
+
+	}
+	
+	
+	
+	public String getLabel(ClosingSettings closingSettings) {
+
+
+		if (this == ColumnType.SALES_1) {
+			return closingSettings.getSalesLabel1();
+		} else if (this == ColumnType.SALES_2) {
+			return closingSettings.getSalesLabel2();
+		} else if (this == ColumnType.SALES_3) {
+			return closingSettings.getSalesLabel3();
+		} else if (this == ColumnType.SALES_4) {
+			return closingSettings.getSalesLabel4();
+		} else if (this == ColumnType.SALES_5) {
+			return closingSettings.getSalesLabel5();
+		} else if (this == ColumnType.SALES_6) {
+			return closingSettings.getSalesLabel6();
+		} else if (this == ColumnType.SALES_7) {
+			return closingSettings.getSalesLabel7();
+		} else if (this == ColumnType.SALES_8) {
+			return closingSettings.getSalesLabel8();
+		} else if (this == ColumnType.SALES_9) {
+			return closingSettings.getSalesLabel9();
+		} else if (this == ColumnType.INCOME_1) {
+			return closingSettings.getIncomeLabel1();
+		} else if (this == ColumnType.INCOME_2) {
+			return closingSettings.getIncomeLabel2();
+		} else if (this == ColumnType.INCOME_3) {
+			return closingSettings.getIncomeLabel3();
+		} else if (this == ColumnType.INCOME_4) {
+			return closingSettings.getIncomeLabel4();
+		} else if (this == ColumnType.INCOME_5) {
+			return closingSettings.getIncomeLabel5();
+		} else if (this == ColumnType.INCOME_6) {
+			return closingSettings.getIncomeLabel6();
+		} else if (this == ColumnType.INCOME_7) {
+			return closingSettings.getIncomeLabel7();
+		} else if (this == ColumnType.INCOME_8) {
+			return closingSettings.getIncomeLabel8();
+		} else if (this == ColumnType.INCOME_9) {
+			return closingSettings.getIncomeLabel9();
+		} else {
+			return this.getName();
+		}
+
+
+	}
+	
+	
 
 	public Double getValue(Closing closing) {
 

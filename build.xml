@@ -36,18 +36,7 @@ into wordpress plugin package
   
     <zip destfile="target/forgebiz-closings.zip"
        basedir="target"/>
-       
-    <!--
-    	now let's copy the stuff we need for the SVN repo 
-    	-->
-    	
-             <copy todir="target/forgebiz-closings/assets">
-    <fileset dir="assets">
-	
-       
-       
-    </fileset>
-  </copy>
+
   
   </target>
   

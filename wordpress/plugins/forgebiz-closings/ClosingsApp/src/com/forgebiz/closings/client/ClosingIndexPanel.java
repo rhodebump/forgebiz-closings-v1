@@ -2,8 +2,11 @@ package com.forgebiz.closings.client;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.gargoylesoftware.htmlunit.javascript.host.fetch.Headers;
 import com.google.gwt.cell.client.AbstractEditableCell;
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.Cell;
@@ -44,8 +47,10 @@ public class ClosingIndexPanel extends FlowPanel {
 			closing.setSubmitted(0);
 			closing.setDeleted(false);
 			ClosingPanel closingPanel = new ClosingPanel();
-			closingPanel.setClosing(closing);
+
 			ClosingsApp.getInstance().swapMain(closingPanel);
+			//need to do this after we clear the message in swapMain
+			closingPanel.setClosing(closing);
 			
 		}
 	};
@@ -191,6 +196,7 @@ public class ClosingIndexPanel extends FlowPanel {
 		}
 	};
 
+	private Map map = new HashMap();
 
 	public ClosingIndexPanel() {
 
@@ -213,8 +219,9 @@ public class ClosingIndexPanel extends FlowPanel {
 			@Override
 			public void update(int index, Closing closing, String value) {
 				ClosingPanel closingPanel = new ClosingPanel();
-				closingPanel.setClosing(closing);
 				ClosingsApp.getInstance().swapMain(closingPanel);
+				closingPanel.setClosing(closing);
+
 			}
 		});
 
@@ -249,18 +256,7 @@ public class ClosingIndexPanel extends FlowPanel {
 		table.addColumn(closeDateColumn, "Close Date");
 
 		
-		//what about sale1, sales2, income1, income2, etc..
-		for (final ColumnType columnType : ColumnType.values()) {
-			TextColumn<Closing> salesColumn = new TextColumn<Closing>() {
-				@Override
-				public String getValue(Closing closing) {
-					return columnType.getValue(closing).toString();
-				}
-			};
-			Header<String> salesFooter = new ClosingHeader(table, columnType);
-			table.addColumn(salesColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(columnType.getName())), salesFooter);
 
-		}
 
 
 
@@ -286,8 +282,42 @@ public class ClosingIndexPanel extends FlowPanel {
 		scrollPanel.add(table);
 		add(scrollPanel);
 		searchClosings();
+		
+		
+		//let's get the settings
+		ClosingsApp.fetchClosingSettings(gotClosingSettingCallback);
+		
 
 	}
+	AsyncCallback gotClosingSettingCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+		}
 
+		public void onSuccess(Object response) {
+			ClosingSettings closingSettings = (ClosingSettings) response;
+			//what about sale1, sales2, income1, income2, etc..
+			for (final ColumnType columnType : ColumnType.values()) {
+				TextColumn<Closing> salesColumn = new TextColumn<Closing>() {
+					@Override
+					public String getValue(Closing closing) {
+						return columnType.getValue(closing).toString();
+					}
+				};
+				boolean display = columnType.getDisplay(closingSettings);
+				GWT.log("label=" + columnType.getLabel(closingSettings));
+				GWT.log("display=" + columnType.getDisplay(closingSettings));
+				if (display == true) {
+					Header<String> salesFooter = new ClosingHeader(table, columnType);
+					SafeHtmlHeader shh = new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(columnType.getLabel(closingSettings)));
+					table.addColumn(salesColumn,shh , salesFooter);					
+					
+				}
+
+
+			}
+
+
+		}
+	};
 
 }

@@ -336,7 +336,7 @@ class forgebizclosingsApp
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         $page_title = 'forgebiz closings | forgebiz.com';
-        // include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
+        //include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
         // local
         include_once ($this->plugin_dir . 'DevPage.php');
         exit();
@@ -369,12 +369,6 @@ class forgebizclosingsApp
         }
     }
 
-    // Add rule for /api/weather/{position}
-    public function rewrite_rules($rules)
-    {
-        $rules[$this->api_route] = 'index.php?api_position=$matches[1]';
-        return $rules;
-    }
 
     // Adding the id var so that WP recognizes it
     public function query_vars($vars)
@@ -963,6 +957,8 @@ function forgebizclosings_closings_search($request)
         $query .= ' WHERE ' . implode(' AND ', $sql);
     }
     
+    $query .= " order by closing_date desc";
+    
     $query_results = $wpdb->get_results($query, OBJECT);
     if ($wpdb->last_error) {
         // if (true) {
@@ -1039,7 +1035,7 @@ function forgebizclosings_plugin_options()
 }
 
 // local
-// add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
+//add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
 function forgebizclosings_is_admin_page($hook)
 {
     if ('settings_page_forgebizclosings' != $hook) {
@@ -1054,10 +1050,6 @@ function forgebizclosings_is_admin_page($hook)
 function forgebizclosings_css_and_js($hook)
 {
     
-    // $screen = get_current_screen();
-    // print_r($screen);
-    
-    // settings_page_fbc
     if (! forgebizclosings_is_admin_page($hook)) {
         return;
     }
