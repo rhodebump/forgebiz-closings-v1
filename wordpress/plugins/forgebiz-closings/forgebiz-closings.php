@@ -336,9 +336,9 @@ class forgebizclosingsApp
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         $page_title = 'forgebiz closings | forgebiz.com';
-        //include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
+        include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
         // local
-        include_once ($this->plugin_dir . 'DevPage.php');
+        //include_once ($this->plugin_dir . 'DevPage.php');
         exit();
     }
 
@@ -368,6 +368,13 @@ class forgebizclosingsApp
             $wp_rewrite->flush_rules();
         }
     }
+    
+    public function rewrite_rules($rules)
+        {
+                $rules[$this->api_route] = 'index.php?api_position=$matches[1]';
+                return $rules;
+            }
+        
 
 
     // Adding the id var so that WP recognizes it
@@ -1035,7 +1042,7 @@ function forgebizclosings_plugin_options()
 }
 
 // local
-//add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
+add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
 function forgebizclosings_is_admin_page($hook)
 {
     if ('settings_page_forgebizclosings' != $hook) {
