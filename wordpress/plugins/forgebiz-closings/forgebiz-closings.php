@@ -527,13 +527,19 @@ function forgebizclosings_closing_save($request)
     
     global $wpdb;
     $id = $request['id'];
-    $closing = forgebizclosings_get_closing_by_id($id);
-    
-    if ($closing) {
-        if ($closing->submitted == 1) {
-           return new WP_REST_Response("Closing already submitted.  Cannot modify a submitted closing.", 500);
+
+    if ($id) {
+        $closing = forgebizclosings_get_closing_by_id($id);
+        if ($closing) {
+            if ($closing->submitted == 1) {
+                return new WP_REST_Response("Closing already submitted.  Cannot modify a submitted closing.", 500);
+            }
         }
+        
     }
+
+    
+
     
 
         
@@ -625,7 +631,7 @@ function forgebizclosings_closing_save($request)
         '%f',
         '%f',
         '%f',
-        '%g',
+        '%f',
         '%f',
         '%f',
         '%f',
@@ -672,12 +678,7 @@ function forgebizclosings_closing_save($request)
     }
     
     $result = $wpdb->replace($table_name, $data, $format);
-    if (true ) {
-        echo "hi " . $request['sales_1'];
-        die();
-    }
-     if (true){
-    //if ($wpdb->last_error) {
+    if ($wpdb->last_error) {
         $last_error = var_export($wpdb->last_error, true);
         $last_query = var_export($wpdb->last_query, true);
         
@@ -918,6 +919,11 @@ function forgebizclosings_get_closing_by_id($id)
     }
     
     $query_results = $wpdb->get_results($query, OBJECT);
+    if ($wpdb->last_error) {
+        $last_error = var_export($wpdb->last_error, true);
+        throw new Exception($last_error);
+    }
+    
     $closing = $query_results[0];
     
     return $closing;
