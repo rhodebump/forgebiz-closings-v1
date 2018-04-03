@@ -22,6 +22,6 @@ rsync -avz ./target/forgebiz-closings  prhodes@PittsburghColorMeMine.spotmouth.c
 
 rsync -avz ./closings_v1.sql  prhodes@PittsburghColorMeMine.spotmouth.com:/home/prhodes
 
-rsync -avz ./wp_forgebiz_closing.sql  prhodes@PittsburghColorMeMine.spotmouth.com:/home/prhodes
+#rsync -avz ./wp_forgebiz_closing.sql  prhodes@PittsburghColorMeMine.spotmouth.com:/home/prhodes
 
 

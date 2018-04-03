@@ -530,13 +530,13 @@ function forgebizclosings_closing_save($request)
     $closing = forgebizclosings_get_closing_by_id($id);
     
     if ($closing) {
-        
-        // return new WP_REST_Response( $testing , 500);
         if ($closing->submitted == 1) {
            return new WP_REST_Response("Closing already submitted.  Cannot modify a submitted closing.", 500);
         }
     }
     
+
+        
     $table_name = forgebizclosings_get_closing_tablename($wpdb);
     
     $data = array(
@@ -602,53 +602,53 @@ function forgebizclosings_closing_save($request)
     
     $format = array(
         
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
         
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
         
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
+        '%f',
+        '%f',
+        '%f',
+        '%g',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
         
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
         
-        '%d',
-        '%d',
-        '%d',
-        '%d',
-        '%d',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
+        '%f',
         
         '%s',
         '%s',
@@ -672,8 +672,12 @@ function forgebizclosings_closing_save($request)
     }
     
     $result = $wpdb->replace($table_name, $data, $format);
-    // if (true){
-    if ($wpdb->last_error) {
+    if (true ) {
+        echo "hi " . $request['sales_1'];
+        die();
+    }
+     if (true){
+    //if ($wpdb->last_error) {
         $last_error = var_export($wpdb->last_error, true);
         $last_query = var_export($wpdb->last_query, true);
         
@@ -748,8 +752,6 @@ function forgebizclosings_save_closing_settings($request)
     $data = json_decode(file_get_contents("php://input"));
     
     global $wpdb;
-    // wp_forgebiz_labels
-    // $data = array("where" => "do we go");
     $table_name = forgebizclosings_get_closing_setting_tablename($wpdb);
     
     $data = array(

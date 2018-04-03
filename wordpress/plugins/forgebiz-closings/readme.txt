@@ -1,7 +1,7 @@
 === forgebiz closings ===
 Contributors: forgebiz
 Donate link: 
-Tags: accounting, bookkeeping, book keeping, income, expense log
+Tags: accounting, bookkeeping, book keeping, income, expense log, forgebiz
 Requires at least: 3.5
 Tested up to: 4.9
 Requires PHP: 5.2.4
