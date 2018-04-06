@@ -13,6 +13,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.Dictionary;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -97,7 +98,6 @@ public class ClosingsApp implements EntryPoint {
 
 	public void displayError(String error) {
 		com.google.gwt.user.client.Window.scrollTo(0, 0);
-		// messagesPanel.add(new Label(error));
 		Label label = new Label();
 		label.setStyleName("alert alert-danger");
 		label.setText(error);
@@ -153,7 +153,32 @@ public class ClosingsApp implements EntryPoint {
 		}
 
 	}
+	public static void refreshNonce(final AsyncCallback callback) {
+		String base = ClosingsApp.getURL("/refresh_nonce");
+		String url = URL.encode(base);
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		setNonce(builder);
+		try {
+			builder.sendRequest(null, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					callback.onFailure(exception);
+				}
 
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode()) {
+						callback.onSuccess(response);
+					} else {
+						callback.onFailure(new Exception(response.getText()));
+
+					}
+				}
+			});
+		} catch (RequestException e) {
+			callback.onFailure(e);
+		}
+
+		
+	}
 	public static void fetchLocations(final AsyncCallback callback) {
 		String base = ClosingsApp.getURL("/location/search");
 		String url = URL.encode(base);
@@ -217,6 +242,22 @@ public class ClosingsApp implements EntryPoint {
 			searchClosingsButton.click();
 		}
 
+		//refresh nonce hourly
+		
+		
+	    Timer t = new Timer() {
+	        @Override
+	        public void run() {
+	        	refreshNonce(refreshNonceCallback);
+	        }
+	      };
+	      // Schedule the timer to run once in 5 seconds.
+	      //t.schedule(5000);
+	      //schedule every 60 minutes
+	     // t.schedule(60 * 1000 * 60);
+	      //testing one a minute
+	      t.schedule(60 * 1000);
+	      
 	}
 
 	Button locationsButton = new Button("Locations");
@@ -262,5 +303,19 @@ public class ClosingsApp implements EntryPoint {
 		closingsMain.add(panel);
 
 	}
+	
+	AsyncCallback refreshNonceCallback = new AsyncCallback() {
+		public void onFailure(Throwable throwable) {
+			ClosingsApp.getInstance().displayError("Security token refresh failure: " + throwable.getMessage());
+		}
+
+		public void onSuccess(Object response) {
+			GWT.log("refreshNonceCallback.onSuccess" + response.toString());
+			GWT.log("UPdating NONCE");
+			ClosingsApp.NONCE =  response.toString();
+		}
+	};
+	
+	
 
 }

@@ -25,8 +25,11 @@ public class BaseIncomeSalesPanel extends FlowPanel {
 	Label income9Label = new Label();
 	public  TextBox income9TextBox = new TextBox();
 
+	//this is a subtotal of income1/income9
 	TextBox totalTextBox = new TextBox();
 	
+	//this is only present used for the cash that comes over as income on the income subpanel
+	TextBox cashTotalTextBox = new TextBox();
 	
 
 	protected void initControl(Label label, TextBox textBox, boolean showControl, String labelText) {
@@ -70,6 +73,9 @@ public class BaseIncomeSalesPanel extends FlowPanel {
 		t += ClosingsApp.getDoubleValue(this.income7TextBox);
 		t += ClosingsApp.getDoubleValue(this.income8TextBox);
 		t += ClosingsApp.getDoubleValue(this.income9TextBox);		
+		t += ClosingsApp.getDoubleValue(this.cashTotalTextBox);				
+
+		
 		setTotal(t);
 	}
 

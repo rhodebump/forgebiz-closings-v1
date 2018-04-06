@@ -1,11 +1,10 @@
 === forgebiz closings ===
 Contributors: forgebiz
-Donate link: 
 Tags: accounting, bookkeeping, book keeping, income, expense log, forgebiz
 Requires at least: 3.5
 Tested up to: 4.9
 Requires PHP: 5.2.4
-Stable tag: trunk
+Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,3 +59,5 @@ This is a first edition of the plugin.  Not applicable yet.
 4. Create a closing
 
 
+= 1.0 =
+* Public Release

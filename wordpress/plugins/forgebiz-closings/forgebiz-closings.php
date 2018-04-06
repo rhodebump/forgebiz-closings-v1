@@ -338,7 +338,7 @@ class forgebizclosingsApp
         $page_title = 'forgebiz closings | forgebiz.com';
         include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
         // local
-        //include_once ($this->plugin_dir . 'DevPage.php');
+        // include_once ($this->plugin_dir . 'DevPage.php');
         exit();
     }
 
@@ -368,14 +368,12 @@ class forgebizclosingsApp
             $wp_rewrite->flush_rules();
         }
     }
-    
-    public function rewrite_rules($rules)
-        {
-                $rules[$this->api_route] = 'index.php?api_position=$matches[1]';
-                return $rules;
-            }
-        
 
+    public function rewrite_rules($rules)
+    {
+        $rules[$this->api_route] = 'index.php?api_position=$matches[1]';
+        return $rules;
+    }
 
     // Adding the id var so that WP recognizes it
     public function query_vars($vars)
@@ -476,6 +474,14 @@ add_action('rest_api_init', function () {
             return current_user_can('edit_others_posts');
         }
     ));
+    
+    register_rest_route('forgebiz-closings/v1', '/refresh_nonce', array(
+        'methods' => 'GET',
+        'callback' => 'refresh_nonce',
+        'permission_callback' => function () {
+            return current_user_can('edit_others_posts');
+        }
+    ));
 });
 
 function forgebizclosings_page_display()
@@ -527,7 +533,7 @@ function forgebizclosings_closing_save($request)
     
     global $wpdb;
     $id = $request['id'];
-
+    
     if ($id) {
         $closing = forgebizclosings_get_closing_by_id($id);
         if ($closing) {
@@ -535,14 +541,8 @@ function forgebizclosings_closing_save($request)
                 return new WP_REST_Response("Closing already submitted.  Cannot modify a submitted closing.", 500);
             }
         }
-        
     }
-
     
-
-    
-
-        
     $table_name = forgebizclosings_get_closing_tablename($wpdb);
     
     $data = array(
@@ -854,6 +854,17 @@ function forgebizclosings_save_closing_settings($request)
     return new WP_REST_Response($data, 200);
 }
 
+function refresh_nonce($request)
+{
+    $nonce = wp_create_nonce('wp_rest');
+    
+    $data = array();
+    
+    $data['nonce'] = $nonce;
+    
+    return new WP_REST_Response($data, 200);
+}
+
 function forgebizclosings_location_search($request)
 {
     global $wpdb;
@@ -1051,6 +1062,7 @@ function forgebizclosings_plugin_options()
 
 // local
 add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
+
 function forgebizclosings_is_admin_page($hook)
 {
     if ('settings_page_forgebizclosings' != $hook) {
@@ -1064,7 +1076,6 @@ function forgebizclosings_is_admin_page($hook)
 
 function forgebizclosings_css_and_js($hook)
 {
-    
     if (! forgebizclosings_is_admin_page($hook)) {
         return;
     }

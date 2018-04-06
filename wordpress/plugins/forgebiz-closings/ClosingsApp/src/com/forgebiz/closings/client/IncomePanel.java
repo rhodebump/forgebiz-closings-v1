@@ -2,14 +2,13 @@ package com.forgebiz.closings.client;
 
 
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 
 public class IncomePanel extends BaseIncomeSalesPanel {
 	Label totalLabel = new Label("Total(Total B)");
 
 
 	Label cashTotalLabel = new Label("Cash (Closing cash - Opening cash)");
-	TextBox cashTotalTextBox = new TextBox();
+
 
 
 

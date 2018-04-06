@@ -37,7 +37,17 @@ into wordpress plugin package
     <zip destfile="target/forgebiz-closings.zip"
        basedir="target"/>
 
-  
+  <!--
+  this copies to the SVN directory for wordpress SCM
+  -->
+       
+             <copy todir="/Users/prhodes/forgebiz-closings">
+                 <fileset dir="target/forgebiz-closings">
+                       <exclude name="**/*.zip"/>
+                             
+    </fileset>
+         </copy>
+       
   </target>
   
   
