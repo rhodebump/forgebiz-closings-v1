@@ -20,7 +20,7 @@ rsync -avz ./target/forgebiz-closings  prhodes@demo.forgebiz.com:/home/prhodes/l
 
 rsync -avz ./target/forgebiz-closings  prhodes@PittsburghColorMeMine.spotmouth.com:/home/prhodes/local/libs/apache/PittsburghColorMeMine/www/wp-content/plugins/
 
-#rsync -avz ./closings_v1.sql  prhodes@PittsburghColorMeMine.spotmouth.com:/home/prhodes
+rsync -avz ./closings_v1.sql  prhodes@PittsburghColorMeMine.spotmouth.com:/home/prhodes
 
 
 
