@@ -945,11 +945,15 @@ function forgebizclosings_closings_search($request)
     global $wpdb;
     
     $table_name = forgebizclosings_get_closing_tablename($wpdb);
+    $location_table_name = forgebizclosings_get_location_tablename($wpdb);
+    
     
     $query = "
-    SELECT $table_name.* 
-    FROM $table_name
+    SELECT $table_name.*, $location_table_name.location_name
+    FROM $table_name,  $location_table_name
  ";
+    
+    $sql[] = " $table_name.location_id = $location_table_name.id ";
     
     $startDate = $request['start_date'];
     
@@ -969,9 +973,9 @@ function forgebizclosings_closings_search($request)
     $deleted = $request['deleted'];
     if ($deleted) {
         // so need to show deleted and non-deleted, so let's not add a filter
-        $sql[] = " deleted = 1 ";
+        $sql[] = "  $table_name.deleted = 1 ";
     } else {
-        $sql[] = " deleted = 0 ";
+        $sql[] = "  $table_name.deleted = 0 ";
     }
     
     $id = $request['id'];

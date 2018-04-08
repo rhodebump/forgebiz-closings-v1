@@ -174,6 +174,10 @@ public final native String getCloserName()/*-{
 	return this.closer_name;
 	}-*/;
 
+public final native String getLocationName()/*-{
+return this.location_name;
+}-*/;
+
 
 public final native String getClosingDate()/*-{
 return this.closing_date;

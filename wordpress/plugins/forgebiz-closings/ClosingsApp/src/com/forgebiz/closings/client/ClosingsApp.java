@@ -257,7 +257,7 @@ public class ClosingsApp implements EntryPoint {
 			}
 		};
 
-		t.schedule(60 * 1000 * 60 );
+		t.schedule(60 * 1000 * 60);
 
 	}
 
@@ -307,7 +307,10 @@ public class ClosingsApp implements EntryPoint {
 
 	AsyncCallback refreshNonceCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
-			ClosingsApp.getInstance().displayError("Security token refresh failure: " + throwable.getMessage());
+			ClosingsApp.getInstance().displayError("Your login has expired:  " + throwable.getMessage());
+			ClosingsApp.getInstance()
+					.displayError("Any changes that have been made can not be saved.  Please login and start again.");
+
 		}
 
 		public void onSuccess(Object response) {

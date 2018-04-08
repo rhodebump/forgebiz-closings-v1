@@ -255,6 +255,14 @@ public class ClosingIndexPanel extends FlowPanel {
 		};
 		table.addColumn(closeDateColumn, "Close Date");
 
+		TextColumn<Closing> locationNameColumn = new TextColumn<Closing>() {
+			@Override
+			public String getValue(Closing closing) {
+				return closing.getLocationName();
+			}
+		};
+		table.addColumn(locationNameColumn, "Location");
+		
 		
 
 
@@ -306,7 +314,8 @@ public class ClosingIndexPanel extends FlowPanel {
 				boolean display = columnType.getDisplay(closingSettings);
 				GWT.log("label=" + columnType.getLabel(closingSettings));
 				GWT.log("display=" + columnType.getDisplay(closingSettings));
-				if (display == true) {
+				if (display != false) {
+				//if (display == true) {
 					Header<String> salesFooter = new ClosingHeader(table, columnType);
 					SafeHtmlHeader shh = new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(columnType.getLabel(closingSettings)));
 					table.addColumn(salesColumn,shh , salesFooter);					

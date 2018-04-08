@@ -101,6 +101,9 @@ public class ClosingPanel extends Composite {
 				locationListBox.addItem(location.getLocationName(), new Integer(location.getId()).toString());
 
 			}
+			
+			ClosingPanel.this.setSelectedValue(locationListBox, closing.getLocationId());
+			
 
 		}
 	};
@@ -395,6 +398,7 @@ public class ClosingPanel extends Composite {
 	}
 
 	private void setSelectedValue(ListBox listBox, String str) {
+
 		String text = str;
 		int indexToFind = -1;
 		for (int i = 0; i < listBox.getItemCount(); i++) {
@@ -424,7 +428,8 @@ public class ClosingPanel extends Composite {
 			ClosingsApp.setString(closingDateBox.getTextBox(), getDisplayDate(closing), closing);
 
 			closingDateBox.getTextBox().setValue(getDisplayDate(closing));
-			this.setSelectedValue(locationListBox, closing.getLocationId());
+			//while we may have the location id for the closing, the locations come through an ajax request, 
+			//and may not be available yet, so not setting of this yet
 
 			ClosingsApp.setDouble(incomePanel.income1TextBox, closing.getIncome1(), closing);
 			ClosingsApp.setDouble(incomePanel.income2TextBox, closing.getIncome2(), closing);
