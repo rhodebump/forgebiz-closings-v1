@@ -4,7 +4,7 @@ Tags: accounting, bookkeeping, book keeping, income, expense log, forgebiz
 Requires at least: 3.5
 Tested up to: 4.9
 Requires PHP: 5.2.4
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,3 +61,11 @@ This is a first edition of the plugin.  Not applicable yet.
 
 = 1.0 =
 * Public Release
+
+= 1.1 =
+* fix location dropdown to location on edit closing screen
+* fix for displaying hidden incomes/products on table results screen
+* added location name to closing search results
+
+
+

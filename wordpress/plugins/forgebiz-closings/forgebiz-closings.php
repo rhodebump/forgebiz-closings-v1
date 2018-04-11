@@ -11,6 +11,7 @@
 global $forgebizclosings_db_version;
 $forgebizclosings_db_version = '1.2';
 
+
 function forgebizclosings_get_closing_setting_tablename($wpdb)
 {
     return $wpdb->prefix . 'forgebiz_closing_settings';
@@ -336,9 +337,14 @@ class forgebizclosingsApp
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         $page_title = 'forgebiz closings | forgebiz.com';
-        include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
-        // local
-        // include_once ($this->plugin_dir . 'DevPage.php');
+
+        //local
+        if (false) {
+            include_once ($this->plugin_dir . 'DevPage.php');
+        } else {
+            include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
+        }
+
         exit();
     }
 
@@ -773,7 +779,8 @@ function forgebizclosings_save_closing_settings($request)
         'sales_label_6' => $request['sales_label_6'],
         'sales_label_7' => $request['sales_label_7'],
         'sales_label_8' => $request['sales_label_8'],
-        'sales_label_9' => $request['sales_label_7'],
+        'sales_label_9' => $request['sales_label_9'],
+        
         'show_income_1' => $request['show_income_1'],
         'show_income_2' => $request['show_income_2'],
         'show_income_3' => $request['show_income_3'],
@@ -783,6 +790,7 @@ function forgebizclosings_save_closing_settings($request)
         'show_income_7' => $request['show_income_7'],
         'show_income_8' => $request['show_income_8'],
         'show_income_9' => $request['show_income_9'],
+        
         'income_label_1' => $request['income_label_1'],
         'income_label_2' => $request['income_label_2'],
         'income_label_3' => $request['income_label_3'],
@@ -1064,8 +1072,11 @@ function forgebizclosings_plugin_options()
     $forgebizclosingsApp->doPageInclude('setup');
 }
 
-// local
-add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
+//local
+if (true) {
+    add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
+}
+
 
 function forgebizclosings_is_admin_page($hook)
 {

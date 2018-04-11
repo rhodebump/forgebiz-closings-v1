@@ -29,7 +29,7 @@ into wordpress plugin package
         <exclude name="**/ClosingsApp.html"/>     
         <exclude name="**/.project"/>             
         <exclude name="**/.classpath"/>            	
-        <exclude name="**/DevPage.php"/>            	       
+    	  	<exclude name="**/DevPage.php"/>     	       
       
     </fileset>
   </copy>

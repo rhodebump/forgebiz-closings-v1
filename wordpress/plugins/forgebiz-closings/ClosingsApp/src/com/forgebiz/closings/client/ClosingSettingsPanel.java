@@ -105,26 +105,24 @@ public class ClosingSettingsPanel extends FlowPanel {
 			closingSettings
 					.setSalesLabel9(sales_9_labelTextBox.getValue());
 			
-			GWT.log("saveHandler.onClick2");
 			closingSettings
-					.setShowSales1(showSales1CheckBox.getValue().booleanValue());
+					.setShowSales1(getInt(showSales1CheckBox));
 			closingSettings
-					.setShowSales2(showSales2CheckBox.getValue().booleanValue());
+					.setShowSales2(getInt(showSales2CheckBox));
 			closingSettings
-					.setShowSales3(showSales3CheckBox.getValue().booleanValue());
+					.setShowSales3(getInt(showSales3CheckBox));
 			closingSettings
-					.setShowSales4(showSales4CheckBox.getValue().booleanValue());
+					.setShowSales4(getInt(showSales4CheckBox));
 			closingSettings
-					.setShowSales5(showSales5CheckBox.getValue().booleanValue());
+					.setShowSales5(getInt(showSales5CheckBox));
 			closingSettings
-					.setShowSales6(showSales6CheckBox.getValue().booleanValue());
+					.setShowSales6(getInt(showSales6CheckBox));
 			closingSettings
-					.setShowSales7(showSales7CheckBox.getValue().booleanValue());
+					.setShowSales7(getInt(showSales7CheckBox));
 			closingSettings
-					.setShowSales8(showSales8CheckBox.getValue().booleanValue());
+					.setShowSales8(getInt(showSales8CheckBox));
 			closingSettings
-					.setShowSales9(showSales9CheckBox.getValue().booleanValue());
-			GWT.log("saveHandler.onClick3");
+					.setShowSales9(getInt(showSales9CheckBox));
 			closingSettings
 					.setIncomeLabel1(income_1_labelTextBox.getValue());
 			closingSettings
@@ -143,29 +141,40 @@ public class ClosingSettingsPanel extends FlowPanel {
 					.setIncomeLabel8(income_8_labelTextBox.getValue());
 			closingSettings
 					.setIncomeLabel9(income_9_labelTextBox.getValue());
-			GWT.log("saveHandler.onClick4");
 			closingSettings
-					.setShowIncome1(showIncome1CheckBox.getValue().booleanValue());
+					.setShowIncome1(getInt(showIncome1CheckBox));
 			closingSettings
-					.setShowIncome2(showIncome2CheckBox.getValue().booleanValue());
+					.setShowIncome2(getInt(showIncome2CheckBox));
+
 			closingSettings
-					.setShowIncome3(showIncome3CheckBox.getValue().booleanValue());
+					.setShowIncome3(getInt(showIncome3CheckBox));
+
 			closingSettings
-					.setShowIncome4(showIncome4CheckBox.getValue().booleanValue());
+					.setShowIncome4(getInt(showIncome4CheckBox));
 			closingSettings
-					.setShowIncome5(showIncome5CheckBox.getValue().booleanValue());
+					.setShowIncome5(getInt(showIncome5CheckBox));
+
 			closingSettings
-					.setShowIncome6(showIncome6CheckBox.getValue().booleanValue());
+					.setShowIncome6(getInt(showIncome6CheckBox));
+
 			closingSettings
-					.setShowIncome7(showIncome7CheckBox.getValue().booleanValue());
+					.setShowIncome7(getInt(showIncome7CheckBox));
+
 			closingSettings
-					.setShowIncome8(showIncome8CheckBox.getValue().booleanValue());
+					.setShowIncome8(getInt(showIncome8CheckBox));
+
 			closingSettings
-					.setShowIncome9(showIncome9CheckBox.getValue().booleanValue());
-			GWT.log("saveHandler.onClick5");
+					.setShowIncome9(getInt(showIncome9CheckBox));
 			saveClosingSettings();
 		}
 	};
+	private int getInt(SimpleCheckBox cb) {
+		if (cb.getValue().booleanValue()) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
 
 	public ClickHandler loadPresetHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
@@ -286,7 +295,7 @@ public class ClosingSettingsPanel extends FlowPanel {
 	
 	
 
-	private void initControl(SimpleCheckBox checkbox, TextBox textBox, String labelText, boolean display,String prompt) {
+	private void initControl(SimpleCheckBox checkbox, TextBox textBox, String labelText, int display,String prompt) {
 		
 		textBox.setValue(labelText);
 		
@@ -299,14 +308,14 @@ public class ClosingSettingsPanel extends FlowPanel {
 		textBox.setStyleName("form-control");
 		
 		add(fp);
+		if (display == 1) {
+			checkbox.setValue(true);
 		
+		} else {
+			checkbox.setValue(false);
+		}
 		
 
-		if (display == false) {
-			checkbox.setValue(false);
-		} else {
-			checkbox.setValue(true);
-		}
 		Label checkboxLabel = new Label("Display?");
 		
 		FlowPanel fp2 = new FlowPanel();
@@ -336,39 +345,55 @@ public class ClosingSettingsPanel extends FlowPanel {
 		this.closingSettings = closingSettings;
 		initControl(this.showSales1CheckBox, this.sales_1_labelTextBox, closingSettings.getSalesLabel1(),
 				closingSettings.getShowSales1(), "Sales #1");
+		
 		initControl(this.showSales2CheckBox, this.sales_2_labelTextBox, closingSettings.getSalesLabel2(),
 				closingSettings.getShowSales2(), "Sales #2");
+		
+		
 		initControl(this.showSales3CheckBox, this.sales_3_labelTextBox, closingSettings.getSalesLabel3(),
 				closingSettings.getShowSales3(), "Sales #3");
+		
 		initControl(this.showSales4CheckBox, this.sales_4_labelTextBox, closingSettings.getSalesLabel4(),
 				closingSettings.getShowSales4(), "Sales #4");
-		initControl(this.showSales5CheckBox, this.sales_5_labelTextBox, closingSettings.getSalesLabel5(),
-				closingSettings.getShowSales5(), "Sales #5");
+		
+		
+		
+		initControl(this.showSales5CheckBox, this.sales_5_labelTextBox, closingSettings.getSalesLabel5(), closingSettings.getShowSales5(), "Sales #5");
+		
 		initControl(this.showSales6CheckBox, this.sales_6_labelTextBox, closingSettings.getSalesLabel6(),
 				closingSettings.getShowSales6(), "Sales #6");
+		
 		initControl(this.showSales7CheckBox, this.sales_7_labelTextBox, closingSettings.getSalesLabel7(),
 				closingSettings.getShowSales7(), "Sales #7");
+		
 		initControl(this.showSales8CheckBox, this.sales_8_labelTextBox, closingSettings.getSalesLabel8(),
 				closingSettings.getShowSales8(), "Sales #8");
+		
 		initControl(this.showSales9CheckBox, this.sales_9_labelTextBox, closingSettings.getSalesLabel9(),
 				closingSettings.getShowSales9(), "Sales #9");
 
 		initControl(this.showIncome1CheckBox, this.income_1_labelTextBox, closingSettings.getIncomeLabel1(),
 				closingSettings.getShowIncome1(),"Income #1");
+		
 		initControl(this.showIncome2CheckBox, this.income_2_labelTextBox, closingSettings.getIncomeLabel2(),
 				closingSettings.getShowIncome2(),"Income #2");
+		
 		initControl(this.showIncome3CheckBox, this.income_3_labelTextBox, closingSettings.getIncomeLabel3(),
-				closingSettings.getShowIncome3(),"Income #4");
+				closingSettings.getShowIncome3(),"Income #3");
 		initControl(this.showIncome4CheckBox, this.income_4_labelTextBox, closingSettings.getIncomeLabel4(),
-				closingSettings.getShowIncome4(),"Income #5");
+				closingSettings.getShowIncome4(),"Income #4");
 		initControl(this.showIncome5CheckBox, this.income_5_labelTextBox, closingSettings.getIncomeLabel5(),
-				closingSettings.getShowIncome5(),"Income #6");
+				closingSettings.getShowIncome5(),"Income #5");
 		initControl(this.showIncome6CheckBox, this.income_6_labelTextBox, closingSettings.getIncomeLabel6(),
-				closingSettings.getShowIncome6(),"Income #7");
+				closingSettings.getShowIncome6(),"Income #6");
 		initControl(this.showIncome7CheckBox, this.income_7_labelTextBox, closingSettings.getIncomeLabel7(),
-				closingSettings.getShowIncome7(),"Income #8");
+				closingSettings.getShowIncome7(),"Income #7");
+		
+
 		initControl(this.showIncome8CheckBox, this.income_8_labelTextBox, closingSettings.getIncomeLabel8(),
-				closingSettings.getShowIncome8(),"Income #9");
+				closingSettings.getShowIncome8(),"Income #8");
+
+
 		initControl(this.showIncome9CheckBox, this.income_9_labelTextBox, closingSettings.getIncomeLabel9(),
 				closingSettings.getShowIncome9(),"Income #9");
 

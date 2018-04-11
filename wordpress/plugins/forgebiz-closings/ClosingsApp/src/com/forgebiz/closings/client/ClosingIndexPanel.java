@@ -250,7 +250,7 @@ public class ClosingIndexPanel extends FlowPanel {
 
 				// https://stackoverflow.com/questions/3075577/convert-mysql-datetime-stamp-into-javascripts-date-format
 				// do we really need to convert this to a date?
-				return ClosingPanel.getDisplayDate(closing);
+				return ClosingPanel.getDisplayDate(closing.getClosingDate());
 			}
 		};
 		table.addColumn(closeDateColumn, "Close Date");
@@ -263,7 +263,17 @@ public class ClosingIndexPanel extends FlowPanel {
 		};
 		table.addColumn(locationNameColumn, "Location");
 		
-		
+		TextColumn<Closing> createDateColumn = new TextColumn<Closing>() {
+			@Override
+			public String getValue(Closing closing) {
+
+				// https://stackoverflow.com/questions/3075577/convert-mysql-datetime-stamp-into-javascripts-date-format
+				// do we really need to convert this to a date?
+				return closing.getDateCreated();
+			}
+		};
+		table.addColumn(createDateColumn, "Create Date");
+	
 
 
 
@@ -311,10 +321,10 @@ public class ClosingIndexPanel extends FlowPanel {
 						return columnType.getValue(closing).toString();
 					}
 				};
-				boolean display = columnType.getDisplay(closingSettings);
+				int display = columnType.getDisplay(closingSettings);
 				GWT.log("label=" + columnType.getLabel(closingSettings));
 				GWT.log("display=" + columnType.getDisplay(closingSettings));
-				if (display != false) {
+				if (display == 1) {
 				//if (display == true) {
 					Header<String> salesFooter = new ClosingHeader(table, columnType);
 					SafeHtmlHeader shh = new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(columnType.getLabel(closingSettings)));

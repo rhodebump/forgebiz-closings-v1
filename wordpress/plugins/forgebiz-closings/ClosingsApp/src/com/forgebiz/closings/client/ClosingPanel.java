@@ -425,9 +425,9 @@ public class ClosingPanel extends Composite {
 				ClosingsApp.getInstance().displayMessage(CLOSING_ALREADY_SUBMITTED);
 			}
 
-			ClosingsApp.setString(closingDateBox.getTextBox(), getDisplayDate(closing), closing);
+			ClosingsApp.setString(closingDateBox.getTextBox(), getDisplayDate(closing.getClosingDate()), closing);
 
-			closingDateBox.getTextBox().setValue(getDisplayDate(closing));
+			closingDateBox.getTextBox().setValue(getDisplayDate(closing.getClosingDate()));
 			//while we may have the location id for the closing, the locations come through an ajax request, 
 			//and may not be available yet, so not setting of this yet
 
@@ -502,15 +502,15 @@ public class ClosingPanel extends Composite {
 
 	}
 
-	public static String getDisplayDate(Closing closing) {
-		if (closing.getClosingDate() == null) {
+	public static String getDisplayDate(String thedate) {
+		if (thedate == null) {
 			return "";
 		}
-		if (closing.getClosingDate().startsWith("0000-00-00")) {
+		if (thedate.startsWith("0000-00-00")) {
 			return "";
 		} else {
 
-			return closing.getClosingDate().substring(0, "0000-00-00".length());
+			return thedate.substring(0, "0000-00-00".length());
 		}
 	}
 

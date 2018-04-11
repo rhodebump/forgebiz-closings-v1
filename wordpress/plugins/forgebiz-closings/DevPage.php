@@ -1,7 +1,6 @@
 
 <?php
-error_reporting( E_ALL ); 
-ini_set( 'display_errors', 1 ); 
+
 
 $bootstrap_css = $plugin_url . 'css/bootstrap-4.0.0-dist/css/bootstrap.css';
 $main_js = $plugin_url . 'ClosingsApp/war/closingsapp/closingsapp.nocache.js';

@@ -17,75 +17,75 @@ public class ClosingSettings
     return (ClosingSettings)JsonUtils.safeEval(json);
   }
   
-  public final native void setShowSales1(boolean show_sales_1) /*-{
+  public final native void setShowSales1(int show_sales_1) /*-{
   this.show_sales_1 = show_sales_1;
   }-*/;
   
-  public final native void setShowSales2(boolean show_sales_2) /*-{
+  public final native void setShowSales2(int show_sales_2) /*-{
   this.show_sales_2 = show_sales_2;
   }-*/;
   
-  public final native void setShowSales3(boolean show_sales_3) /*-{
+  public final native void setShowSales3(int show_sales_3) /*-{
   this.show_sales_3 = show_sales_3;
   }-*/;
   
-  public final native void setShowSales4(boolean show_sales_4) /*-{
+  public final native void setShowSales4(int show_sales_4) /*-{
   this.show_sales_4 = show_sales_4;
   }-*/;
   
-  public final native void setShowSales5(boolean show_sales_5) /*-{
+  public final native void setShowSales5(int show_sales_5) /*-{
   this.show_sales_5 = show_sales_5;
   }-*/;
   
-  public final native void setShowSales6(boolean show_sales_6) /*-{
+  public final native void setShowSales6(int show_sales_6) /*-{
   this.show_sales_6 = show_sales_6;
   }-*/;
   
-  public final native void setShowSales7(boolean show_sales_7) /*-{
+  public final native void setShowSales7(int show_sales_7) /*-{
   this.show_sales_7 = show_sales_7;
   }-*/;
   
-  public final native void setShowSales8(boolean show_sales_8) /*-{
+  public final native void setShowSales8(int show_sales_8) /*-{
   this.show_sales_8 = show_sales_8;
   }-*/;
   
-  public final native void setShowSales9(boolean show_sales_9) /*-{
+  public final native void setShowSales9(int show_sales_9) /*-{
   this.show_sales_9 = show_sales_9;
   }-*/;
   
-  public final native void setShowIncome1(boolean show_income_1) /*-{
+  public final native void setShowIncome1(int show_income_1) /*-{
 		  this.show_income_1 = show_income_1;
 		  }-*/;
   
-  public final native void setShowIncome2(boolean show_income_2) /*-{
+  public final native void setShowIncome2(int show_income_2) /*-{
   this.show_income_2 = show_income_2;
   }-*/;
   
-  public final native void setShowIncome3(boolean show_income_3) /*-{
+  public final native void setShowIncome3(int show_income_3) /*-{
   this.show_income_3 = show_income_3;
   }-*/;
   
-  public final native void setShowIncome4(boolean show_income_4) /*-{
+  public final native void setShowIncome4(int show_income_4) /*-{
   this.show_income_4 = show_income_4;
   }-*/;
   
-  public final native void setShowIncome5(boolean show_income_5) /*-{
+  public final native void setShowIncome5(int show_income_5) /*-{
   this.show_income_5 = show_income_5;
   }-*/;
   
-  public final native void setShowIncome6(boolean show_income_6) /*-{
+  public final native void setShowIncome6(int show_income_6) /*-{
   this.show_income_6 = show_income_6;
   }-*/;
   
-  public final native void setShowIncome7(boolean show_income_7) /*-{
+  public final native void setShowIncome7(int show_income_7) /*-{
   this.show_income_7 = show_income_7;
   }-*/;
   
-  public final native void setShowIncome8(boolean show_income_8) /*-{
+  public final native void setShowIncome8(int show_income_8) /*-{
   this.show_income_8 = show_income_8;
   }-*/;
   
-  public final native void setShowIncome9(boolean show_income_9) /*-{
+  public final native void setShowIncome9(int show_income_9) /*-{
   this.show_income_9 = show_income_9;
   }-*/;
   
@@ -168,88 +168,88 @@ public class ClosingSettings
 	}-*/;
 
   
-  public final native boolean getShowIncome1()/*-{
+  public final native int getShowIncome1()/*-{
 	return this.show_income_1;
 	}-*/;
 
   
-  public final native boolean getShowIncome2()/*-{
+  public final native int getShowIncome2()/*-{
 	return this.show_income_2;
 	}-*/;
 
   
-  public final native boolean getShowIncome3()/*-{
+  public final native int getShowIncome3()/*-{
 	return this.show_income_3;
 	}-*/;
 
   
-  public final native boolean getShowIncome4()/*-{
+  public final native int getShowIncome4()/*-{
 	return this.show_income_4;
 	}-*/;
 
   
-  public final native boolean getShowIncome5()/*-{
+  public final native int getShowIncome5()/*-{
 	return this.show_income_5;
 	}-*/;
 
   
-  public final native boolean getShowIncome6()/*-{
+  public final native int getShowIncome6()/*-{
 	return this.show_income_6;
 	}-*/;
 
   
-  public final native boolean getShowIncome7()/*-{
+  public final native int getShowIncome7()/*-{
 	return this.show_income_7;
 	}-*/;
 
   
-  public final native boolean getShowIncome8()/*-{
+  public final native int getShowIncome8()/*-{
 	return this.show_income_8;
 	}-*/;
   
-  public final native boolean getShowIncome9()/*-{
+  public final native int getShowIncome9()/*-{
 	return this.show_income_9;
 	}-*/;
 
   
-  public final native boolean getShowSales1()/*-{
+  public final native int getShowSales1()/*-{
 	return this.show_sales_1;
 	}-*/;
 
 	
-  public final native boolean getShowSales2()/*-{
+  public final native int getShowSales2()/*-{
 	return this.show_sales_2;
 	}-*/;
  
-  public final native boolean getShowSales3()/*-{
+  public final native int getShowSales3()/*-{
 	return this.show_sales_3;
 	}-*/;
 
   
-  public final native boolean getShowSales4()/*-{
+  public final native int getShowSales4()/*-{
 	return this.show_sales_4;
 	}-*/;
 
   
-  public final native boolean getShowSales5()/*-{
+  public final native int getShowSales5()/*-{
 	return this.show_sales_5;
 	}-*/;
   
-  public final native boolean getShowSales6()/*-{
+  public final native int getShowSales6()/*-{
 	return this.show_sales_6;
 	}-*/;
   
-  public final native boolean getShowSales7()/*-{
+  public final native int getShowSales7()/*-{
 	return this.show_sales_7;
 	}-*/;
 
   
-  public final native boolean getShowSales8()
+  public final native int getShowSales8()
   /*-{
 	return this.show_sales_8;
 	}-*/;
 
-  public final native boolean getShowSales9()/*-{
+  public final native int getShowSales9()/*-{
 	return this.show_sales_9;
 	}-*/;
   

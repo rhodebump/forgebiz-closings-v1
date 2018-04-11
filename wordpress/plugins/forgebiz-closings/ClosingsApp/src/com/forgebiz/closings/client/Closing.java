@@ -183,6 +183,10 @@ public final native String getClosingDate()/*-{
 return this.closing_date;
 }-*/;
 
+public final native String getDateCreated()/*-{
+return this.date_created;
+}-*/;
+
 
   public final native void setDeleted(boolean deleted) /*-{
   this.deleted = deleted;

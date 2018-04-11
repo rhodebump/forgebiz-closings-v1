@@ -32,9 +32,9 @@ public class BaseIncomeSalesPanel extends FlowPanel {
 	TextBox cashTotalTextBox = new TextBox();
 	
 
-	protected void initControl(Label label, TextBox textBox, boolean showControl, String labelText) {
+	protected void initControl(Label label, TextBox textBox, int showControl, String labelText) {
 		
-		if (showControl != false) {
+		if (showControl == 1) {
 			label.setText(labelText);
 			add(NumberPanelHelper.getFlowPanel( label,  textBox));
 			textBox.addKeyUpHandler(numberKeyUpHandler);
