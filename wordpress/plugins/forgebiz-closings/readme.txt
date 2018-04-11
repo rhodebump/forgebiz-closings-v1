@@ -1,12 +1,16 @@
 === forgebiz closings ===
 Contributors: forgebiz
+Donate link: http://forgebiz.com/donate/
 Tags: accounting, bookkeeping, book keeping, income, expense log, forgebiz
 Requires at least: 3.5
 Tested up to: 4.9
 Requires PHP: 5.2.4
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+
+
 
 forgebiz closings plugin gives allows small businesses to balance cash register transactions at the end of each day to properly track and record sales transactions
 
