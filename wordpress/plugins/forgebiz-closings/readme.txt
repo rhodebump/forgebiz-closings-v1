@@ -2,20 +2,15 @@
 Contributors: forgebiz
 Donate link: http://forgebiz.com/donate/
 Tags: accounting, bookkeeping, book keeping, income, expense log, forgebiz
-Requires at least: 3.5
+Requires at least: 4.8
 Tested up to: 4.9
-Requires PHP: 5.2.4
 Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-
-
-
 forgebiz closings plugin gives allows small businesses to balance cash register transactions at the end of each day to properly track and record sales transactions
 
 == Description ==
-
 
 What is the purpose of forgebiz closings?
 forgebiz aims to provide useful applications for small business with a focus on the WordPress platform.  Forgebiz closings is a simple application that small businesses can use to balance their registers when they close our a register.
@@ -63,13 +58,27 @@ This is a first edition of the plugin.  Not applicable yet.
 4. Create a closing
 
 
-= 1.0 =
-* Public Release
+= 1.2 =
+* fix boolean/int properties for display
+* added date created to search results
 
 = 1.1 =
 * fix location dropdown to location on edit closing screen
 * fix for displaying hidden incomes/products on table results screen
 * added location name to closing search results
 
+= 1.0 =
+* Public Release
 
 
+
+
+
+
+== Contribute ==
+	
+If you find this useful and if you want to contribute, there are three ways:
+
+1. You can [write me](https://www.philliprhodes.com/contact) and submit your bug reports, suggestions and requests for features;
+2. If you want to translate it to your language (there are just a few lines of text), you can use the [translation project](https://translate.wordpress.org/projects/wp-plugins/forgebiz-closings);
+3. Using the plugin is free, but if you want you can support my efforts by donating [here](http://forgebiz.com/donate/)
