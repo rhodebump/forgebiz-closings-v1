@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: forgebiz Closings
+ * Plugin Name: Forgebiz Closings
  * Plugin URI: http://forgebiz.com
  * Description: Allows businesses to perform end-of-day cash register closing
- * Version: 1.0
+ * Version: 1.2
  * Author: Phillip Rhodes "rhodebump"
  * Author URI: http://www.philliprhodes.com
  * License: GPLv2 or later

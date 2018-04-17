@@ -188,8 +188,14 @@ public class ClosingPanel extends Composite {
 		this.closeCashPanel.calculateAll();
 		double closeCashTotal = this.closeCashPanel.getCashTotal();
 		closing.setCloseCashTotal(closeCashTotal);
+		GWT.log("income calculateAll->");
+		double incomeCashTotal = getSafeDouble(closing.getCloseCashTotal()) - getSafeDouble(closing.getOpenCashTotal());
+		GWT.log("Setting income cash total to " + incomeCashTotal);
+		//kind of tricky situation,  we need the cash total to be updated so that the income panel can calculate correctly
+		incomePanel.cashTotalTextBox.setValue(getCurrency(incomeCashTotal));
 		incomePanel.calculateAll();
 		Double income_total = incomePanel.getTotal();
+		GWT.log("income_total " + income_total);
 		closing.setIncomeTotal(income_total);
 
 		salesPanel.calculateAll();
@@ -211,13 +217,14 @@ public class ClosingPanel extends Composite {
 	}
 
 	private void updateControls() {
-
+		GWT.log("updateControls");
+		GWT.log("closing.getSalesTotal() " + closing.getSalesTotal());
+		GWT.log("closing.getIncomeTotal() " + closing.getIncomeTotal());
+		GWT.log("closing.getDifference() " + closing.getDifference());	
 		totalSalesTextBox.setValue(getCurrency(closing.getSalesTotal()));
 		totalIncomeTextBox.setValue(getCurrency(closing.getIncomeTotal()));
 		differenceTextBox.setValue(getCurrency(closing.getDifference()));
-		double incomeCashTotal = getSafeDouble(closing.getCloseCashTotal()) - getSafeDouble(closing.getOpenCashTotal());
 
-		incomePanel.cashTotalTextBox.setValue(getCurrency(incomeCashTotal));
 
 	}
 

@@ -1,4 +1,4 @@
-=== forgebiz closings ===
+=== Forgebiz Closings ===
 Contributors: forgebiz
 Donate link: http://forgebiz.com/donate/
 Tags: accounting, bookkeeping, book keeping, income, expense log, forgebiz
@@ -79,6 +79,6 @@ This is a first edition of the plugin.  Not applicable yet.
 	
 If you find this useful and if you want to contribute, there are three ways:
 
-1. You can [write me](https://www.philliprhodes.com/contact) and submit your bug reports, suggestions and requests for features;
+1. You can [write me](http://www.philliprhodes.com/contact) and submit your bug reports, suggestions and requests for features;
 2. If you want to translate it to your language (there are just a few lines of text), you can use the [translation project](https://translate.wordpress.org/projects/wp-plugins/forgebiz-closings);
 3. Using the plugin is free, but if you want you can support my efforts by donating [here](http://forgebiz.com/donate/)
