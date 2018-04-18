@@ -339,7 +339,7 @@ class forgebizclosingsApp
         $page_title = 'forgebiz closings | forgebiz.com';
 
         //local
-        if (false) {
+        if (true) {
             include_once ($this->plugin_dir . 'DevPage.php');
         } else {
             include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
@@ -1073,7 +1073,7 @@ function forgebizclosings_plugin_options()
 }
 
 //local
-if (true) {
+if (false) {
     add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
 }
 

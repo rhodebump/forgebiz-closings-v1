@@ -35,27 +35,16 @@
 						</div>
 					</div>
 				<div class="col-4">
-						<div class="form-group">
-							<label for="closingDate">Date</label>
 
-							<p class="input-group">
-								<datepicker:DateBox styleName="form-control"
-									ui:field="closingDateBox" />
-
-
-							</p>
-
-						</div>
+						
+							<g:FlowPanel ui:field="dateFlowPanel"/>
 
 					</div>
 
 
 				<div class="col-4">
-						<div class="form-group">
-							<label for="closingDate">Location</label>
-							<g:ListBox styleName="formControl" ui:field="locationListBox" />
-
-						</div>
+				<g:FlowPanel ui:field="locationFlowPanel"/>
+	
 
 					</div>
 

@@ -1,5 +1,8 @@
 package com.forgebiz.closings.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //import com.google.gwt.i18n.client.NumberFormat;
 
 //import java.text.DecimalFormat;
@@ -7,8 +10,12 @@ package com.forgebiz.closings.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -23,6 +30,8 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -78,12 +87,32 @@ public class ClosingPanel extends Composite {
 	@UiField
 	TextBox totalSalesTextBox;
 
+	DateBox closingDateBox = new DateBox();
 	@UiField
-	DateBox closingDateBox;
+	FlowPanel dateFlowPanel;
+	
+	
+	/*
+	 * 						<div class="form-group">
+							<label for="closingDate">Date</label>
+
+							<p class="input-group">
+								<datepicker:DateBox styleName="form-control"
+									ui:field="closingDateBox" />
+
+
+							</p>
+
+						</div>
+						
+	 */
 
 	ClosingsApp closingsApp = null;
 
 	@UiField
+	FlowPanel locationFlowPanel;
+	
+	
 	ListBox locationListBox = new ListBox();
 
 	AsyncCallback gotLocationsCallback = new AsyncCallback() {
@@ -156,6 +185,38 @@ public class ClosingPanel extends Composite {
 
 	public ClosingPanel() {
 		initWidget((Widget) binder.createAndBindUi(this));
+		
+		//FlowPanel locationFlowPanel;
+		Label locationLabel = new Label("Location");
+		NumberPanelHelper.getFlowPanel2(locationFlowPanel,locationLabel, locationListBox,"Please pick a location");
+
+		locationListBox.addChangeHandler(new ChangeHandler() {
+
+		        @Override
+		        public void onChange(ChangeEvent event) {
+		            //onChangeBody(lb);
+		        		validateLocation(new ArrayList<String>());
+		        }
+		    });
+		 
+		Label dateLabel = new Label("Closing Date");
+		NumberPanelHelper.getFlowPanel2(dateFlowPanel,dateLabel, closingDateBox,"Please pick a date");
+
+		closingDateBox.getTextBox().addValueChangeHandler(new ValueChangeHandler<String>() {
+			   @Override
+			   public void onValueChange(ValueChangeEvent<String> event) {
+					if (closingDateBox.getValue() == null) {
+
+		
+						NumberKeyUpHandler.fixStyles(false,closingDateBox);
+		
+					} else {
+						NumberKeyUpHandler.fixStyles(true,closingDateBox);
+					}
+			  }
+			});
+		
+		
 
 		this.saveButton.addClickHandler(saveHandler);
 		this.submitButton.addClickHandler(submitHandler);
@@ -244,6 +305,7 @@ public class ClosingPanel extends Composite {
 
 	private boolean isNullOrEmpty(String val) {
 
+		GWT.log("isNullOrEmpty val=" + val);
 		if (val == null) {
 			return true;
 
@@ -252,29 +314,27 @@ public class ClosingPanel extends Composite {
 			return true;
 
 		}
+		GWT.log("isNullOrEmpty is false");
 		return false;
 	}
 
 	private static String CLOSING_ALREADY_SUBMITTED = "This closing has already been submitted, you cannot edit or make any changes to it.";
 	public ClickHandler submitHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
-			// is it valid for submit??
-			if (isNullOrEmpty(locationListBox.getSelectedValue())) {
 
-				ClosingsApp.getInstance().displayError("Please choose a location");
-				return;
-			}
-			if (closingDateBox.getValue() == null) {
-
-				ClosingsApp.getInstance().displayError("Please set a date");
-				return;
-			}
 			if (closing.getSubmitted() == 1) {
 				ClosingsApp.getInstance().displayError(CLOSING_ALREADY_SUBMITTED);
 				return;
 			}
+			List<String> errors = new ArrayList<String>();
+			isValid(errors);
+			
+			if (!errors.isEmpty()) {
+				return;
+			}
 			closing.setSubmitted(0);
 			saveClosing(closing, saveClosingCallback);
+
 
 		}
 	};
@@ -302,6 +362,34 @@ public class ClosingPanel extends Composite {
 		}
 	};
 
+
+	
+	private void validateLocation(List<String> errors) {
+		if (isNullOrEmpty(locationListBox.getSelectedValue())) {
+
+			errors.add("error");
+			ClosingsApp.getInstance().displayError("Please choose a location");
+			NumberKeyUpHandler.fixStyles(false,locationListBox);
+			//need to highlight
+		} else {
+			NumberKeyUpHandler.fixStyles(true,locationListBox);
+			
+		}
+		
+	}
+	private void isValid(List<String> errors) {
+
+		validateLocation(errors);
+		if (closingDateBox.getValue() == null) {
+
+			ClosingsApp.getInstance().displayError("Please set a date");
+			NumberKeyUpHandler.fixStyles(false,closingDateBox);
+			errors.add("error");
+		} else {
+			NumberKeyUpHandler.fixStyles(true,closingDateBox);
+		}
+
+	}
 	public ClickHandler cancelHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 
@@ -313,6 +401,12 @@ public class ClosingPanel extends Composite {
 	public ClickHandler saveHandler = new ClickHandler() {
 		public void onClick(ClickEvent event) {
 
+			List<String> errors = new ArrayList<String>();
+			isValid(errors);
+			
+			if (!errors.isEmpty()) {
+				return;
+			}
 			if (closing.getSubmitted() == 1) {
 				ClosingsApp.getInstance().displayError(CLOSING_ALREADY_SUBMITTED);
 				return;

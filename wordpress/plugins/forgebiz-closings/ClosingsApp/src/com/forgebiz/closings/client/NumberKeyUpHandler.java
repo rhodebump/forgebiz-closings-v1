@@ -24,19 +24,26 @@ public class NumberKeyUpHandler implements KeyUpHandler {
 			//FlowPanel fp = flowPanelMap.get(widget);
 
 			boolean valid = NumberPanelHelper.isValidNumber(widget);
-			if (valid) {
-				widget.removeStyleName("is-invalid");
-				widget.addStyleName("is-valid");
-
-			} else {
-				widget.addStyleName("is-invalid");
-				widget.removeStyleName("is-valid");
-			}
-
+			fixStyles(valid,widget);
 			
 
 			closingPanel.calculateAll();
 		}
 
 	}
+	
+	public static void fixStyles(boolean valid, Widget widget) {
+		if (valid) {
+			widget.removeStyleName("is-invalid");
+			widget.addStyleName("is-valid");
+
+		} else {
+			widget.addStyleName("is-invalid");
+			widget.removeStyleName("is-valid");
+		}
+
+		
+	}
+	
+	
 }
