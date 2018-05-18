@@ -161,10 +161,18 @@ public class ClosingPanel extends Composite {
 			ClosingsApp.getInstance().displayError("Closing save failure:" + throwable.getMessage());
 		}
 
-		public void onSuccess(Object response) {
+		public void onSuccess(Object obj) {
+			Response response = (Response) obj;
+			Closing closing = JsonUtils.safeEval(response.getText());
+			//ClosingsApp.getInstance().displayMessage("Closing saved id " + closing.getId());
+		//	JsArray<ClosingSettings> records = JsonUtils
+		//			.<JsArray<ClosingSettings>>safeEval(response.getText());
+		//	ClosingSettings closingSettings = records.get(0);
 			ClosingsApp.getInstance().clearMessages();
 			ClosingsApp.getInstance().displayMessage("Closing saved");
-
+			ClosingPanel.this.closing = closing;
+			ClosingPanel.this.saveButton.setEnabled(true);
+			ClosingPanel.this.saveButton2.setEnabled(true);
 		}
 	};
 
@@ -173,6 +181,7 @@ public class ClosingPanel extends Composite {
 		}
 
 		public void onSuccess(Object response) {
+			
 			ClosingSettings closingSettings = (ClosingSettings) response;
 
 			incomePanel.setClosingSettings(closingSettings);
@@ -470,13 +479,16 @@ public class ClosingPanel extends Composite {
 		}
 	};
 
-	public static void saveClosing(Closing closing, final AsyncCallback callback) {
+	public  void saveClosing(Closing closing, final AsyncCallback callback) {
 		String base = ClosingsApp.getURL("/closing/save");
 		String url = URL.encode(base);
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url);
 		ClosingsApp.setNonce(builder);
 		builder.setHeader("Content-Type", "application/json");
 		String postData = JsonUtils.stringify(closing);
+		ClosingPanel.this.saveButton.setEnabled(true);
+		ClosingPanel.this.saveButton2.setEnabled(true);
+		
 		try {
 			builder.sendRequest(postData, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {

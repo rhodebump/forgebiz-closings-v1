@@ -92,7 +92,9 @@ function forgebizclosings_install()
 		submitted tinyint NOT NULL,
 		sales_total decimal(15,2) NOT NULL,
 		income_total decimal(15,2) NOT NULL,
-		PRIMARY KEY  (id)
+		PRIMARY KEY  (id),
+        KEY closing_date (closing_date),
+        KEY location_id (location_id)
 	) $charset_collate;";
     
     require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -339,7 +341,7 @@ class forgebizclosingsApp
         $page_title = 'forgebiz closings | forgebiz.com';
 
         //local
-        if (true) {
+        if (false) {
             include_once ($this->plugin_dir . 'DevPage.php');
         } else {
             include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
@@ -685,6 +687,7 @@ function forgebizclosings_closing_save($request)
     
     $result = $wpdb->replace($table_name, $data, $format);
     if ($wpdb->last_error) {
+   // if (true) {
         $last_error = var_export($wpdb->last_error, true);
         $last_query = var_export($wpdb->last_query, true);
         
@@ -697,6 +700,8 @@ function forgebizclosings_closing_save($request)
         
         return new WP_REST_Response($debug, 500);
     }
+    $lastid = $wpdb->insert_id;
+    
     
     $submitted = $request['submitted'];
     if ($submitted) {
@@ -721,8 +726,9 @@ function forgebizclosings_closing_save($request)
             return new WP_REST_Response($e, 500);
         }
     }
+    $closing = forgebizclosings_get_closing_by_id($lastid);
     
-    return new WP_REST_Response($data, 200);
+    return new WP_REST_Response($closing, 200);
 }
 
 function forgebizclosings_get_closing_body($closing)
@@ -1073,7 +1079,7 @@ function forgebizclosings_plugin_options()
 }
 
 //local
-if (false) {
+if (true) {
     add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
 }
 
