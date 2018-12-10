@@ -12,7 +12,10 @@ exec:
 	
 mysql:
 	docker exec -it wordpressdb sh
-		
+
+dev:
+	cd ./wordpress/plugins/forgebiz-closings/ClosingsApp; ant devmode
+	
 	
 #/Users/prhodes/Development/forgebiz_closings/wordpress/plugins/forgebiz-closings  to /var/www/html/wp-content/plugins
 #docker run -v /host/directory:/container/directory -other -options image_name command_to_run

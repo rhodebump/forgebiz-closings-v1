@@ -11,6 +11,10 @@
 global $forgebizclosings_db_version;
 $forgebizclosings_db_version = '1.2';
 
+//toggle this to true if you are developing locally for testing
+function isforgebizdev() {
+    return false;
+}
 
 function forgebizclosings_get_closing_setting_tablename($wpdb)
 {
@@ -339,9 +343,9 @@ class forgebizclosingsApp
         $plugin_url = $this->plugin_url;
         $base_href = $this->base_href;
         $page_title = 'forgebiz closings | forgebiz.com';
-
+		$rest_end_point = get_rest_url ( null, "/forgebiz-closings/v1" );
         //local
-        if (false) {
+        if (isforgebizdev()) {
             include_once ($this->plugin_dir . 'DevPage.php');
         } else {
             include_once ($this->plugin_dir . 'ClosingsAppInclude.php');
@@ -675,10 +679,15 @@ function forgebizclosings_closing_save($request)
         '%d'
     
     );
+    //need to provide a value for date_created in any case since the value will be replaced
     
     if ($id) {
         $data['ID'] = $request['id'];
         $format[] = '%d';
+        
+        $data['date_created'] =  $request['date_created'];
+        $format[] = '%s';
+        
     } else {
         
         $data['date_created'] = current_time('mysql');
@@ -870,6 +879,9 @@ function forgebizclosings_save_closing_settings($request)
 
 function refresh_nonce($request)
 {
+	
+	//https://developer.wordpress.org/reference/functions/wp_refresh_post_nonces/
+	//bad www.f
     $nonce = wp_create_nonce('wp_rest');
     
     $data = array();
@@ -1079,7 +1091,7 @@ function forgebizclosings_plugin_options()
 }
 
 //local
-if (true) {
+if (! isforgebizdev()) {
     add_action('admin_enqueue_scripts', 'forgebizclosings_css_and_js');
 }
 

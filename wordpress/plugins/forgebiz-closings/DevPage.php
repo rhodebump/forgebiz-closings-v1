@@ -28,6 +28,7 @@ $nonce = wp_create_nonce( 'wp_rest' );
 var WordpressForgebizSettings = {
   nonce: "<?php echo $nonce; ?>",
   app_mode:"<?php echo $app_mode; ?>",
+  rest_end_point:"<?php echo $rest_end_point; ?>",
 };
 </script>
 

@@ -3,54 +3,54 @@
 
 
 
-<!--
+	<!--
 Purpose of this ant build file is to copy what we have that is in format to use with docker and GWT devmode
 into wordpress plugin package
 -->
 
 
-  <target name="clean" description="Cleans this project">
-    <delete dir="target" failonerror="false" />
-  </target>
-  
-  <target name="build" description="Cleans this project" depends="clean">
-    <mkdir dir="target"/>
-        <mkdir dir="target/forgebiz-closings"/>
-    
-      <copy todir="target/forgebiz-closings">
-    <fileset dir="wordpress/plugins/forgebiz-closings">
-      <exclude name="**/*.jar"/>
-       <exclude name="**/*.class"/>     
-       <exclude name="**/gwt-unitCache/"/>            
-       <exclude name="**/WEB-INF/"/>              
-       
-       <exclude name="**/ClosingsApp.launch"/>     
-       <exclude name="**/build.xml"/>     
-        <exclude name="**/ClosingsApp.html"/>     
-        <exclude name="**/.project"/>             
-        <exclude name="**/.classpath"/>            	
-    	  	<exclude name="**/DevPage.php"/>     	       
-      
-    </fileset>
-  </copy>
-  
-    <zip destfile="target/forgebiz-closings.zip"
+	<target name="clean" description="Cleans this project">
+		<delete dir="target" failonerror="false" />
+	</target>
+
+	<target name="build" description="Cleans this project" depends="clean">
+		<mkdir dir="target"/>
+		<mkdir dir="target/forgebiz-closings"/>
+
+		<copy todir="target/forgebiz-closings">
+			<fileset dir="wordpress/plugins/forgebiz-closings">
+				<exclude name="**/*.jar"/>
+				<exclude name="**/*.class"/>
+				<exclude name="**/gwt-unitCache/"/>
+				<exclude name="**/WEB-INF/"/>
+
+				<exclude name="**/ClosingsApp.launch"/>
+				<exclude name="**/build.xml"/>
+				<exclude name="**/ClosingsApp.html"/>
+				<exclude name="**/.project"/>
+				<exclude name="**/.classpath"/>
+
+
+			</fileset>
+		</copy>
+
+		<zip destfile="target/forgebiz-closings.zip"
        basedir="target"/>
 
-  <!--
+		<!--
   this copies to the SVN directory for wordpress SCM
   -->
-       
-             <copy todir="/Users/prhodes/forgebiz-closings">
-                 <fileset dir="target/forgebiz-closings">
-                       <exclude name="**/*.zip"/>
-                             
-    </fileset>
-         </copy>
-       
-  </target>
-  
-  
-  
+
+		<copy todir="/Users/prhodes/forgebiz-closings">
+			<fileset dir="target/forgebiz-closings">
+				<exclude name="**/*.zip"/>
+
+			</fileset>
+		</copy>
+
+	</target>
+
+
+
 </project>
 

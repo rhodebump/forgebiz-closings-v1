@@ -158,11 +158,11 @@ public class ClosingIndexPanel extends FlowPanel {
 		try {
 			String base = ClosingsApp.getURL("/closing/search");
 			String url = URL.encode(base);
-
-			url = url + "?location_id=" + getString(locationListBox);
-			url = url + "&start_date=" + getDate(startDatePicker);
-			url = url + "&end_date=" + getDate(endDatePicker);
-			url = url + "&deleted=" + getBoolean(showDeletedCheckbox);
+			//we may already have a ? in the path
+			url = ClosingsApp.append(url,"location_id=" + getString(locationListBox));
+			url = ClosingsApp.append(url,"start_date=" + getDate(startDatePicker));
+			url = ClosingsApp.append(url,"end_date=" + getDate(endDatePicker));
+			url = ClosingsApp.append(url,"deleted=" + getBoolean(showDeletedCheckbox));
 
 			GWT.log("url = " + url);
 			RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);

@@ -38,16 +38,39 @@ public class ClosingsApp implements EntryPoint {
 		GWT.log(" GWT.getModuleBaseURL() =" + GWT.getModuleBaseURL());
 		GWT.log(" GWT.getHostPageBaseURL() =" + GWT.getHostPageBaseURL());
 
-		GWT.log(GWT.getHostPageBaseURL() + "../wp-json/forgebiz-closings/v1" + val);
-		return GWT.getHostPageBaseURL() + "../wp-json/forgebiz-closings/v1" + val;
+		GWT.log(REST_END_POINT + "/forgebiz-books/v1" + val);
+		return REST_END_POINT + val;
 
 	}
-
+	private static String REST_END_POINT;
 	public static ClosingsApp getInstance() {
 
 		return closingsApp;
 
 	}
+	
+	/*
+	public void initSettings() {
+		Dictionary wps = Dictionary.getDictionary("WordpressForgebizSettings");
+
+		NONCE = wps.get("nonce");
+		APP_MODE = wps.get("app_mode");
+
+	}
+	*/
+
+	
+	public void initSettings() {
+		Dictionary wps = Dictionary.getDictionary("WordpressForgebizSettings");
+
+		NONCE = wps.get("nonce");
+		// APP_MODE = wps.get("app_mode");
+		REST_END_POINT = wps.get("rest_end_point");
+		APP_MODE = wps.get("app_mode");
+
+	}
+
+	
 
 	public static double getDoubleValue(TextBox textBox) {
 		try {
@@ -113,16 +136,9 @@ public class ClosingsApp implements EntryPoint {
 	private static String NONCE;
 	private static String APP_MODE;
 
-	public void initSettings() {
-		Dictionary wps = Dictionary.getDictionary("WordpressForgebizSettings");
-
-		NONCE = wps.get("nonce");
-		APP_MODE = wps.get("app_mode");
-
-	}
 
 	public static void setNonce(RequestBuilder rb) {
-
+		GWT.log("setting nonce header to " + NONCE);
 		rb.setHeader("X-WP-Nonce", NONCE);
 	}
 
@@ -158,8 +174,17 @@ public class ClosingsApp implements EntryPoint {
 		}
 
 	}
-
+	public static String append(String url, String append) {
+		GWT.log("append" + url);
+		
+		if (url.indexOf("?") == -1) {
+			return url + "?" + append;
+		} else {
+			return url + "&" + append;
+		}
+	}
 	public static void refreshNonce(final AsyncCallback callback) {
+		GWT.log("refreshNonce");
 		String base = ClosingsApp.getURL("/refresh_nonce");
 		String url = URL.encode(base);
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
@@ -225,6 +250,13 @@ public class ClosingsApp implements EntryPoint {
 		ClosingsApp.closingsApp = this;
 	}
 
+	Timer t = new Timer() {
+		@Override
+		public void run() {
+			refreshNonce(refreshNonceCallback);
+		}
+	};
+	
 	public void onModuleLoad() {
 		initSettings();
 		RootPanel.get("messagesPanel").add(messagesPanel);
@@ -250,14 +282,14 @@ public class ClosingsApp implements EntryPoint {
 
 		// refresh nonce hourly
 
-		Timer t = new Timer() {
-			@Override
-			public void run() {
-				refreshNonce(refreshNonceCallback);
-			}
-		};
 
-		t.schedule(60 * 1000 * 60);
+		
+		
+		//every minute
+		refreshNonce();
+		
+		//every hour
+		//t.schedule(60 * 1000 * 60);
 
 	}
 
@@ -304,20 +336,31 @@ public class ClosingsApp implements EntryPoint {
 		closingsMain.add(panel);
 
 	}
+	public void refreshNonce() {
+		t.schedule(60 * 60 * 1000 );
+	}
 
 	AsyncCallback refreshNonceCallback = new AsyncCallback() {
 		public void onFailure(Throwable throwable) {
+
 			ClosingsApp.getInstance().displayError("Your login has expired:  " + throwable.getMessage());
 			ClosingsApp.getInstance()
 					.displayError("Any changes that have been made can not be saved.  Please login and start again.");
-
+			refreshNonce();
 		}
 
 		public void onSuccess(Object response) {
-
+			GWT.log("refreshNonceCallback success " + response.toString());
+			//Need to strip out the wrapping quotes
+			// {"nonce":"4c406ad7c2"}
+			//https://groups.google.com/forum/#!topic/google-web-toolkit/sq818aqXjX8
 			JSONObject jsonObject = new JSONObject(JsonUtils.safeEval(response.toString()));
-			JSONValue val = jsonObject.get("nonce");
-			ClosingsApp.NONCE = val.toString();
+			//JSONValue val = jsonObject.get("nonce");
+			//JSONObject.get("name").isString().stringValue() 
+			
+			ClosingsApp.NONCE = jsonObject.get("nonce").isString().stringValue();
+			GWT.log("refreshed nonce with " + ClosingsApp.NONCE);
+			refreshNonce();
 
 		}
 	};
